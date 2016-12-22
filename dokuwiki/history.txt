@@ -1,0 +1,55 @@
+    1  ls
+    2  apt-get update
+    3  apt-get install lighttpd
+    4  apt-get install php5-cgi php5 dokuwiki
+    5  lighty-enable-mod fastcgi fastcgi-php dokuwiki
+    6  /​etc/​init.d/​lighttpd force-reload
+    7  /etc/init.d/lighttpd force-reload
+    8  cd /etc/
+    9  ls
+   10  mkdir docuwiki
+   11  cd docuwiki/
+   12  ls
+   13  touch lighttpd.conf
+   14  ln /etc/lighttpd/conf-available/50-docuwiki.conf /etc/docuwiki/lighttpd.conf
+   15  ln /etc/docuwiki/lighttpd.conf /etc/lighttpd/conf-available/50-docuwiki.conf
+   16  ls
+   17  ll
+   18  ls -lah
+   19  ls -lah --color
+   20  vim /etc/docuwiki/lighttpd.conf
+   21  vi /etc/docuwiki/lighttpd.conf
+   22  apt install vim
+   23  vim /etc/docuwiki/lighttpd.conf
+   24  lighttpd-enable-mod dokuwiki
+   25  /etc/init.d/lighttpd force-reload
+   26  cd /var/log
+   27  ls
+   28  tail lighttpd/
+   29  cd lighttpd/
+   30  ls
+   31  ls
+   32  ll
+   33  ls -lah
+   34  cd ..
+   35  ls
+   36  l
+   37  ls -lah
+   38  date
+   39  tail alternatives.log
+   40  clear
+   41  ls
+   42  /etc/init.d/lighttpd restart
+   43  /etc/init.d/lighttpd force-reload
+   44  ps auxc
+   45  nmap
+   46  netstat -tape
+   47  apt install netstat
+   48  apt install nmap
+   49  nmap localhost
+   50  wget
+   51  apt install wget
+   52  wget localhost
+   53  vim index.html
+   54  history
+
