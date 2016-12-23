@@ -15,9 +15,10 @@ $
 
 # Command Line History (newest to oldest):
 :wq
-:q
 :w
 :syntax on
+:1
+:q
 :q!
 
 # Search String History (newest to oldest):
@@ -33,41 +34,50 @@ $
 
 # Registers:
 "0	LINE	0
-	sleep 10
+	- [ ]
 "1	LINE	0
-	
+	- [ ]
 "2	LINE	0
-	COPY my.cnf /etc/mysql/my.cnf
+	- [ ]
 "3	LINE	0
-	
+	- [ ] 
 "4	LINE	0
-	usr/bin/mysqladmin shutdown
+	
 "5	LINE	0
-	killall mysqld
+	
 "6	LINE	0
-	mysql -e "FLUSH PRIVILEGES;"
+	COPY my.cnf /etc/mysql/my.cnf
 "7	LINE	0
-	mysql -e "GRANT ALL PRIVILEGES ON \*.\* TO 'kproot'@'%' WITH GRANT OPTION;"
+	
 "8	LINE	0
-	mysql -e "CREATE USER 'kproot'@'%' IDENTIFIED BY 'qwer';"
+	usr/bin/mysqladmin shutdown
 "9	LINE	0
-	mysqld &
+	killall mysqld
 ""-	CHAR	0
-	#
+	 
 
 # File marks:
-'0  11  0  ~/mysql/Dockerfile
-'1  6  6  ~/mysql/grant_access.sh
-'2  6  0  ~/mysql/Dockerfile
-'3  7  13  ~/mysql/grant_access.sh
-'4  3  21  ~/mysql/grant_access.sh
-'5  9  40  ~/mysql/Dockerfile
-'6  1  0  ~/mysql/grant_access.sh
-'7  47  22  ~/mysql/my.cnf
-'8  5  0  ~/mysql/Dockerfile
-'9  15  9  ~/mysql/Dockerfile
+'0  4  5  ~/.gitignore
+'1  14  3  ~/README.md
+'2  71  0  ~/osticket/nginx.conf
+'3  13  36  ~/osticket/Dockerfile
+'4  1  8  ~/osticket/nginx.conf
+'5  8  0  ~/osticket/nginx.conf
+'6  11  0  ~/mysql/Dockerfile
+'7  6  6  ~/mysql/grant_access.sh
+'8  6  0  ~/mysql/Dockerfile
+'9  7  13  ~/mysql/grant_access.sh
 
 # Jumplist (newest first):
+-'  4  5  ~/.gitignore
+-'  1  0  ~/.gitignore
+-'  14  3  ~/README.md
+-'  1  0  ~/README.md
+-'  71  0  ~/osticket/nginx.conf
+-'  1  0  ~/osticket/nginx.conf
+-'  13  36  ~/osticket/Dockerfile
+-'  1  0  ~/osticket/Dockerfile
+-'  8  0  ~/osticket/nginx.conf
 -'  11  0  ~/mysql/Dockerfile
 -'  1  0  ~/mysql/Dockerfile
 -'  6  6  ~/mysql/grant_access.sh
@@ -158,15 +168,76 @@ $
 -'  1  0  ~/docuwiki/history.txt
 -'  7  0  ~/.bashrc
 -'  1  0  ~/.bashrc
--'  11  0  ~/.bashrc
--'  12  0  ~/docuwiki/lighthttp.conf
--'  1  0  ~/docuwiki/lighthttp.conf
--'  55  0  ~/docuwiki/history.txt
--'  1  0  ~/docuwiki/history.txt
--'  55  0  ~/docuwiki/history.txt
--'  1  0  ~/docuwiki/history.txt
 
 # History of marks within files (newest to oldest):
+
+> ~/.gitignore
+	"	4	5
+	^	4	6
+	.	4	5
+	+	4	5
+
+> ~/README.md
+	"	14	3
+	^	12	14
+	.	13	3
+	+	21	44
+	+	19	99
+	+	21	157
+	+	19	23
+	+	23	0
+	+	13	12
+	+	14	4
+	+	15	0
+	+	16	0
+	+	17	0
+	+	17	0
+	+	18	0
+	+	18	0
+	+	14	13
+	+	15	14
+	+	16	5
+	+	15	55
+	+	16	13
+	+	17	0
+	+	10	11
+	+	17	15
+	+	18	0
+	+	10	4
+	+	11	10
+	+	12	13
+	+	16	3
+	+	13	3
+
+> ~/osticket/nginx.conf
+	"	71	0
+	^	31	9
+	.	35	14
+	+	1	12
+	+	71	0
+	+	22	28
+	+	23	44
+	+	29	0
+	+	28	37
+	+	27	17
+	+	29	8
+	+	30	8
+	+	31	8
+	+	35	14
+
+> ~/osticket/Dockerfile
+	"	13	36
+	^	13	37
+	.	13	36
+	+	5	27
+	+	9	40
+	+	7	26
+	+	12	0
+	+	5	33
+	+	17	4
+	+	17	85
+	+	15	8
+	+	13	36
 
 > ~/mysql/Dockerfile
 	"	11	0

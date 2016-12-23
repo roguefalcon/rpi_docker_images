@@ -1,170 +1,3 @@
-rm -rf *
-ls
-cd ..
-ls
-chmod o-r dokuwiki/
-ls
-chmod =R o-r dokuwiki/
-chmod -R o-r dokuwiki/
-ll
-chmod -R o-w dokuwiki/
-chmod -R o+r dokuwiki/
-ll
-cd dokuwiki/
-ls
-ll
-watch -n3 `ls -lah`
-watch -n3 ls -lah
-ls
-docker -v
-docker images
-docker ps
-docker ps -a
-docker rm dokuwiki
-docker run --name dokuwiki -d -p 80:80 dokuwiki
-docker ps
-docker rm dokuwiki
-docker stop dokuwiki
-docker rm dokuwiki
-docker run --name dokuwiki -d -p 80:80 dokuwiki
-docker ps
-top
-uit
-quit
-docker ps
-docker ps
-docker ps -a
-docker start prickly_mclean
-docker ps
-docker ps
-docker ps
-docker ps
-clear
-ls
-cd openldap
-ls
-cp ../dokuwiki/Dockerfile .
-ls
-vim Dockerfile 
-cd ..
-ls
-mkdir kprpi
-cd kprpi
-cp ../openldap/Dockerfile .
-ls
-vim Dockerfile 
-clear; time docker build -t kprpi .
-docker images
-cd ..
-ls
-cd openldap/
-vim Dockerfile 
-clear; time docker build -t openldap .
-docker images
-docker run -ti openldap /bin/bash
-clear; time docker build -t openldap .
-docker run -ti openldap
-docker ps
-docker ps -a
-docker rm zen_aryabhata nauseous_poincare
-clear
-ls
-docker ps
-docker run -ti openldap  /bin/bash
-docker ps
-docker ps -a
-docker rm elated_shannon
-docker ps -a
-docker ps -a
-docker images
-docker images -a
-docker rmi 50fcc6014e81 30633005b8d3 7683d0988dfb 11df51d68292 2b72d312c5d1 f41a9bc003ae 1927247d7272 dfd2b2a08b4b 13c4f6173b98
-clear
-docker images
-clear; time docker build -t openldap .
-clear; time docker build -t openldap .
-clear; time docker build -t openldap .
-history
-history | grep run
-cat Dockerfile 
-vim Dockerfile 
-clear; time docker build -t openldap .
-vim Dockerfile 
-clear; time docker build -t openldap .
-cd ..
-ls
-rmdir pwn
-mkdir phpLDAPadmin
-cd phpLDAPadmin/
-ls
-cp ../openldap/Dockerfile .
-vim Dockerfile 
-clear; time docker build -t phpLDAPadmin .
-ls
-pwd
-clear; time docker build -t phpLDAPadmin .
-ls
-cd ..
-ls
-cd openldap/
-clear; time docker build -t openldap .
-cd ..
-ls
-cd phpLDAPadmin/
-clear; time docker build -t phpLDAPadmin .
-cd ..
-l
-smv phpLDAPadmin/ phpldapadmin
-mv phpLDAPadmin/ phpldapadmin
-cd phpldapadmin/
-ls
-clear; time docker build -t phpldapadmin .
-clear
-ls
-docker run -ti phpldapadmin /bin/bash
-docker ps
-docker ps -a
-docker rm lonely_yalow
-clear; time docker build -t phpldapadmin .
-clear; time docker build -t phpldapadmin .
-docker ps
-docker attach -h
-docker attach openldap
-cd ../openldap && clear; time docker build -t openldap .
-cd ..
-cd phpldapadmin/
-clear; time docker build -t phpldapadmin .
-vim Dockerfile 
-clear; time docker build -t phpldapadmin .
-docker ps -a
-cd ..
-ls
-vim build.sh
-docker stop openldap
-docker run -ti openldap /bin/bash
-docker run -ti openldap -p389:389 /bin/bash
-docker run -ti openldap -p 389:389 /bin/bash
-docker run -ti -p 389:389 openldap /bin/bash
-docker ps
-cd openldap/
-ls
-vim Dockerfile 
-clear; time docker build -t openldap .
-docker run -ti -p 389:389 openldap /bin/bash
-docker run -ti -p 389:389 openldap /bin/bash
-docker run -ti -p 389:389 openldap /bin/bash
-clear
-docker ps
-docker stop dokuwiki
-clear
-docker start dokuwiki
-docker ps
-docker stop dokuwiki
-docker run -ti dokuwiki /bin/bash
-docker run -ti -p 80:80 dokuwiki /bin/bash
-docker run -ti -p 80:80 dokuwiki /bin/bash
-clear; time docker build -t dokuwiki .
-cd ..
 ls
 docker images
 cd dokuwiki/
@@ -498,3 +331,170 @@ docker ps
 docker stop jenkins dokuwiki phpldapadmin
 docker ps
 shutdown -h now
+ls
+mkdir osticket
+cd osticket
+ls
+cp ../mysql/Dockerfile .
+ls
+clear
+nmap localhost
+mysql -h 127.0.0.1
+docker ps
+docker ps
+docker stop kickass_stonebraker 
+mysql -h 127.0.0.1
+mysql -h 127.0.0.1
+docker ps
+docker kill determined_mestorf 
+docker ps -a
+docker rm determined_mestorf kickass_stonebraker pensive_bardeen mysql
+docker ps -a
+df -h
+clear
+ls
+mysql
+mysql -h 127.0.0.1
+mysql -h 192.168.1.139
+mysql -h 192.168.1.139 -u kproot -p
+clear
+ls
+cd ..
+cd mysql/
+ls
+top
+mysql -h 192.168.1.139 -u kproot -p
+mysql -h 127.0.0.1 -u kproot -p
+locate my.cnf
+updated
+updatedb
+locate my.cnf
+ls
+cp /var/lib/docker/overlay/a5c24480dd94a06c891c2b7606cc032c139857f6f08a72405413a7ddce9611ea/root/etc/mysql/my.cnf
+cp /var/lib/docker/overlay/a5c24480dd94a06c891c2b7606cc032c139857f6f08a72405413a7ddce9611ea/root/etc/mysql/my.cnf .
+ls
+vim my.cnf 
+vim Dockerfile 
+mysql -h 127.0.0.1 -u kproot -p
+ls
+vim grant_access.sh 
+clear
+ls
+vim Dockerfile 
+vim grant_access.sh 
+vim grant_access.sh 
+vim Dockerfile 
+mysql -h 127.0.0.1 -u kproot -p
+mysql -h 127.0.0.1 -u kproot -p
+mysql -h 127.0.0.1 -u kproot -p
+mysql -h 127.0.0.1 -u kproot -p
+mysql -h 127.0.0.1 -u kproot -p
+vim Dockerfile 
+top
+mysql -h 127.0.0.1 -u kproot -p
+mysql -h 127.0.0.1 -u kproot -p
+mysql -h 127.0.0.1 -u kproot -p
+df -h
+clear
+ls
+docker ps -a
+docker start dokuwiki
+docker start phpldapadmin
+docker ps
+top
+clear
+ls
+cd ..
+ls
+clear
+ls
+mkdir sonarqube
+ls
+git status
+git add mysql
+clear
+ls
+pwd
+git push
+git status
+git commit -a
+clear; git push
+clear; git push
+git config --global push.default simple
+docker ps
+docker ps -a
+ls
+mkdir mysql
+cd mysql
+clear
+ls
+cp ../dokuwiki/Dockerfile .
+ls
+vim Dockerfile 
+clear; time docker build -t mysql .
+docker images -a
+docker images
+nmap localhost
+docker run --name mysql -d -p 3306:3306 mysql
+docker ps
+mysql
+apt install mysql-client
+mysql -h 127.0.0.1
+ps auxc
+nmap localhost
+mysql -h 127.0.0.1 -p 3306
+mysql -h 127.0.0.1:3306
+mysql -h 127.0.0.1 3306
+mysql -h 127.0.0.1 --port=3306
+man mysql
+mysql -h localhost --port=3306
+mysql -h --port=3306
+clear
+ls
+mysql
+mysql -h 127.0.0.1
+docker run --name mysql -ti -p 3306:3306 /bin/bash
+docker run -ti -p 3306:3306 mysql /bin/bash
+docker stop mysql
+docker run -ti -p 3306:3306 mysql /bin/bash
+man mysqld
+docker run -ti -p 3306:3306 mysql /bin/bash
+clear; docker run -ti -p 3306:3306 mysql /bin/bash
+clear
+ls
+vim grant_access.sh
+vim Dockerfile 
+docker ps -a
+docker rmi mysql
+docker ps -a
+docker rm jolly_kilby
+docker rmi mysql
+df -h
+clear; time docker build -t mysql .
+clear
+ls
+clear
+ls
+clear; docker run -ti -p 3306:3306 mysql /bin/bash
+clear
+ls
+clear; time docker build -t mysql .
+clear; time docker build -t mysql .
+clear; time docker build -t mysql .
+clear; time docker build -t mysql .
+docker run --name=mysql -d -p 3306:3306 mysql 
+docker ps
+docker stop mysql
+docker rm mysql
+docker run -ti -p 3306:3306 mysql /bin/bash
+vim Dockerfile 
+vim grant_access.sh 
+docker ps -a
+docker rm distracted_ritchie focused_noyce adoring_borg naughty_dijkstra suspicious_wilson
+clear; time docker build -t mysql .
+clear; time docker build -t mysql .
+docker ps
+docker run -d --name=mysql -p3306:3306 mysql
+docker ps
+docker ps
+docker ps
