@@ -1,36 +1,3 @@
-ls'
-ls
-mkdir attic
-mkdir media
-mkdir media_attic
-mkdir media_meta
-chgrp -R www-data *
-chmod -R g+w *
-ls
-ll
-rm hello
-clear
-ls
-ll
-ps auxc
-ls
-clear
-ls
-ll
-ls
-cd ..
-ls
-chmod -R 777 dokuwiki/
-ll
-cd dokuwiki/
-ls
-ll
-clear
-ls
-chmod 2775 attic
-chmod 2775 data
-ls
-ll
 rm -rf *
 ls
 cd ..
@@ -498,3 +465,36 @@ iotop
 apt install iotop
 apt-get install linux-image-extra-$(uname -r) linux-image-extra-virtual
 top
+ls
+git init
+git add .
+git commit -a
+git status
+git remote add origin https://github.com/roguefalcon/rpi_docker_images.git
+git pull
+ls
+mkdir /tmp/kpbak
+cp -r * /tmp/kpbak
+ls
+git pull origin/master
+git remote -v
+git pull
+git push
+git push --set-upstream origin master
+git pull
+git pull --set-upstream origin master
+git branch --set-upstream-to=origin/master master
+git pull
+git stuats
+git status
+git push
+git pull
+clear
+ls
+top
+clear
+ls
+docker ps
+docker stop jenkins dokuwiki phpldapadmin
+docker ps
+shutdown -h now

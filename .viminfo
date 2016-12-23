@@ -33,43 +33,53 @@ $
 
 # Registers:
 "0	LINE	0
-	cd dokuwiki
-	docker build -t dokuwiki .
-	cd ..
-""1	LINE	0
+	sleep 10
+"1	LINE	0
 	
 "2	LINE	0
-	
+	COPY my.cnf /etc/mysql/my.cnf
 "3	LINE	0
 	
 "4	LINE	0
-	RUN apt-get -y install jenkins
+	usr/bin/mysqladmin shutdown
 "5	LINE	0
-	
+	killall mysqld
 "6	LINE	0
-	RUN apt-get -y install nmap
+	mysql -e "FLUSH PRIVILEGES;"
 "7	LINE	0
-	
+	mysql -e "GRANT ALL PRIVILEGES ON \*.\* TO 'kproot'@'%' WITH GRANT OPTION;"
 "8	LINE	0
-	   24 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 perf
+	mysql -e "CREATE USER 'kproot'@'%' IDENTIFIED BY 'qwer';"
 "9	LINE	0
-	   23 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 netns
-"-	CHAR	0
-	j
+	mysqld &
+""-	CHAR	0
+	#
 
 # File marks:
-'0  5  47  ~/jenkins/Dockerfile
-'1  11  0  ~/jenkins/Dockerfile
-'2  1  0  ~/dokuwiki/Dockerfile
-'3  33  39  ~/build.sh
-'4  3  0  ~/jenkins/Dockerfile
-'5  7  26  ~/jenkins/Dockerfile
-'6  9  9  ~/jenkins/Dockerfile
-'7  7  32  ~/jenkins/Dockerfile
-'8  1  15  ~/jenkins/jenkins
-'9  7  0  ~/kprpi/Dockerfile
+'0  11  0  ~/mysql/Dockerfile
+'1  6  6  ~/mysql/grant_access.sh
+'2  6  0  ~/mysql/Dockerfile
+'3  7  13  ~/mysql/grant_access.sh
+'4  3  21  ~/mysql/grant_access.sh
+'5  9  40  ~/mysql/Dockerfile
+'6  1  0  ~/mysql/grant_access.sh
+'7  47  22  ~/mysql/my.cnf
+'8  5  0  ~/mysql/Dockerfile
+'9  15  9  ~/mysql/Dockerfile
 
 # Jumplist (newest first):
+-'  11  0  ~/mysql/Dockerfile
+-'  1  0  ~/mysql/Dockerfile
+-'  6  6  ~/mysql/grant_access.sh
+-'  1  0  ~/mysql/grant_access.sh
+-'  6  0  ~/mysql/Dockerfile
+-'  7  13  ~/mysql/grant_access.sh
+-'  3  0  ~/mysql/grant_access.sh
+-'  9  40  ~/mysql/Dockerfile
+-'  47  22  ~/mysql/my.cnf
+-'  1  0  ~/mysql/my.cnf
+-'  5  0  ~/mysql/Dockerfile
+-'  15  9  ~/mysql/Dockerfile
 -'  5  47  ~/jenkins/Dockerfile
 -'  1  0  ~/jenkins/Dockerfile
 -'  11  0  ~/jenkins/Dockerfile
@@ -155,20 +165,64 @@ $
 -'  1  0  ~/docuwiki/history.txt
 -'  55  0  ~/docuwiki/history.txt
 -'  1  0  ~/docuwiki/history.txt
--'  12  0  ~/docuwiki/lighthttp.conf
--'  1  0  ~/docuwiki/lighthttp.conf
--'  55  0  ~/docuwiki/history.txt
--'  1  0  ~/docuwiki/history.txt
--'  55  0  ~/docuwiki/history.txt
--'  1  0  ~/docuwiki/history.txt
--'  12  0  ~/docuwiki/lighthttp.conf
--'  1  0  ~/docuwiki/lighthttp.conf
--'  55  0  ~/docuwiki/history.txt
--'  1  0  ~/docuwiki/history.txt
--'  55  0  ~/docuwiki/history.txt
--'  1  0  ~/docuwiki/history.txt
 
 # History of marks within files (newest to oldest):
+
+> ~/mysql/Dockerfile
+	"	11	0
+	^	11	1
+	.	11	0
+	+	5	34
+	+	13	10
+	+	15	9
+	+	13	0
+	+	9	26
+	+	13	0
+	+	9	20
+	+	13	28
+	+	9	42
+	+	8	0
+	+	9	0
+	+	10	33
+	+	9	19
+	+	11	13
+	+	9	40
+	+	13	0
+	+	7	0
+	+	6	0
+	+	13	0
+	+	11	0
+
+> ~/mysql/grant_access.sh
+	"	6	6
+	^	6	7
+	.	6	6
+	+	7	62
+	+	7	0
+	+	7	57
+	+	7	72
+	+	7	27
+	+	7	49
+	+	7	0
+	+	7	7
+	+	7	13
+	+	7	0
+	+	7	0
+	+	1	0
+	+	3	21
+	+	5	0
+	+	3	5
+	+	7	0
+	+	7	13
+	+	3	0
+	+	4	7
+	+	6	6
+
+> ~/mysql/my.cnf
+	"	47	22
+	^	47	23
+	.	47	22
+	+	47	22
 
 > ~/jenkins/Dockerfile
 	"	5	47
