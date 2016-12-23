@@ -17,8 +17,9 @@ I'm planning to use the following
 - [ ] Kubernetes
 
 __Use at your own risk__
+
 In the spirit of time, I'm breaking a few rules.  For example, this will run on a private encrypted wifi network behind a firewall.  It is only intended to run
 for the HackMT event.  This means I'm ok with things like running nginx as root or not setting up SSL for osticket (because the Raspberry Pi's will already be
-under enough load without SSL decryption.
+under enough load without SSL decryption).
 
 
