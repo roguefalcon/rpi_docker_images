@@ -3,32 +3,28 @@
 #docker rmi kprpi openldap phpldapadmin dokuwiki
 
 # Start with my base image from resin/rpi-raspbian:jessie-20160830
-cd kprpi
-docker build -t kprpi .
-cd ..
+docker build -t kprpi kprpi/
 
 # Now we need to build openldap
-cd openldap
-docker build -t openldap .
-cd ..
+docker build -t openldap openldap/
 
 # Let's build phpLDAPadmin so we can admin it
-cd phpldapadmin
-docker build -t phpldapadmin .
-cd ..
+docker build -t phpldapadmin pypldapadmin/
 
 # Dokuwiki
-cd dokuwiki
-docker build -t dokuwiki .
-cd ..
+docker build -t dokuwiki dokuwiki/
 
 # Jenkins
-cd jenkins
-docker build -t jenkins .
-cd ..
+docker build -t jenkins jenkins/
+
+# ostikcet
+docker build -t osticket osticket/
+
+# ostikcet
+docker build -t mysql mysql/
 
 # Start the containers
 #docker run --name openldap -d -p 389:389 -p 636:636 openldap
-docker run --name phpldapadmin -d -p 8080:80 phpldapadmin
-docker run --name dokuwiki -d -p 80:80 dokuwiki
-docker run --name jenkins -d -p 8000:8000 jenkins
+#docker run --name phpldapadmin -d -p 8080:80 phpldapadmin
+#docker run --name dokuwiki -d -p 80:80 dokuwiki
+#docker run --name jenkins -d -p 8000:8000 jenkins
