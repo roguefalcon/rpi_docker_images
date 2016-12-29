@@ -15,6 +15,8 @@ I'm planning to use the following
 - [-] SonarQube (needs 3 gigs of ram :-( )
 - [x] Dokuwiki
 - [ ] Kubernetes & Flocker || Rancher
+- [ ] Python Dev VM
+- [ ] .Net Core Dev VM
 
 __Use at your own risk__
 
