@@ -5,7 +5,7 @@ FROM kprpi
 RUN apt-get -y update && apt-get -y upgrade
 
 # Install everything
-RUN apt-get -y install nginx unzip php5-common php5-cli php5-fpm php5-mysql php5-gd php5-intl php5-apcu
+RUN apt-get -y install nginx unzip php5-common php5-cli php5-fpm php5-mysql php5-gd php5-intl php5-apcu php5-ldap
 
 # Setup Nginx
 COPY nginx.conf /nginx.conf
@@ -18,6 +18,9 @@ RUN unzip osticket.zip
 RUN chmod a+x /osticket/upload/*.php
 COPY ost-config.php /osticket/upload/include/ost-config.php
 RUN chmod 0644 /osticket/upload/include/ost-config.php
+
+# Setup LDAP for OSTicket
+COPY auth-ldap.phar /osticket/upload/include/plugins/auth-ldap.phar
 
 # Setup PHP5-FPM
 COPY www.conf /etc/php5/fpm/pool.d/www.conf
