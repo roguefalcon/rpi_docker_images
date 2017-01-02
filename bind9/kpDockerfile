@@ -1,0 +1,11 @@
+FROM kprpi
+
+RUN apt-get -y update && apt-get -u upgrade
+
+RUN apt-get -y install bind9 dnsutils
+
+#COPY resolv.conf /etc/resolv.conf
+#COPY named.conf /etc/bind/named.conf
+
+
+#CMD lighttpd -D -f /etc/lighttpd/lighttpd.conf
