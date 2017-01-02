@@ -11,10 +11,12 @@ I'm planning to use the following
 - [x] MySQL
 - [x] OpenLDAP
 - [x] Jenkins
-- [ ] OSTicket
-- [ ] SonarQube (if I can get it to run on an Odriod C2)
+- [x] OSTicket
+- [-] SonarQube (needs 3 gigs of ram :-( )
 - [x] Dokuwiki
-- [ ] Kubernetes
+- [ ] Kubernetes & Flocker || Rancher
+- [ ] Python Dev VM
+- [ ] .Net Core Dev VM
 
 __Use at your own risk__
 
