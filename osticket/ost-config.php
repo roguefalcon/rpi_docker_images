@@ -39,7 +39,7 @@ define('ADMIN_EMAIL','kenny.pyatt@gmail.com');
 # ---------------------------------------------------
 # Mysql Login info
 define('DBTYPE','mysql');
-define('DBHOST','192.168.1.139');
+define('DBHOST','192.168.2.11');
 define('DBNAME','osticket');
 define('DBUSER','kproot');
 define('DBPASS','qwer');
