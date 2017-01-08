@@ -1,0 +1,10 @@
+---
+
+- hosts: container-servers
+
+  tasks:
+    - name: Setup SSH
+      #debug: msg={{ host_ip_list.0.iname }} {{ host_ip_list.0.ipaddr }}
+      template: owner=root group=root mode=644
+                  src=/etc/ansible/templates/sshd_config
+                  dest=/etc/ssh/sshd_config
