@@ -1,0 +1,17 @@
+# eth0 special treatment
+allow-hotplug eth0
+no-auto-down eth0
+
+{% for item in host_ip_list %}
+# {{ item.iname }}
+auto {{ item.iname }}
+iface {{item.iname}}  inet static
+address {{ item.ipaddr}}
+netmask 255.255.255.0
+gateway 192.168.1.5
+dns-nameservers 8.8.8.8 8.8.4.4
+{% endfor %}
+
+# local
+auto lo
+iface lo inet loopback

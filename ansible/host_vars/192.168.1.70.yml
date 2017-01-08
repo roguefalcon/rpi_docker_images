@@ -1,0 +1,24 @@
+---
+
+# List of the IP's I want to assign 
+host_ip_list:
+  - iname: "eth0"
+    ipaddr: '192.168.1.70'
+  - iname: "eth0:0"
+    ipaddr: '192.168.1.71'
+  - iname: "eth0:1"
+    ipaddr: '192.168.1.72'
+  - iname: "eth0:2"
+    ipaddr: '192.168.1.73'
+  - iname: "eth0:3"
+    ipaddr: '192.168.1.74'
+  - iname: "eth0:4"
+    ipaddr: '192.168.1.75'
+  - iname: "eth0:5"
+    ipaddr: '192.168.1.76'
+  - iname: "eth0:6" 
+    ipaddr: '192.168.1.77'
+  - iname: "eth0:7"
+    ipaddr: '192.168.1.78'
+  - iname: "eth0:8"
+    ipaddr: '192.168.1.79'
