@@ -4,7 +4,6 @@
 
   tasks:
     - name: Setup Networking
-      #debug: msg={{ host_ip_list.0.iname }} {{ host_ip_list.0.ipaddr }}
       template: owner=root group=root mode=644
                   src=/etc/ansible/templates/interfaces
                   dest=/etc/network/interfaces

@@ -9,7 +9,7 @@ iface {{item.iname}}  inet static
 address {{ item.ipaddr}}
 netmask 255.255.255.0
 gateway 192.168.1.5
-dns-nameservers 8.8.8.8 8.8.4.4
+dns-nameservers 192.168.2.10
 {% endfor %}
 
 # local
