@@ -1,15 +1,36 @@
 <html>
 
-<h1>Register for a HackMT TeamKP VM</h1>
+<h1>Register for a Personal Virtual Machine</h1>
+
+<p>Welcome to Team KP!</p>
+
+<p>This form will allow to register for a personal vm for the entire HackMT event.</p>
 
 <form method='post' action='/vm/new'>
 
-First Name: <input type='text' name='firstname'><br />
-Last Name: <input type='text' name='lastname'><br />
-Username: <input type='text' name='username'><br />
-Password: <input type='password' name='password'><br />
-<input type='submit' name='submit' value='Register'>
+<table style='padding: 0px 0px 0px 50px'>
+<tr>
+   <td>First Name:</td> <td><input type='text' name='firstname'></td>
+</tr>
+<tr>
+   <td>Last Name:</td> <td><input type='text' name='lastname'></td>
+</tr>
+<tr>
+   <td>Username:</td> <td><input type='text' name='username'></td>
+</tr>
+<tr>
+   <td>Password:</td> <td><input type='text' name='password'></td>
+</tr>
+<tr>
+  <td colspan=2 align=right text-align=right>
+    <input type='submit' name='submit' value='Register'>
+  </td>
+</tr>
+</table>
+
+<p>
+<i>*all fields are required</i>
+</p>
 
 </form>
-
 </html>
