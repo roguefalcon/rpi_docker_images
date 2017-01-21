@@ -2,7 +2,7 @@ FROM kprpi
 
 RUN apt-get -y update && apt-get -u upgrade
 
-RUN apt-get -y install python python-pip python-dev build-essential openssh-server git
+RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd
 
 RUN pip install Flask
 RUN pip install tinydb
@@ -14,7 +14,17 @@ RUN useradd -m -p paUD.XF6AT3SA -s /bin/bash kp
 COPY sshd_config /etc/ssh/sshd_config
 COPY motd /etc/motd
 COPY issue.net /etc/issue.net
+COPY nsswitch.conf /etc/nsswitch.conf
+COPY common-session /etc/pam.d/common-session
+COPY start.sh /tmp/start.sh
+RUN chmod u+x /tmp/start.sh
+COPY nslcd.conf /etc/nslcd.conf
+RUN chmod 600 /etc/nslcd.conf
+COPY pam_ldap.conf /etc/pam_ldap.conf
+COPY ldap.conf /etc/ldap/ldap.conf
+
+RUN pam-auth-update --force
 
 EXPOSE 22
 
-CMD /usr/sbin/sshd -D
+CMD /tmp/start.sh

@@ -3,7 +3,7 @@
 import ldap
 import ldap.modlist as modlist
 
-l = ldap.initialize("ldap://192.168.1.139")
+l = ldap.initialize("ldap://192.168.1.5")
 l.simple_bind_s("cn=admin,dc=pyatt,dc=lan","qwerty")
 try:
    #l.search_s("cn=admin,dc=pyatt,dc=lan", ldap.SCOPE_SUBTREE, "objectclass=*")
@@ -31,20 +31,22 @@ newldif = modlist.addModlist(insertLDIF)
 print "Added to group: Group"
 """
 
-# This adds a new user to Docuwiki
+# This adds a new user to Docuwiki and SSH
 dn = "cn=Foo Bar,ou=People,dc=pyatt,dc=lan"
 insertLDIF = {}
 insertLDIF['cn'] = ['Foo Bar']
 insertLDIF['gidNumber'] = ['500']
 insertLDIF['givenName'] = ['Foo']
-insertLDIF['homeDirectory'] = ['/home/users/foobar']
+insertLDIF['homeDirectory'] = ['/home/foobar']
 insertLDIF['objectClass'] = ['inetOrgPerson','posixAccount','top']
 insertLDIF['userpassword'] = ['barfoo']
 insertLDIF['sn'] = ['Bar']
 insertLDIF['userid'] = ['foobar']
 insertLDIF['uidNumber'] = ['1002']
 insertLDIF['ou'] = ['People','Group']
+insertLDIF['loginShell'] = ['/bin/bash']
 
+# This prints an LDIF file
 myLDIF = ldif.CreateLDIF(dn, insertLDIF)
 print myLDIF
 

@@ -1,5 +1,7 @@
 FROM kprpi
 
+RUN apt-get update && apt-get upgrade -y
+
 RUN apt-get install -y phpldapadmin
 
 COPY ./config.php /etc/phpldapadmin/config.php
