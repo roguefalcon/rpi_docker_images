@@ -35,7 +35,7 @@ def new_vm():
    print "==> Assigning host", vm_name, "to user", request.form['firstname'], request.form['lastname'], "as", request.form['username'], "with password", request.form['password']
 
    # Let's get the last user id number from a file
-   with open('last_uid.txt') as f:
+   with open('/var/user_reg/last_uid.txt') as f:
       last_uid = f.read()
 
    # Connect to LDAP and add new user
@@ -70,7 +70,7 @@ def new_vm():
    db.update({'username': request.form['username'], 'password': request.form['password'], 'firstname': request.form['firstname'], 'lastname': request.form['lastname']}, vms.name == vm_name)
 
    # Increment the UID
-   with open('last_uid.txt', 'w') as f:
+   with open('/var/user_reg/last_uid.txt', 'w') as f:
       f.write(str(int(last_uid) + 1))
    
    return render_template('vm_assignment.html', vm_name=vm_name) 

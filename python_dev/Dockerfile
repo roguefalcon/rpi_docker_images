@@ -1,6 +1,6 @@
 FROM kprpi
 
-RUN apt-get -y update && apt-get -u upgrade
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd
 #RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd iputils-ping

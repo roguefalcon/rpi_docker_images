@@ -4,7 +4,7 @@
 These images are being created specifically for HackMT at MTSU:
 http://hackmt.eventbrite.com
 
-The goal is to create a complete continuous integration environment for the hack-a-thon that runs on a raspberry pi / odriod-c2 cluster.
+The goal is to create a complete continuous integration environment for the hack-a-thon that runs on a raspberry pi / odriod-c2 cluster. I'm trying to support up to 30 developers on 4 odroids :-)
 
 I'm planning to use the following
 - [x] Docker
@@ -14,8 +14,7 @@ I'm planning to use the following
 - [x] OSTicket
 - [-] SonarQube (needs 3 gigs of ram :-( )
 - [x] Dokuwiki
-- [ ] Kubernetes & Flocker || Rancher
-- [ ] Python Dev VM
+- [x] Python Dev VM
 - [ ] .Net Core Dev VM
 
 __Use at your own risk__
@@ -23,5 +22,3 @@ __Use at your own risk__
 In the spirit of time, I'm breaking a few rules.  For example, this will run on a private encrypted wifi network behind a firewall.  It is only intended to run
 for the HackMT event.  This means I'm ok with things like running nginx as root or not setting up SSL for osticket (because the Raspberry Pi's will already be
 under enough load without SSL decryption).
-
-
