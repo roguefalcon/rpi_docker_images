@@ -10,7 +10,7 @@ $conf['license'] = 'cc-by-sa';
 $conf['useacl'] = 1;
 $conf['openregister']=0;
 $conf['authtype']    = 'ldap';
-$conf['auth']['ldap']['server']      = 'ldap://ldap.pyatt.lan:389';
+$conf['auth']['ldap']['server']      = 'ldap://192.168.2.10:389';
 $conf['auth']['ldap']['usertree']    = 'ou=People, dc=pyatt, dc=lan';
 $conf['auth']['ldap']['grouptree']   = 'ou=Group, dc=pyatt, dc=lan';
 $conf['auth']['ldap']['userfilter']  = '(&(uid=%{user})(objectClass=posixAccount))';

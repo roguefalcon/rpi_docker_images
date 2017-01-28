@@ -19,7 +19,9 @@ COPY load_db.py /tmp/load_db.py
 RUN chmod u+x /tmp/load_db.py && /tmp/load_db.py
 RUN cp /db.json /var/user_reg/db.json
 
-EXPOSE 80
+WORKDIR /var/user_reg/
+
+EXPOSE 8888
 
 # Run the command on port 5000 mapped to port 80
-CMD /var/user_reg/user_registration.py
+CMD ["nohup /var/user_reg/user_registration.py"]
