@@ -6,12 +6,14 @@
 <tr>
    <td>Server</td>
    <td>IP</td>
+   <td>Language</td>
    <td>User</td>
 </tr>
 {% for vm in vms %}
    <tr>
      <td>{{vm.name}}</td>
      <td>{{vm.ip}}</td>
+     <td>{{vm.language}}</td>
      <td>{{vm.username}}</td>
    </tr>
 {% endfor %}

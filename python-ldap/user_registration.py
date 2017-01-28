@@ -6,6 +6,7 @@ from flask import request
 from tinydb import TinyDB, Query, where
 import ldap
 import ldap.modlist as modlist
+import sys, os
 app = Flask(__name__)
 
 # Initialize the database
@@ -35,7 +36,7 @@ def new_vm():
    print "==> Assigning host", vm_name, "to user", request.form['firstname'], request.form['lastname'], "as", request.form['username'], "with password", request.form['password']
 
    # Let's get the last user id number from a file
-   with open('/var/user_reg/last_uid.txt') as f:
+   with open('last_uid.txt') as f:
       last_uid = f.read()
 
    # Connect to LDAP and add new user
@@ -66,11 +67,19 @@ def new_vm():
    newldif = modlist.addModlist(insertLDIF)
    l.add_s(dn, newldif)
 
+   # Let's create the requested VM on the odroid host via ansible
+   os.system("nslookup " + vm_name + " | grep Address | grep -v '#53' | awk '{print $2}' > /tmp/kpout")
+   with open('/tmp/kpout') as f:
+      lines = f.readlines()
+   ip = lines[0].rstrip()
+   odroid = ip[:-1] + "0"
+   os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000:5000 -h " + vm_name + " " + request.form['language'] + "\"")
+
    # Update the local database
-   db.update({'username': request.form['username'], 'password': request.form['password'], 'firstname': request.form['firstname'], 'lastname': request.form['lastname']}, vms.name == vm_name)
+   db.update({'username': request.form['username'], 'password': request.form['password'], 'firstname': request.form['firstname'], 'lastname': request.form['lastname'], 'language': request.form['language']}, vms.name == vm_name)
 
    # Increment the UID
-   with open('/var/user_reg/last_uid.txt', 'w') as f:
+   with open('last_uid.txt', 'w') as f:
       f.write(str(int(last_uid) + 1))
    
    return render_template('vm_assignment.html', vm_name=vm_name) 

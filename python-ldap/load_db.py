@@ -14,7 +14,7 @@ for ip in range(51,90):
    ip_addr = '192.168.1.' + str(ip)
    host_info = socket.gethostbyaddr(ip_addr)
    if not re.search('odroid', host_info[0]):
-      db.insert({'ip': ip_addr, 'name': host_info[0], 'username':'', 'password':'', 'firstname':'', 'lastname': ''})
+      db.insert({'ip': ip_addr, 'name': host_info[0], 'username':'', 'password':'', 'firstname':'', 'lastname': '', 'language': ''})
 
 # This will find a free VM
 #vms = Query()
