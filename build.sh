@@ -30,3 +30,4 @@ docker build -t mysql mysql/
 #docker run --name dokuwiki -d --restart always -p 192.168.2.10:80:80 dokuwiki
 #docker run --name jenkins -d --restart always -p 8000:8000 jenkins
 #docker run --name osticket -d --restart always -p 192.168.2.11:80:80 osticket
+#docker run --name skyblue.pyatt.lan -d --restart always -p 192.168.1.53:22:22 -p 192.168.1.53:80:80 -p 192.168.1.53:5000:5000 -h skyblue.pyatt.lan ubuntu_dotnet_dev
