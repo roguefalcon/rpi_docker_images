@@ -13,7 +13,6 @@ app = Flask(__name__)
 # Initialize the database
 db = TinyDB('db.json')
 
-
 # Registration Info Screen
 @app.route("/")
 def main():
@@ -35,6 +34,7 @@ def list_vm():
 @app.route("/vm/new", methods=['POST'])
 def new_vm():
 
+   # VM Assignment ============================================================
    # This will find a free VM
    vms = Query()
    free_vms = db.search(vms.username == '')
@@ -43,6 +43,15 @@ def new_vm():
 
    print "==> Assigning host", vm_name, "to user", request.form['firstname'], request.form['lastname'], "as", request.form['username'], "with password", request.form['password']
 
+   # Let's create the requested VM on the odroid host via ansible
+   os.system("nslookup " + vm_name + " | grep Address | grep -v '#53' | awk '{print $2}' > /tmp/kpout")
+   with open('/tmp/kpout') as f:
+      lines = f.readlines()
+   ip = lines[0].rstrip()
+   odroid = ip[:-1] + "0"
+   os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000:5000 -h " + vm_name + " " + request.form['language'] + "\"")
+
+   # User Setup ===============================================================
    # Let's get the last user id number from a file
    with open('last_uid.txt') as f:
       last_uid = f.read()
@@ -66,8 +75,8 @@ def new_vm():
    insertLDIF['ou'] = ['People','Group']
    insertLDIF['loginShell'] = ['/bin/bash']
 
-   import ldif
    # This prints an LDIF file
+   import ldif
    myLDIF = ldif.CreateLDIF(dn, insertLDIF)
    print myLDIF
 
@@ -75,21 +84,25 @@ def new_vm():
    newldif = modlist.addModlist(insertLDIF)
    l.add_s(dn, newldif)
 
-   # Let's create the requested VM on the odroid host via ansible
-   os.system("nslookup " + vm_name + " | grep Address | grep -v '#53' | awk '{print $2}' > /tmp/kpout")
-   with open('/tmp/kpout') as f:
-      lines = f.readlines()
-   ip = lines[0].rstrip()
-   odroid = ip[:-1] + "0"
-   os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000:5000 -h " + vm_name + " " + request.form['language'] + "\"")
-
-   # Update the local database
-   db.update({'username': request.form['username'], 'password': request.form['password'], 'firstname': request.form['firstname'], 'lastname': request.form['lastname'], 'language': request.form['language']}, vms.name == vm_name)
-
-   # Increment the UID
+   # Increment the UID now that LDAP has a new user
    with open('last_uid.txt', 'w') as f:
       f.write(str(int(last_uid) + 1))
-   
+
+   # Setup OSTicket User (note: This is the only place MySQL is used so I hardcoded somethings)
+   import MySQLdb
+   mydb=MySQLdb.connect(user='kproot',passwd="qwer",db="osticket",host='127.0.0.1')
+   myc=mydb.cursor()
+   myc.execute("""INSERT INTO ost_staff(dept_id, role_id, username, firstname, lastname, passwd, isactive, isadmin, isvisible,
+                                      max_page_size, permissions, created, updated, signature)
+                              VALUES (1,2,%s,%s,%s,MD5(%s),1,1,1,25,'{"faq.manage":1}', now(), now(), '') """,
+                       (request.form['username'], request.form['firstname'], request.form['lastname'], request.form['password'])
+            )
+   mydb.commit()
+
+   # Local Database ===========================================================
+   # Update the local tinydb database
+   db.update({'username': request.form['username'], 'password': request.form['password'], 'firstname': request.form['firstname'], 'lastname': request.form['lastname'], 'language': request.form['language']}, vms.name == vm_name)
+
    return render_template('vm_assignment.html', vm_name=vm_name) 
 
 if __name__ == "__main__":
