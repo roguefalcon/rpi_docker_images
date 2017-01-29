@@ -7,6 +7,7 @@ from tinydb import TinyDB, Query, where
 import ldap
 import ldap.modlist as modlist
 import sys, os
+import random
 app = Flask(__name__)
 
 # Initialize the database
@@ -16,12 +17,18 @@ db = TinyDB('db.json')
 # Registration Info Screen
 @app.route("/")
 def main():
-    return render_template('user_registration.html') 
+   # This will find a free VM
+   vms = Query()
+   free_vms = db.search(vms.username == '')
+   if free_vms:
+      return render_template('user_registration.html') 
+   else:
+      return render_template('registration_full.html') 
 
 @app.route("/vm/list")
 def list_vm():
-    vms = db.all()
-    return render_template('vm_list.html', vms=vms) 
+   vms = db.all()
+   return render_template('vm_list.html', vms=vms) 
 
 
 # Success Screen
@@ -31,7 +38,8 @@ def new_vm():
    # This will find a free VM
    vms = Query()
    free_vms = db.search(vms.username == '')
-   vm_name = free_vms[0]['name']
+   random_vm = random.choice(free_vms)
+   vm_name = random_vm['name']
 
    print "==> Assigning host", vm_name, "to user", request.form['firstname'], request.form['lastname'], "as", request.form['username'], "with password", request.form['password']
 
