@@ -94,9 +94,12 @@ def new_vm():
    myc=mydb.cursor()
    myc.execute("""INSERT INTO ost_staff(dept_id, role_id, username, firstname, lastname, passwd, isactive, isadmin, isvisible,
                                       max_page_size, permissions, created, updated, signature)
-                              VALUES (1,2,%s,%s,%s,MD5(%s),1,1,1,25,'{"faq.manage":1}', now(), now(), '') """,
+                              VALUES (4,2,%s,%s,%s,MD5(%s),1,0,1,25,'{"faq.manage":1}', now(), now(), '') """,
                        (request.form['username'], request.form['firstname'], request.form['lastname'], request.form['password'])
             )
+   myc.execute("""SELECT staff_id FROM ost_staff WHERE username = %s""", (request.form['username']))
+   myrow = myc.fetchone()
+   myc.execute("""insert into ost_team_member (team_id, staff_id, flags) VALUES (1,%s,1)""", (myrow[0]));
    mydb.commit()
 
    # Local Database ===========================================================
