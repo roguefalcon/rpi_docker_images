@@ -15,7 +15,8 @@ I'm planning to use the following
 - [-] SonarQube (needs 3 gigs of ram :-( )
 - [x] Dokuwiki
 - [x] Python Dev VM
-- [ ] .Net Core Dev VM
+- [x] Node.js Dev VM
+- [x] .Net Core Dev VM (this will only run the app.  You still have to develop locally.)
 
 __Use at your own risk__
 
