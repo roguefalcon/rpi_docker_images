@@ -16,4 +16,4 @@ with open('/tmp/kpout') as f:
 ip = lines[0].rstrip()
 print "Found IP Address:", ip
 
-print "docker run --name " + sys.argv[1] + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000:5000 -h " + sys.argv[1] + " " + sys.argv[2] 
+print "docker run --name " + sys.argv[1] + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000:5000 -p " + ip + ":9418:9418 -h " + sys.argv[1] + " " + sys.argv[2] 
