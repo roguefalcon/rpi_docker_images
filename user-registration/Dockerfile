@@ -24,4 +24,4 @@ WORKDIR /var/user_reg/
 EXPOSE 8888
 
 # Run the command on port 5000 mapped to port 80
-CMD ["nohup /var/user_reg/user_registration.py"]
+CMD ["nohup", "/var/user_reg/user_registration.py"]
