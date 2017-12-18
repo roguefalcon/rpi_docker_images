@@ -2,12 +2,13 @@
 
 from flask import Flask
 from flask import render_template
-from flask import request
+from flask import request, send_from_directory
 from tinydb import TinyDB, Query, where
 import ldap
 import ldap.modlist as modlist
 import sys, os
 import random
+import sqlite3
 app = Flask(__name__)
 
 # Initialize the database
@@ -23,6 +24,25 @@ def main():
       return render_template('user_registration.html') 
    else:
       return render_template('registration_full.html') 
+
+
+@app.route("/vpn_setup")
+def vpn_setup():
+
+   return render_template('vpn_setup.html')
+
+
+@app.route("/vpn_setup_windows")
+def vpn_setup_windows():
+
+   return render_template('vpn_setup_windows.html')
+
+
+@app.route("/hello_world")
+def hello_world():
+
+   return render_template('hello_world.html')
+
 
 @app.route("/vm/list")
 def list_vm():
@@ -108,5 +128,11 @@ def new_vm():
 
    return render_template('vm_assignment.html', vm_name=vm_name) 
 
+# Favicon.ico =================================================================
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=3500)

@@ -1,3 +1,4 @@
+# docker run -ti -p 53:53/tcp -p 53:53/udp -p 10000:10000 -v /data:/data --name=bind9 bind9
 FROM kprpi
 RUN apt-get -y update && apt-get -y upgrade
 
@@ -24,7 +25,6 @@ ENV BIND_USER=bind \
     BIND_VERSION=1:9.9.5 \
     WEBMIN_VERSION=1.830 \
     DATA_DIR=/data
-
 
 EXPOSE 53/udp 53/tcp 10000/tcp
 VOLUME ["/data"]

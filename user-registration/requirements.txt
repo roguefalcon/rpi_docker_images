@@ -1,0 +1,4 @@
+tinydb
+ldap
+python-ldap
+flask
