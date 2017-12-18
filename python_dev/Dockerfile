@@ -3,7 +3,7 @@ FROM kprpi
 #RUN apt-get update && apt-get upgrade -y
 RUN apt-get update
 
-RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd python3 python3-pip python3-dev
+RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd python3 python3-pip python3-dev libffi-dev
 
 RUN pip install Flask
 RUN pip install tinydb

@@ -1,18 +1,23 @@
 #!/usr/bin/python
 
-from flask import Flask
-from flask import render_template
+from flask import Flask, url_for
+from flask import render_template, redirect
 from flask import request, send_from_directory
+from flask import make_response, flash
 from tinydb import TinyDB, Query, where
 import ldap
 import ldap.modlist as modlist
 import sys, os
 import random
 import sqlite3
+
+# The flask app object
 app = Flask(__name__)
 
 # Initialize the database
 db = TinyDB('db.json')
+conn = sqlite3.connect('sql.db', check_same_thread=False)
+c = conn.cursor()
 
 # Registration Info Screen
 @app.route("/")
@@ -24,6 +29,42 @@ def main():
       return render_template('user_registration.html') 
    else:
       return render_template('registration_full.html') 
+
+
+# Register a new user =========================================================
+@app.route("/register", methods=['POST'])
+def register():
+
+   print "==> Setting up: " + request.form['username']
+
+   # The form fields
+   name = request.form['name']
+   email = request.form['email']
+   username = request.form['username']
+   password = request.form['password']
+   filename = username + '.ovpn'
+
+   # Let's see if this username is free
+   c.execute('''SELECT username FROM vpn_users WHERE username=?''', (username,))
+   user = c.fetchone()
+
+   if user:
+      print "==> flashing message to user"
+      flash('Username ' + str(username) + ' already exists.  Sorry :(')
+      return redirect(url_for('main'))
+
+   # Add the user
+   c.execute('''INSERT INTO vpn_users VALUES (?, ?, ?, ?, ?)''', 
+            (name, email, username, password, filename))
+
+   # Now let's close the db
+   conn.commit()
+
+   # We want to set a cookie for this user so we can track who it is
+   resp = make_response(redirect(url_for('vpn_setup')))
+   resp.set_cookie('username', username)
+
+   return resp
 
 
 @app.route("/vpn_setup")
@@ -135,4 +176,7 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=3500)
+    app.secret_key = '8sad87das87sdf87sdf87sd87fd87dsf'
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    app.run(host='0.0.0.0', port=3500, debug=True)
