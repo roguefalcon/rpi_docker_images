@@ -8,7 +8,9 @@ conn = sqlite3.connect('sql.db')
 c = conn.cursor()
 
 # Make the tables =============================================================
-c.execute('''CREATE TABLE IF NOT EXISTS favorite_color
-             (name text, color text)''')
+c.execute('''SELECT * FROM favorite_color''')
+colors = c.fetchall()
 
+for color in colors:
+   print(color)
 

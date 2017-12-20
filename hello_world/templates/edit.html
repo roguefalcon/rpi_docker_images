@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Team KP - Hello World</title>
+
+    <!-- Style -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <!--/Style -->
+  </head>
+  <body>
+  <!-- Content -->
+  <div class='container'>
+    <div class='row'>
+      <div class='col-md-12'>
+        <h1>Edit</h1>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-6 col-md-offset-6'>
+        <form method='post' action='/save'>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name='name' value="{{ data.name }}">
+          </div>
+          <div class="form-group">
+            <label for="color">Favorite Color</label>
+            <input type="text" class="form-control" id="color" name='color' value="{{ data.color }}">
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--/Content -->
+
+  <!-- Javascript -->
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/jquery.min.js"></script>
+  <!--/Javascript -->
+  </body>
+</html>

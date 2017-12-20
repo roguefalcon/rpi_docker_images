@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Team KP - Hello World</title>
+
+    <!-- Style -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+    <!--/Style -->
+  </head>
+  <body>
+  <!-- Content -->
+  <div class='container'>
+    <div class='row'>
+      <div class='col-md-10'>
+        <h1>Browse</h1>
+      </div>
+      <div class='col-md-2'>
+       <a class='btn btn-primary' href='/create' role='button'>Create</a> 
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-12'>
+      <table class='table'>
+      <thead>
+        <tr>
+          <th scope='col'>#</th>
+          <th scope='col'>Name</th>
+          <th scope='col'>Color</th>
+          <th scope='col'> </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data %}
+        <tr>
+          <th scope='row'>{{ item.rowid }}</th>
+          <td>{{ item.name }}</td>
+          <td>{{ item.color }}</td>
+          <td>
+            <a class='btn btn-secondary' href='/edit/{{ item.rowid }}' role='button'>Edit</a>
+            <a class='btn btn-secondary' href='/delete/{{ item.rowid }}' role='button'>Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+  <!--/Content -->
+
+  <!-- Javascript -->
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/jquery.min.js"></script>
+  <!--/Javascript -->
+  </body>
+</html>
