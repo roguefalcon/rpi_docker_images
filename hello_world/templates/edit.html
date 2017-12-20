@@ -22,7 +22,8 @@
     </div>
     <div class='row'>
       <div class='col-md-6 col-md-offset-6'>
-        <form method='post' action='/save'>
+        <form method='post' action='/update'>
+        <input type='hidden' name='id' value='{{ data.rowid }}'>
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name='name' value="{{ data.name }}">

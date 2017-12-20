@@ -21,10 +21,12 @@
       </div>
       <div class='col-md-2'>
        <a class='btn btn-primary' href='/create' role='button'>Create</a> 
+       <a class='btn btn-secondary' href='/logout' role='button'>Logout</a> 
       </div>
     </div>
     <div class='row'>
       <div class='col-md-12'>
+      {% if data %}
       <table class='table'>
       <thead>
         <tr>
@@ -48,6 +50,9 @@
         {% endfor %}
       </tbody>
       </table>
+      {% else %}
+         No one has picked a favorite color yet, so you <a href='/create'>can be first</a>.
+      {% endif %}
       </div>
     </div>
   </div>

@@ -22,11 +22,19 @@ c = conn.cursor()
 # Registration Info Screen
 @app.route("/")
 def main():
+
+   data = {}
+
    # This will find a free VM
    vms = Query()
    free_vms = db.search(vms.username == '')
    if free_vms:
-      return render_template('user_registration.html') 
+
+      # Have they already registered
+      if request.cookies.get('username'):
+         data['username'] = request.cookies.get('username')
+
+      return render_template('user_registration.html', data=data) 
    else:
       return render_template('registration_full.html') 
 

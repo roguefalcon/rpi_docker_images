@@ -74,6 +74,18 @@
    </div>
    <div class='col-md-4'>
 
+    {% if data.username %}
+       <h2>Hello {{ data.username }}</h2>
+
+       <p>It looks like you've alredy created an account.</p>
+
+       <p>If you've forgotten your password you'll need to talk to Kenny and he can reset it for you.</p>
+
+       <p>You are probably ready to proceed to the <a href='/vpn_setup'>VPN Setup</a> Step.</p>
+
+       
+
+    {% else %}
     <form method='post' action='/register'>
     <p>
     <i>*all fields are required</i>
@@ -111,6 +123,7 @@
        <button type='submit' class='btn btn-default pull-right' name='submit' value='Step 2'>Register &amp; Proceed to Step 2 &gt;</button>
     </div>
     </form>
+    {% endif %}
    </div>
   </div>
 
