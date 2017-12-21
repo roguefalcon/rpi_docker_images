@@ -14,3 +14,11 @@ colors = c.fetchall()
 for color in colors:
    print(color)
 
+
+# Make the tables =============================================================
+c.execute('''SELECT * FROM users''')
+users = c.fetchall()
+
+for user in users:
+   print(user)
+

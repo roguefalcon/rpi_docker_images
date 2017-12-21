@@ -1,16 +1,18 @@
 #!/usr/bin/python3
 
+# Included code
 from flask import Flask
 from flask import render_template
 from flask import request
 from flask import redirect
 from flask import url_for
 from flask import session
+from flask import flash
 import bcrypt
 import sqlite3
 
+# Define the flask application
 app = Flask(__name__)
-
 
 # The SQL connection ==========================================================
 conn = sqlite3.connect('sql.db', check_same_thread=False)
@@ -18,7 +20,6 @@ conn = sqlite3.connect('sql.db', check_same_thread=False)
 conn.row_factory = lambda c, r: dict([(col[0], r[idx]) for idx, col in enumerate(c.description)])
 # SQL cursor
 c = conn.cursor()
-
 
 
 # Index Page ==================================================================
@@ -38,11 +39,34 @@ def index():
 @app.route("/login", methods=["POST"])
 def login():
 
-   # This actually 'logs' the user in by saving the username in the session
-   session['username'] = request.form['username']
+   # First let's confirm they sent us a username and password.
+   if not request.form['username'] or not request.form['password']:
+      flash("No username or password entered")
 
-   # Take them to the browse page
-   return redirect(url_for("browse"))
+      return redirect(url_for("index"))
+
+   # Let's check their password against the database
+   c.execute('SELECT username, password FROM users WHERE username=?', (request.form['username'],))
+   user = c.fetchone()
+
+   # Let's check the bcrypt password
+   if bcrypt.checkpw(request.form['password'].encode('utf8'), user['password']):
+
+      # This actually 'logs' the user in by saving the username in the session
+      session['username'] = request.form['username']
+
+      # Take them to the browse page (they made it in)
+      return redirect(url_for("browse"))
+
+   # The login didn't work
+   else:
+      
+      # Let's tell them they need to try again
+      flash("Login failed")
+
+
+   # We need to go back to the index page
+   return redirect(url_for("index"))
 
 
 # Logout =====================================================================
