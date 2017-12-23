@@ -2,6 +2,10 @@
 
 This image runs a version of OpenLDAP (slapd).
 
+To build it:
+
+```docker build -t openldap openldap/```
+
 To start it:
 
 ```docker run --name openldap -d --restart always -p 389:389 openldap```
