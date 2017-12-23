@@ -26,6 +26,7 @@ docker build -t mysql mysql/
 # Start the containers
 #docker run --name mysql -d --restart always -p 3306:3306 mysql
 #docker run --name openldap -d -p 389:389 -p 636:636 openldap
+docker run --name openldap -d -p 389:389 -e SLAPD_PASSWORD=asdf -e SLAPD_DOMAIN=ldap.pyatt.lan openldap
 #docker run --name phpldapadmin -d --restart always -p 8080:80 phpldapadmin
 #docker run --name dokuwiki -d --restart always -p 192.168.2.10:80:80 dokuwiki
 #docker run --name jenkins -d --restart always -p 8000:8000 jenkins

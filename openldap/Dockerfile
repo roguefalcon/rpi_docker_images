@@ -1,11 +1,29 @@
-FROM kprpi
+FROM alpine
 
-RUN apt-get install slapd ldap-utils
+MAINTAINER Daniel Guerra
 
-RUN dpkg-reconfigure slapd
+ENV OPENLDAP_VERSION 2.4.44-r0
 
-EXPOSE 389 636
+RUN  apk update \
+  && apk add openldap openldap-back-mdb \
+  && rm -rf /var/cache/apk/*
 
-ENTRYPOINT ["/usr/bin/entry.sh"]
+EXPOSE 389
 
-CMD slapd -d 32768 -u openldap -g openldap
+VOLUME ["/etc/openldap-dist", "/var/lib/openldap"]
+
+COPY modules/ /etc/openldap/modules
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod u+x entrypoint.sh
+RUN mkdir /run/openldap
+RUN touch /run/openldap/slapd.pid
+RUN chmod a+rw /run/openldap/slapd.pid
+RUN touch /run/openldap/slapd.args
+RUN chmod a+rw /run/openldap/slapd.args
+COPY slapd.conf /etc/openldap/slapd.conf
+COPY slapd.ldif /etc/openldap/slapd.ldif
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["slapd", "-d", "32768", "-u", "ldap", "-g", "ldap"]
