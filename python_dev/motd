@@ -1,20 +1,18 @@
+  _                          ____        _                  _    _            _    __  __ _______ 
+ | |                        |  _ \      | |                | |  | |          | |  |  \/  |__   __|
+ | |     __ ___      ___ __ | |_) | ___ | |_ ___   ______  | |__| | __ _  ___| | _| \  / |  | |   
+ | |    / _` \ \ /\ / / '_ \|  _ < / _ \| __/ __| |______| |  __  |/ _` |/ __| |/ / |\/| |  | |   
+ | |___| (_| |\ V  V /| | | | |_) | (_) | |_\__ \          | |  | | (_| | (__|   <| |  | |  | |   
+ |______\__,_| \_/\_/ |_| |_|____/ \___/ \__|___/          |_|  |_|\__,_|\___|_|\_\_|  |_|  |_|   
+                                                                                                  
 -------------------------------------------------------------------------------
 Welcome to your personal Dev VM!
 
-You've chosen a Python VM (or you need to talk to Kenny and he will help you
-switch).  This VM will be yours throughout the rest of the Hack-a-thon.  Be
-kind to your VM and it will treat you well.
-
-There are helpful python examples in the /tmp/examples folder.  Please copy
-these to your home directory because /tmp will eventually delete the files.
-
-# cp -r /tmp/examples .
-
-They will help you get started on any of the tasks you are assigned.
+This is a Python VM.  This VM will be yours throughout the rest of the Hack-a-thon.  
+Be kind to your VM and it will treat you well.
 
 If you have questions feel free to ask in the #hackmt team channel.
 --------------------------------------------------------------------------------
 
-Note: Don't do anything illegal from this VM or Kenny will turn you in.
-
+Note: Don't do anything illegal from this VM or Kenny will turn you in to the FBI.
 

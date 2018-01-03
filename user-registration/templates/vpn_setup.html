@@ -18,13 +18,16 @@
   <div class='row'>
     <div class='col-md-12 text-center'>
       <h1>VPN Setup</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
     </div>
   </div>
  <div class='row'>
     <div class='col-md-12'>
       <ul id="progressbar">
-        <li class='active'>Register</li>
-        <li class='active'>VPN Setup</li>
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
         <li>Hello World Tutorial</li>
         <li>REST API Tutorial</li>
         <li>Start Working</li>
@@ -34,6 +37,12 @@
   <div class='row'>
     <div class='col-md-12'>
       &nbsp;
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12 bg-inverse text-white text-center' style='padding-top:20px; padding-bottom:20px; margin-bottom:40px'>
+       You've been assigned the following VM:
+       <h2>{{request.cookies.vm_name}}</h2>
     </div>
   </div>
   <div class='row'>

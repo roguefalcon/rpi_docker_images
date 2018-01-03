@@ -1,0 +1,53 @@
+<html>
+<head>
+   <title>Dashboard</title>
+</head>
+
+<h1>Dashboard</h1>
+
+<table border=0 cellpadding=10 cellspacing=1>
+<tr>
+  <td valign='top'>
+   <h2>Users</h2>
+
+   <table border=1 cellpadding=5 cellspacing=1>
+   <tr>
+      <td>Name</td>
+      <td>Email</td>
+      <td>Username</td>
+      <td>Filename</td>
+   </tr>
+   {% for user in users %}
+   <tr>
+      <td>{{user.name}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.filename}}</td>
+   </tr>
+   {% endfor %}
+   </table>
+   
+  </td>
+  <td valign='top'>&nbsp;</td>
+  <td valign='top'>
+   
+   <h2>List of VMs</h2>
+   
+   <table border=1 cellpadding=5 cellspacing=1>
+   <tr>
+      <td>Server</td>
+      <td>IP</td>
+      <td>User</td>
+   </tr>
+   {% for vm in vms %}
+      <tr>
+        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.name}}</td>
+        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.ip}}</td>
+        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.username}}</td>
+      </tr>
+   {% endfor %}
+   </table>
+  </td>
+</tr>
+</table>
+</html>

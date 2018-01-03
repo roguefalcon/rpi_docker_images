@@ -10,6 +10,7 @@ import ldap.modlist as modlist
 import sys, os
 import random
 import sqlite3
+from dns import resolver
 
 # The flask app object
 app = Flask(__name__)
@@ -17,6 +18,8 @@ app = Flask(__name__)
 # Initialize the database
 db = TinyDB('db.json')
 conn = sqlite3.connect('sql.db', check_same_thread=False)
+# This tells SQLite that I want dictionaries instead of tuples for fetch statements
+conn.row_factory = lambda c, r: dict([(col[0], r[idx]) for idx, col in enumerate(c.description)])
 c = conn.cursor()
 
 # Registration Info Screen
@@ -26,8 +29,10 @@ def main():
    data = {}
 
    # This will find a free VM
-   vms = Query()
-   free_vms = db.search(vms.username == '')
+   #vms = Query()
+   #free_vms = db.search(vms.username == '')
+   c.execute('''SELECT * from vms WHERE username = ""''')
+   free_vms = c.fetchall()
    if free_vms:
 
       # Have they already registered
@@ -56,6 +61,7 @@ def register():
    c.execute('''SELECT username FROM vpn_users WHERE username=?''', (username,))
    user = c.fetchone()
 
+   # We need to tell them if a name is already taken
    if user:
       print "==> flashing message to user"
       flash('Username ' + str(username) + ' already exists.  Sorry :(')
@@ -65,12 +71,53 @@ def register():
    c.execute('''INSERT INTO vpn_users VALUES (?, ?, ?, ?, ?)''', 
             (name, email, username, password, filename))
 
+   # Assign VM ================================================================
+   vm_name = selectRandomVM(username)
+
+   # User Setup ===============================================================
+   # Let's get the last user id number from a file
+   with open('last_uid.txt') as f:
+      last_uid = f.read()
+
+   # Connect to LDAP and add new user
+   l = ldap.initialize("ldap://192.168.1.112")
+   l.simple_bind_s("cn=admin,dc=pyatt,dc=lan","asdf")
+
+   # This adds a new user to Docuwiki and SSH
+   dn = "cn=" + str(request.form['name']) + ",ou=People,dc=pyatt,dc=lan"
+   insertLDIF = {}
+   insertLDIF['cn'] = [str(request.form['name'])]
+   insertLDIF['gidNumber'] = ['500']
+   insertLDIF['givenName'] = [str(request.form['name'])]
+   insertLDIF['homeDirectory'] = ['/home/' + str(request.form['username'])]
+   insertLDIF['objectClass'] = ['inetOrgPerson','posixAccount','top']
+   insertLDIF['userpassword'] = [str(request.form['password'])]
+   insertLDIF['sn'] = ['lastname']
+   insertLDIF['userid'] = [str(request.form['username'])]
+   insertLDIF['uidNumber'] = [str(int(last_uid) + 1)]
+   insertLDIF['ou'] = ['People','Group']
+   insertLDIF['loginShell'] = ['/bin/bash']
+
+   # This prints an LDIF file
+   import ldif
+   myLDIF = ldif.CreateLDIF(dn, insertLDIF)
+   print myLDIF
+
+   # Send the add LDIF
+   newldif = modlist.addModlist(insertLDIF)
+   l.add_s(dn, newldif)
+
+   # Increment the UID now that LDAP has a new user
+   with open('last_uid.txt', 'w') as f:
+      f.write(str(int(last_uid) + 1))
+
    # Now let's close the db
    conn.commit()
 
    # We want to set a cookie for this user so we can track who it is
    resp = make_response(redirect(url_for('vpn_setup')))
    resp.set_cookie('username', username)
+   resp.set_cookie('vm_name', vm_name)
 
    return resp
 
@@ -93,10 +140,19 @@ def hello_world():
    return render_template('hello_world.html')
 
 
-@app.route("/vm/list")
-def list_vm():
-   vms = db.all()
-   return render_template('vm_list.html', vms=vms) 
+@app.route("/dashboard")
+def dashboard():
+
+   # Get a list of the users registered
+   c.execute('''SELECT name, email, username, filename FROM vpn_users''')
+   users = c.fetchall()
+
+   # Get a list of the vms 
+   c.execute('''SELECT name, ip, username from vms''')
+   vms = c.fetchall()
+
+   # Show the results
+   return render_template('dashboard.html', vms=vms, users=users) 
 
 
 # Success Screen
@@ -118,7 +174,9 @@ def new_vm():
       lines = f.readlines()
    ip = lines[0].rstrip()
    odroid = ip[:-1] + "0"
-   os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000:5000 -h " + vm_name + " " + request.form['language'] + "\"")
+
+   # I needed to give them more ports so I went with 5000 to 5100.  Seems like 100 will be enough
+   os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000-5100:5000-5100 -h " + vm_name + " " + request.form['language'] + "\"")
 
    # User Setup ===============================================================
    # Let's get the last user id number from a file
@@ -126,8 +184,8 @@ def new_vm():
       last_uid = f.read()
 
    # Connect to LDAP and add new user
-   l = ldap.initialize("ldap://192.168.1.5")
-   l.simple_bind_s("cn=admin,dc=pyatt,dc=lan","qwerty")
+   l = ldap.initialize("ldap://192.168.1.112")
+   l.simple_bind_s("cn=admin,dc=pyatt,dc=lan","asdf")
 
    # This adds a new user to Docuwiki and SSH
    dn = "cn=" + str(request.form['firstname'] + " " + request.form['lastname']) + ",ou=People,dc=pyatt,dc=lan"
@@ -182,6 +240,36 @@ def new_vm():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+# HELPER FUNCTIONS ============================================================
+
+# Let's select and assign a random VM
+def selectRandomVM(username):
+
+   c.execute('''SELECT name, ip FROM vms WHERE username = ""''')
+   free_vms = c.fetchall()
+   random_vm = random.choice(free_vms)
+   vm_name = random_vm['name']
+   print "==> Selecting vm:" + str(vm_name)
+   c.execute('''UPDATE vms SET username = ? WHERE name = ?''', (username, vm_name))
+
+   # Let's create the requested VM on the odroid host via ansible
+   res = resolver.Resolver()
+   res.nameservers = ['192.168.1.112']
+   answers = res.query(vm_name)
+   ip = answers[0].address
+   print "==> Found IP: " + ip
+
+   # Determine the ODROID ip address so we know which host to start the VM on.
+   odroid = ip[:-1] + "0"
+
+   # I needed to give them more ports so I went with 5000 to 5050.  Seems like 50 will be enough
+   #print "ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000-5100:5000-5100 -h " + vm_name + " python_dev\""
+   os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000-5050:5000-5050 -h " + vm_name + " python_dev\"")
+
+   return vm_name
+
 
 if __name__ == "__main__":
     app.secret_key = '8sad87das87sdf87sdf87sd87fd87dsf'

@@ -105,3 +105,6 @@ a:visited { color: #0d0; }
 .faq dt, .faq dd {
   padding-left: 50px;
 }
+
+.top-buffer { margin-top:20px; }
+.bottom-buffer { margin-bottom:20px; }
