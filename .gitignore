@@ -1,1 +1,3 @@
 *.db
+user-registration/static/ovpns
+.gitignore

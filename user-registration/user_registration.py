@@ -11,6 +11,9 @@ import sys, os
 import random
 import sqlite3
 from dns import resolver
+import subprocess
+from pipes import quote
+import shlex
 
 # The flask app object
 app = Flask(__name__)
@@ -70,46 +73,16 @@ def register():
    # Add the user
    c.execute('''INSERT INTO vpn_users VALUES (?, ?, ?, ?, ?)''', 
             (name, email, username, password, filename))
+   rowid = c.lastrowid
 
    # Assign VM ================================================================
    vm_name = selectRandomVM(username)
 
-   # User Setup ===============================================================
-   # Let's get the last user id number from a file
-   with open('last_uid.txt') as f:
-      last_uid = f.read()
+   # Create the LDAP User via the request object
+   setupLDAPUser()
 
-   # Connect to LDAP and add new user
-   l = ldap.initialize("ldap://192.168.1.112")
-   l.simple_bind_s("cn=admin,dc=pyatt,dc=lan","asdf")
-
-   # This adds a new user to Docuwiki and SSH
-   dn = "cn=" + str(request.form['name']) + ",ou=People,dc=pyatt,dc=lan"
-   insertLDIF = {}
-   insertLDIF['cn'] = [str(request.form['name'])]
-   insertLDIF['gidNumber'] = ['500']
-   insertLDIF['givenName'] = [str(request.form['name'])]
-   insertLDIF['homeDirectory'] = ['/home/' + str(request.form['username'])]
-   insertLDIF['objectClass'] = ['inetOrgPerson','posixAccount','top']
-   insertLDIF['userpassword'] = [str(request.form['password'])]
-   insertLDIF['sn'] = ['lastname']
-   insertLDIF['userid'] = [str(request.form['username'])]
-   insertLDIF['uidNumber'] = [str(int(last_uid) + 1)]
-   insertLDIF['ou'] = ['People','Group']
-   insertLDIF['loginShell'] = ['/bin/bash']
-
-   # This prints an LDIF file
-   import ldif
-   myLDIF = ldif.CreateLDIF(dn, insertLDIF)
-   print myLDIF
-
-   # Send the add LDIF
-   newldif = modlist.addModlist(insertLDIF)
-   l.add_s(dn, newldif)
-
-   # Increment the UID now that LDAP has a new user
-   with open('last_uid.txt', 'w') as f:
-      f.write(str(int(last_uid) + 1))
+   # Create the VPN settings
+   setupVPN(rowid)
 
    # Now let's close the db
    conn.commit()
@@ -159,62 +132,6 @@ def dashboard():
 @app.route("/vm/new", methods=['POST'])
 def new_vm():
 
-   # VM Assignment ============================================================
-   # This will find a free VM
-   vms = Query()
-   free_vms = db.search(vms.username == '')
-   random_vm = random.choice(free_vms)
-   vm_name = random_vm['name']
-
-   print "==> Assigning host", vm_name, "to user", request.form['firstname'], request.form['lastname'], "as", request.form['username'], "with password", request.form['password']
-
-   # Let's create the requested VM on the odroid host via ansible
-   os.system("nslookup " + vm_name + " | grep Address | grep -v '#53' | awk '{print $2}' > /tmp/kpout")
-   with open('/tmp/kpout') as f:
-      lines = f.readlines()
-   ip = lines[0].rstrip()
-   odroid = ip[:-1] + "0"
-
-   # I needed to give them more ports so I went with 5000 to 5100.  Seems like 100 will be enough
-   os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000-5100:5000-5100 -h " + vm_name + " " + request.form['language'] + "\"")
-
-   # User Setup ===============================================================
-   # Let's get the last user id number from a file
-   with open('last_uid.txt') as f:
-      last_uid = f.read()
-
-   # Connect to LDAP and add new user
-   l = ldap.initialize("ldap://192.168.1.112")
-   l.simple_bind_s("cn=admin,dc=pyatt,dc=lan","asdf")
-
-   # This adds a new user to Docuwiki and SSH
-   dn = "cn=" + str(request.form['firstname'] + " " + request.form['lastname']) + ",ou=People,dc=pyatt,dc=lan"
-   insertLDIF = {}
-   insertLDIF['cn'] = [str(request.form['firstname'] + " " + request.form['lastname'])]
-   insertLDIF['gidNumber'] = ['500']
-   insertLDIF['givenName'] = [str(request.form['firstname'])]
-   insertLDIF['homeDirectory'] = ['/home/' + str(request.form['username'])]
-   insertLDIF['objectClass'] = ['inetOrgPerson','posixAccount','top']
-   insertLDIF['userpassword'] = [str(request.form['password'])]
-   insertLDIF['sn'] = [str(request.form['lastname'])]
-   insertLDIF['userid'] = [str(request.form['username'])]
-   insertLDIF['uidNumber'] = [str(int(last_uid) + 1)]
-   insertLDIF['ou'] = ['People','Group']
-   insertLDIF['loginShell'] = ['/bin/bash']
-
-   # This prints an LDIF file
-   import ldif
-   myLDIF = ldif.CreateLDIF(dn, insertLDIF)
-   print myLDIF
-
-   # Send the add LDIF
-   newldif = modlist.addModlist(insertLDIF)
-   l.add_s(dn, newldif)
-
-   # Increment the UID now that LDAP has a new user
-   with open('last_uid.txt', 'w') as f:
-      f.write(str(int(last_uid) + 1))
-
    # Setup OSTicket User (note: This is the only place MySQL is used so I hardcoded somethings)
    import MySQLdb
    mydb=MySQLdb.connect(user='kproot',passwd="qwer",db="osticket",host='127.0.0.1')
@@ -235,26 +152,44 @@ def new_vm():
 
    return render_template('vm_assignment.html', vm_name=vm_name) 
 
-# Favicon.ico =================================================================
+
+# Favicon.ico ==================================================================
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+# OpenVPN file download ========================================================
+@app.route('/ovpn_file', methods=['GET', 'POST'])
+def ovpn_file():
 
-# HELPER FUNCTIONS ============================================================
+   # Set the username from the cookie of the user that is logged in 
+   # I don't want to be obvious and expose other ovpn files
+   filename = request.cookies.get('username') + '.ovpn'
+
+   # the full path to the ovpn files
+   fileloc = os.path.join(app.root_path, 'static/ovpns/')
+
+   # Send the file as an attachment
+   return send_from_directory(directory=fileloc, filename=filename, as_attachment=True)
+
+
+# HELPER FUNCTIONS =============================================================
 
 # Let's select and assign a random VM
 def selectRandomVM(username):
 
+   # Get a list of the unassigned VMs
    c.execute('''SELECT name, ip FROM vms WHERE username = ""''')
    free_vms = c.fetchall()
    random_vm = random.choice(free_vms)
    vm_name = random_vm['name']
-   print "==> Selecting vm:" + str(vm_name)
+   print "==> Selecting vm: " + str(vm_name)
    c.execute('''UPDATE vms SET username = ? WHERE name = ?''', (username, vm_name))
+   # There is a chance here that two people could get the same random VM before the database update
+   # is commited.  It's a small chance but there is a chance.
 
-   # Let's create the requested VM on the odroid host via ansible
+   # Let's determine the IP address of this vm by DNS lookup
    res = resolver.Resolver()
    res.nameservers = ['192.168.1.112']
    answers = res.query(vm_name)
@@ -264,13 +199,82 @@ def selectRandomVM(username):
    # Determine the ODROID ip address so we know which host to start the VM on.
    odroid = ip[:-1] + "0"
 
-   # I needed to give them more ports so I went with 5000 to 5050.  Seems like 50 will be enough
-   #print "ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000-5100:5000-5100 -h " + vm_name + " python_dev\""
+   # Let's create the requested VM on the odroid host via ansible
+   # NOTE I needed to give them more ports so I went with 5000 to 5050.  Seems like 50 will be enough
    os.system("ansible " + odroid + " -m command -a \"docker run --name " + vm_name + " -d --restart always -p " + ip + ":22:22 -p " + ip + ":80:80 -p " + ip + ":5000-5050:5000-5050 -h " + vm_name + " python_dev\"")
 
    return vm_name
 
 
+# Setup the LDAP user
+def setupLDAPUser():
+
+   # User Setup ===============================================================
+   # Let's get the last user id number from a file
+   with open('last_uid.txt') as f:
+      last_uid = f.read()
+
+   # Connect to LDAP and add new user
+   l = ldap.initialize("ldap://192.168.1.112")
+   l.simple_bind_s("cn=admin,dc=pyatt,dc=lan","asdf")
+
+   # This adds a new user to Docuwiki and SSH
+   dn = "cn=" + str(request.form['name']) + ",ou=People,dc=pyatt,dc=lan"
+   insertLDIF = {}
+   insertLDIF['cn'] = [str(request.form['name'])]
+   insertLDIF['gidNumber'] = ['500']
+   insertLDIF['givenName'] = [str(request.form['name'])]
+   insertLDIF['homeDirectory'] = ['/home/' + str(request.form['username'])]
+   insertLDIF['objectClass'] = ['inetOrgPerson','posixAccount','top']
+   insertLDIF['userpassword'] = [str(request.form['password'])]
+   insertLDIF['sn'] = ['lastname']
+   insertLDIF['userid'] = [str(request.form['username'])]
+   insertLDIF['uidNumber'] = [str(int(last_uid) + 1)]
+   insertLDIF['ou'] = ['People','Group']
+   insertLDIF['loginShell'] = ['/bin/bash']
+
+   # This prints an LDIF file
+   import ldif
+   myLDIF = ldif.CreateLDIF(dn, insertLDIF)
+   print myLDIF
+
+   # Send the add LDIF
+   newldif = modlist.addModlist(insertLDIF)
+   l.add_s(dn, newldif)
+
+   # Increment the UID now that LDAP has a new user
+   with open('last_uid.txt', 'w') as f:
+      f.write(str(int(last_uid) + 1))
+
+   return
+
+
+# Setup VPN
+def setupVPN(rowid):
+
+   username = request.form['username']
+   password = request.form['password']
+   ipaddress = '10.8.0.' + str(rowid + 5)
+   print "==> Using VPN ip: " + ipaddress
+
+   # This runs the pivpn command to add a new user
+   command = "/usr/local/bin/pivpn add --name {}".format(quote(username))
+   command += " --password {}".format(quote(password))
+   subprocess.call(shlex.split(command), shell=False)
+
+   # create the client config file to assign routes and ip addresses
+   with open('/etc/openvpn/clients/' + username, 'w') as f:
+      f.write('ifconfig-push ' + ipaddress + ' 255.255.255.0\n')
+      f.write('push "route 192.168.1.0 255.255.255.0 10.8.0.1"\n')
+      f.write('push "route 192.168.3.0 255.255.255.0 10.8.0.2"\n')
+
+   command = "cp /home/pi/ovpns/{}.ovpn ./static/ovpns/.".format(quote(username))
+   subprocess.call(shlex.split(command), shell=False)
+
+   return
+
+
+# Application Settings =========================================================
 if __name__ == "__main__":
     app.secret_key = '8sad87das87sdf87sdf87sd87fd87dsf'
     app.config['SESSION_TYPE'] = 'filesystem'

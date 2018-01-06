@@ -23,7 +23,7 @@ c.execute('''CREATE TABLE vms
              (name text, ip text, username text)''')
 
 # Load the tables =============================================================
-c.execute('''INSERT INTO vpn_users VALUES (?, ?, ?, ?, ?)''', ('asdf', 'asdf@asdf.com', 'asfd', 'asdf', 'asdf.ovpn'))
+#c.execute('''INSERT INTO vpn_users VALUES (?, ?, ?, ?, ?)''', ('asdf', 'asdf@asdf.com', 'asfd', 'asdf', 'asdf.ovpn'))
 
 vms = [
          ('blue.pyatt.lan', '192.168.3.51', ''),
