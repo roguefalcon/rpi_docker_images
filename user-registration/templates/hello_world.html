@@ -219,6 +219,39 @@ if __name__ == "__main__":
 from flask import Flask
 app = Flask(__name__)</pre></p>
 
+      <p>This section starts by pulling code into your program.  The `from flask import Flask` is telling
+         python to put the code in the Flask module in scope so you can use it.  The second line creates
+         a new object called app and set's it as a Flask object.  The __name__ is a python trick to send
+         the name of your app to the Flask function.  I wouldn't worry about that part to much.  If you really
+         want to know then the value of __name__ is almost always going to be the string "__main__".</p>
+
+      <p><pre class='prettyprint lang-python'>
+# The index page
+@app.route("/")
+def hello():
+    return "Hello World!"</pre></p>
+
+      <p>This code is the `meat` of the program.  In Flask each function is a single screen of a web application.
+         In this case the @app.route("/") is telling Flask the url at http://{{request.cookies.vm_name}}:5000<b>/</b> is
+         should run the hello() function.  The magic is the / at the end of the url.  If we had wanted
+         http://{{request.cookies.vm_name}}:5000<b>/asdf</b> then our line would have read @app.route("/asdf").  We'd say
+         that we are mapping a url to a function.  The return "Hello World!" is the string that will display in the
+         browser.  We will make this more complex later in the tutorial.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Runtime settings
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)</pre></p>
+
+      <p>This section is telling the Flask app how to run.  The first line `if __name__ == "__main__":` is a
+         python trick to determine if you are the running application or if someone else imported you.  If you
+         don't understand this then I wouldn't stress out about it.  Just know it makes your program safer.
+         The second line `app.run(host='0.0.0.0', port=5000, debug=True)` actually runs the Flask app
+         with a few arguments.  The host='0.0.0.0' is saying run on any IP Address.  The port=5000 is
+         asking for the specific port on the server (this is another complex subject that you don't
+         fully need to understand but Kenny is happy to explain to you).  The last argument `debut=True` makes your life
+         easier because it prints errors to the browser screen and terminal as well as reloading the program
+         if any changes are made.  You don't want this turned on in Production but for development it's great!</p>
 
       <p>Now that you have everything in your file it's time to save it.  Press escape and then type `:w`.</p>
 
