@@ -26,9 +26,9 @@
  <div class='row'>
     <div class='col-md-12'>
       <ul id="progressbar">
-        <li class='active'>Register</li>
-        <li class='active'>VPN Setup</li>
-        <li class='active'>Hello World Tutorial</li>
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
         <li>REST API Tutorial</li>
         <li>Start Working</li>
       </ul>
@@ -41,7 +41,7 @@
   </div>
   <div class='row'>
     <div class='col-md-12'>
-    <p>In this tutorial you will get a quick intro to the following technologies:</p>
+    <p>In this tutorial you will get a deep intro to the following technologies:</p>
 
     <center>
     <span class='text-center center-block'>
@@ -61,23 +61,33 @@
     <p>&nbsp;</p>
     <p>Specifically: HTML 5 - CSS 3 - JavaScript - Bootstrap 4 - JQuery 3 - Python 3 - Flask - SQLite - ZeroMQ</p>
     <p><i>Hint: This looks great on a resume but anything you put on a resume may come up in a tech interview.</i></p>
-    <hr>
     </div>
   </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
   <div class='row'>
     <div class='col-md-2'>
        <span class='giant'>1</span>
     </div>
     <div class='col-md-10'>
-      <span class='align-bottom'><p>You are going to need a terminal to run the Flask app. In Linux and Mac 
-      they are built in.  In Windows we will need to download/save putty.exe.
-      I typically creat a folder on the c:\ drive called `bin` and put it in there.</p></span>
+      <p>It is important that you don't rush this tutorial.  If you've never done this before it will take some
+         time.  That's ok.  You are here to learn.  The industry professionals are here to help you.  If you've
+         already built a couple Flask apps then you'll breeze through this tutorial.  I still recommend you
+         follow it because you'll write code that will be valuable on the project we are building.</p>
 
-      <p>Windows - <a href='/static/files/putty64/putty.exe'>Putty 64bit</a> or <a href='/static/files/putty32/putty.exe'>Putty 32bit</a> (right click - save file as).</p>
+      <p>You are going to need a terminal to run the Flask app. In Linux and Mac
+      they are built in.  In Windows we will need to download/save putty.exe.
+      I typically creat a folder on the c:\ drive called `bin` and put it in there.</p>
+
+      <p>Windows - <a href='/static/files/putty64/putty.exe'>Putty 64bit</a> or <a href='/static/files/putty32/putty.exe'>Putty 32bit</a> (right click - save file as).  The odds are that you want 64bit.</p>
       <p>Linux &amp; Mac - Open a Terminal.</p>
       <p>Chromebook - Google `Chromebook Developer Mode` and follow those steps for a Chronos shell OR you can just install the SSH extension.</p>
     </div>
   </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
   <div class='row'>
     <div class='col-md-2'>
        <span class='giant'>2</span>
@@ -88,8 +98,213 @@
       <p>If you are using putty.exe you will want to put <i>{{request.cookies.username}}@{{request.cookies.vm_name}}</i> into the host field and then click open.</p>
 
       <p>If you are using Linux or Mac then in the terminal type <i>ssh {{request.cookies.username}}@{{request.cookies.vm_name}}</i> and press enter</p>
+
+      <p>You will be prompted for your password.  This is the one you set at registration.</p>
+      <img src='static/img/hello_world/step.1.putty.jpg'>
+
+      <p>Once logged in you should see this:</p>
+      <img src='static/img/hello_world/step.2.putty.jpg'>
     </div>
   </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-2'>
+       <span class='giant'>3</span>
+    </div>
+    <div class='col-10'>
+      <p>Now let's setup a couple of directories for our new hello world python flask app.</p>
+
+      <p>
+         <pre class='prettyprint lang-bash'>
+mkdir hello_world
+cd hello_world
+mkdir static
+mkdir templates
+ls
+         </pre>
+      </p>
+
+      <p><b>mkdir</b> is a command to create (make) a new directory.<br />
+         <b>cd</b> is the command to change directories.<br />
+         <b>ls</b> is the command to list everything in a directory<br />
+      </p>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-2'>
+       <span class='giant'>4</span>
+    </div>
+    <div class='col-10'>
+       <p>Now you are going to need to make the decision about which text editor you want to
+          use.  There are hundres to choose from but in Kenny's opinion, the best developers
+          use Vim (or at least vim bindings).  There is a learning curve but the basics are
+          pretty easy to get started.  Kenny loves to teach people Vim.  Once you learn it
+          you will appreciate how fast it is to do things with text.  Also it's installed on
+          almost every linux box so learning to use it is very helpful in your career.</p>
+       <p>Your development VM has two text editors installed that will work in the terminal.  <b>Vim</b> and <b>Nano</b>.
+          You can also connect <a href='https://notepad-plus-plus.org/download/v7.5.4.html'>Notepad++</a> to the <a href='https://blog.sleeplessbeastie.eu/2015/07/27/how-to-edit-files-using-notepad-plus-plus-over-ssh-file-transfer-protocol/'>Virtual Machine via SSH</a> if you prefer a GUI.</p>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-2'>
+       <span class='giant'>5</span>
+    </div>
+    <div class='col-10'>
+      <p>I'm going to assume Vim for the rest of this tutorial and weave the instructions
+         on how to use it throughout.  If you don't want to use Vim the other editors will
+         work fine.  Just ignore the vim commands.</p>
+
+      <p>Flask is a lightweight web framework written in Python.  It is very simple because it only
+         requires a few lines of code to make a complete web application.  Let's create a new file called hello.py
+         and make our first flask app.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+vim hello.py</pre>
+      </p>
+
+      <p>When you first start Vim it starts in what is called Visual mode.  This is hotkey mode.  The hotkeys are
+         the power of Vim.  But getting started we just want to type in text.  Press `i` to go into Insert mode and
+         then you can start typing like you'd expect.  If you get stuck at any point.  Press the escape key a
+         few times and then press `i`.  Escape takes you back to Visual mode.</p>
+
+      <p>This is what we want in our file.  You can copy paste into you putty window or terminal.  With putty
+         it is a right click to paste.  You must be in insert mode in Vim before you can paste (press `i`).
+         Then look for the `-- INSERT --` at the bottom of the screen.
+
+      <p><pre class='prettyprint lang-python'>
+#!/usr/bin/python3
+
+# Include Flask and setup the application object
+from flask import Flask
+app = Flask(__name__)
+
+# The index page
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+# Runtime settings
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
+         </pre>
+      </p>
+
+      <p>If you are using Putty the comment colors are probably a very dark blue that is hard to read.
+         You can change that by clicking on the icon in the top of the window.  Then click on Change
+         Settings -&gt; Colours -&gt; and select the color for `ANSI BLUE` and make it 110 110 255
+         and click apply.  Might be a good time to also disable the annoying bell sound.</p>
+
+      <p>Let's discuss what each group of lines is doing</p>
+
+      <p><pre class='prettyprint lang-python'>#!/usr/bin/python3</pre></p>
+
+      <p>This line tells the server which program to use to run this file.  In our case we are using
+         the python3 program to interpret/run the file.  This line is called the `shebang`.  I'm
+         honestly not sure why we call it that (neither is Wikipedia) but if you Google 
+         `shebang python` you'll see that I'm not crazy.  I think it's because we are in the `Shell`
+         and in the old days of typing the ! was called a `bang` and over time it was shortened
+         to `shebang` but I'm just guessing.  When I started coding the # was called a `pound` and
+         not a `hashtag`.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Include Flask and setup the application object
+from flask import Flask
+app = Flask(__name__)</pre></p>
+
+
+      <p>Now that you have everything in your file it's time to save it.  Press escape and then type `:w`.</p>
+
+      <p>You will now want to open a second terminal.  If you are using putty, you can do this by clicking
+         on the icon and click `Duplicate Session`.  You'll need to type your password.  Then change into the
+         same directory.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+cd hello_world
+ls
+chmod u+x hello.py
+ls -l
+i     </pre></p>
+
+      <p>It should look something like the items below.
+
+      <p><img src='static/img/hello_world/step.5.jpg'></p>
+
+      <p>You've seen the `cd` and `ls` before.  The <b>chmod u+x hello.py</b> is telling the linux
+         system that you what to change the mode of this file (`chmod`) to allow the user (`u`) to
+         be allowed to run or execute (`+x`) the file hello.py.</p>
+
+      <p>When you type `ls -l` it is saying list everything in long format.  There you can see the
+         permissions on the files, who owns them, how big they are (in bytes) and the date and time
+         they were created.  There is a simple way to learn permissions and that is to remember The old
+         Yugo cars from the 1980s.</p>
+
+      <p><img src='http://www.carbuzz.com/resizeimg/imageshandler.ashx?w=640&h=480&url=http://db.carbuzz.com/images2/220000/6000/900/226923.jpg' width=250px></p>
+
+      <p>Drop the `y` and you are left with `ugo` which stands for user - group - other.  In the picture
+         of the terminal above you can see the line that says hello.py starts with `-rwxr--r--`.  This
+         is telling you the permissions of the hello.py file.  The first - is reserved for something special
+         so you can ignore it.
+         The next three characters `rwx` are saying the User (remember Ugo) has read write and execute permissions on
+         the file.  The next three characters `r--` is saying that the members of the Group (uGo) have read permissions
+         but can not write or execute.  The last three characters are showing that everyone else or `Other` (ugO) has
+         read permissions.  It's normallly best not to let people have read permissions on your personal files.  In this case
+         it's probably ok since this is a Hack-a-thon and these are your personal files on your personal VM.  If you want
+         to lock it down you can issue `chmod o-r hello.py` and it will remove that last r.</p>
+
+      <p>We did all of that so we could run our program.  Whew.  Now issue the following command in your new terminal.<p>
+
+      <p><pre class='prettyprint lang-bash'>
+./hello.py
+      </pre></p>
+
+      <p>If it worked you will see this.</p>
+
+      <p><img src='static/img/hello_world/step.5.2.jpg'></p>
+
+      <p>If not you probably need to ask for help.</p>
+
+      <p>Step 5 is almost complete.  Now let's go to a browser and see if we can load our
+         Hello World web page.</p>
+
+      <p>This link should work <a href='http://{{request.cookies.vm_name}}:5000/' target='_new'>http://{{request.cookies.vm_name}}:5000/</a> (opens a new tab).</p>
+
+      <p>If everything went according to plan you should see two new lines in the 2nd terminal window.<p>
+
+      <p><img src='static/img/hello_world/step.5.3.jpg'></p>
+
+      <p>  I'm using Chrome
+         so it fetched the index page (`GET /`) and then tried to get the icon file (`GET /favicon.ico`).  The first one
+         worked and issued a 200 (which means Success).  The second one didn't work since we don't have an icon.  It
+         issued a 404 code.  That code means Not Found.  These are called HTTP Status Codes.  You don't need this right now but for the future, <a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_errors' target='_new'>here</a> 
+         is the complete list of codes that you could see.</p>
+
+      <p>Every time you reload the page you should see another line in the terminal.  If possible try to get your terminal
+         and your browser aligned so you can see both at the same time.  In a perfect world you'd be able to see your
+         code, the terminal running flask and the browser window at the same time.  A laptop might make this difficult.
+
+      <p>Congrats!  You just built your first python flask app!  Now let's make it do something.</p>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-2'>
+       <span class='giant'>6</span>
+    </div>
+    <div class='col-md-10'>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
   <div class='row'>
     <div class='col-md-12'>
       &nbsp;
@@ -100,6 +315,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->

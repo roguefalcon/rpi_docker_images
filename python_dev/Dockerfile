@@ -3,7 +3,7 @@ FROM kprpi
 #RUN apt-get update && apt-get upgrade -y
 RUN apt-get update
 
-RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd python3 python3-pip python3-dev libffi-dev sqlite3 python3-setuptools
+RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd python3 python3-pip python3-dev libffi-dev sqlite3 python3-setuptools nano
 
 RUN pip3 install wheel flask bcrypt
 #RUN pip3 install sqlite3
