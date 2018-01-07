@@ -113,6 +113,12 @@ def hello_world():
    return render_template('hello_world.html')
 
 
+@app.route("/hello_world2")
+def hello_world2():
+
+   return render_template('hello_world2.html')
+
+
 @app.route("/dashboard")
 def dashboard():
 

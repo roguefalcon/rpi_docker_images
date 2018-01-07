@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-12'>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>6</span>
+    </div>
+    <div class='col-11'>
+    <p>In the last step we built a fully functional web application but it really doesn't do much.  Let's make it
+       more robust and start adding features.</p>
+
+    <p>You should still have two terminal windows open.  Flask should be running in one and you should have
+       the other one viewing the file in your text editor.  Let's change the following line:</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Change this line
+return "Hello World!"
+
+# To this line
+return render_template("index.html")</pre></p>
+
+    <p>Vim tip (Delete a line):  Press escape to go back to visual mode.  Move the cursor to the line you want to delete.
+       press 'dd' to delete the line.  Then press 'i' to go back into insert mode.</p>
+
+    <p>Now we need to add another line of code to import the render_template function into our program. We want
+       to add the line below the `from flask import Flask` line.</p>
+
+    <p><pre class='prettyprint lang-python'>
+from flask import Flask
+from flask import render_template  # &lt;-- This is your new line
+app = Flask(__name__)</pre></p>
+
+    <p>Vim tip (Insert a line):  There are a few ways to do this.  From visual mode press the 'o' key
+       and it will insert a new line below the one your are on and put you in insert mode.  IF you want
+       to place a line above the line you are on you can press the 'O' (captial o).</p>
+
+    <p>Now you need to press escape and type ':w' to write the file.</p>  When you do this the other terminal
+       where flask is running should say the following:</p>
+
+    <p><img src='/static/img/hello_world/step.6.jpg'></p>
+
+    <p>Flask is watching for changes in the file.  When you save it, Flask will reload the entire web application.</p>
+
+    <p>Now if you reload the browser window it's going to complain "TemplateNotFound: index.html"</p>
+
+    <p>In your vim window, type ':wq' which will write the file and quit.</p>
+
+    <p>We need to create the index.html template.  Type the following command:</p>
+
+    <p><pre class='prettyprint lang-html'>
+vim templates/index.html</pre></p>
+
+    <p>And copy paste the file below into your index.html then press escape then ':wq'</p>
+
+    <p><pre class='prettyprint lang-html'>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+
+  &lt;!-- Style --&gt;
+  &lt;link href="static/css/bootstrap.min.css" rel="stylesheet"&gt;
+  &lt;link href="static/css/style.css" rel="stylesheet"&gt;
+  &lt;!--/Style --&gt;
+
+  &lt;title&gt;Team KP - Hello World&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;!-- Content --&gt;
+&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-12"&gt;
+      &lt;h1&gt;Hello, World&lt;/h1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!--/Content --&gt;
+
+&lt;!-- Javascript --&gt;
+&lt;script src="static/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script src="static/js/jquery.min.js"&gt;&lt;/script&gt;
+&lt;!--/Javascript --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></p>
+
+    <p>Whoa!  That was a lot of stuff.  This HTML 5 file sets up Bootstrap and Jquery and lays out the screen.
+       It also references a few files in the static folder that we don't have.  For example bootstrap.min.js.
+       I'll cover the basics of this file and HTML in Step 7 but for now we want to get everything installed
+       and watch it run.  The next commands are going to get the "dependencies" for Bootstrap 4 and JQuery 3.
+    </p>
+
+    <p><pre class='prettyprint lang-bash'>
+cd static
+mkdir css
+mkdir js
+cd css
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/css/bootstrap.min.css
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/css/style.css
+cd ../js
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/js/jquery.min.js
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/js/bootstrap.min.js
+cd ../..
+ls -R</pre></p>
+
+    <p>So we created two static directories.  One for our CSS Style sheets and one for our JavaScript files.
+       We then downloaded "minified" versions of Bootstrap and Jquery as well as a simple style sheet.</p>
+
+    <p>Go to the browser and reload the page.  Hopefully it worked and you see a black background with the large
+       white Hello, World text. In your Flask terminal you should see the following:</p>
+
+    <p><img src='/static/img/hello_world/step.6.2.jpg'></p>
+
+    <p>Something neat about the browser.  In that first load you can see the browser load each file it needs.  If you
+       reload the browser window again it will only load the index page (indicated by the /).  That's because it will cache the other files
+       on your computer and not download them again.  This makes loading things the 2nd time much faster.  But it can drive
+       you crazy as a web developer because you can change a secondary file and it will keep loading the file from cache.
+       Chrome has a couple of tricks to avoid using cached versions for developers.
+       One trick is the developer tools console.  You can access it by pressing ctrl+shift+i.
+       Then click the disable cache checkbox under the network tab.  This only works while that console is open.</p>
+
+    <p>I think you are ready for step 7.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>7</span>
+    </div>
+    <div class='col-11'>
+    <p>Step 7 is going to introduce you to HTML 5 and Bootstrap 4.  In the last step you copy/pasted but now we
+       need to discuss how each portion of it works.</p>
+
+    <p>HTML stands for Hyper Text Markup Language.  The Markup is the key word.  HTML really is as simple as
+       putting some 'markup' tags around things so Browsers know how to display them.  For example, if
+       I want to make something bold I would put a set of &lt;b&gt; tags around it.</p>
+
+    <p><pre class='prettyprint lang-html'>
+The word is &lt;b&gt;bold&lt;/b&gt;.</pre></p>
+
+    <p>The &lt;b&gt; and &lt;/b&gt; tags tell the browser where to start making things bold and where to stop.</p>
+
+    <p>HTML files are divided into two sections.  The &lt;head&gt; and the &lt;body&gt;.  The head tells the browser
+       general setup stuff and the body tells the browers what to do in the view window.
+
+    <p>Let's take each block of the index.html file in pieces.</p>
+
+    <p><pre class='prettyprint lang-html'>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;</pre></p>
+
+    <p>The DOCTYPE tells the browser which version of HTML we want to use.  This line used to be much crazier before
+       HTML 5.  We decided to simplify it with HTML 5 since it was getting out of hand.
+
+    <p><pre class='prettyprint lang-html'>
+This was the OLD line for HTML 4.01 with the "strict" rules in case you thought I was kidding.
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;</pre></p>
+
+    <p>The &lt;html lang="en"&gt; line starts the HTML section (which has the two
+       parts of head and body) and sets the language to English.  The &lt;head&gt; line starts the head section of the
+       file.</p>
+
+    <p><pre class='prettyprint lang-html'>
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</pre></p>
+
+    <p>These next couple of lines setup specific things about the characters the browse should expect to
+       see in the HTML file as well as how to handle the browser window.  There is also a special line that
+       Makes IE9 and IE10 not suck with Bootstrap.  For now just know it's better to have these lines
+       so things you code will Do the Right Thing<sup>TM</sup>.</p>
+
+    <p><pre class='prettyprint lang-html'>
+  &lt;!-- Style --&gt;
+  &lt;link href="static/css/bootstrap.min.css" rel="stylesheet"&gt;
+  &lt;link href="static/css/style.css" rel="stylesheet"&gt;
+  &lt;!--/Style --&gt;</pre></p>
+
+    <p>These lines pull in some Cascading Style Sheets.  If you think about these CSS files
+       as layers of a water fall (or Cascades) then you can remember that the last one wins.
+       Meaning if you define a style for the text color to be RED in the first file and
+       then define the same text style to be GREEN in the last file.  The text will be green.
+       That is why our "style.css" file is the last one defined.  So we can override the default
+       Bootstrap styles if needed.</p>
+
+    <p><pre class='prettyprint lang-html'>
+  &lt;title&gt;Team KP - Hello World&lt;/title&gt;
+&lt;/head&gt;</pre></p>
+
+    <p>The &lt;title&gt; tag tells the browser what to display on the tab.  The &lt;/head&gt; ends the head section
+       of the HTML document.</p>
+
+    <p><pre class='prettyprint lang-html'>
+&lt;body&gt;</pre></p>
+
+    <p>The &lt;body&gt; section is what will show up in the browser window.  It's where your content goes.</p>
+
+    <p><pre class='prettyprint lang-html'>
+&lt;!-- Content --&gt;
+&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-12"&gt;
+      &lt;h1&gt;Hello, World&lt;/h1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!--/Content --&gt;</pre></p>
+
+    <p>This section is 100% Bootstrap 4. The &lt;div&gt; tag stands for division and it creates a visual
+       and logical division on the page.  The class='' portion of the &lt;div&gt; tag allows you to apply a
+       CSS Style class to that div.  The class='' syntax can be used in any HTML tag to add a CSS class
+       Every piece of content in Bootstrap needs to be in a container.  I typically only have one of these per
+       HTML file.  So the second line (after the comment) sets up the Bootstrap container.
+       The next line creates a div with the class `row`.  Inside of it is another div with the class col-12.
+       These &lt;div&gt; tags are setting up the Bootstrap Grid to determine where things are positioned on
+       the screen.  Bootstrap ships with a `standard` 12 column grid.  The video below explains this grid.
+    </p>
+
+    <p><center><iframe width="560" height="315" src="https://www.youtube.com/embed/g3LRU3JF-rQ?start=28" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe></center></p>
+
+    <p><pre class='prettyprint lang-html'>
+&lt;!-- Javascript --&gt;
+&lt;script src="static/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script src="static/js/jquery.min.js"&gt;&lt;/script&gt;
+&lt;!--/Javascript --&gt;</pre></p>
+
+    <p>These JavaScript libraries are included in the bottom of the &lt;body&gt; tag because by having
+       them at the bottom it improves the speed at which the browser can 'paint' the page.  We will cover
+       Javascript in a later step but for now these are the ones we need for Bootstrap 4 and Jquery 3.</p>
+
+    <p><pre class='prettyprint lang-html'>
+&lt;/body&gt;
+&lt;/html&gt;</pre></p>
+
+    <p>The final section of the file closes out the &lt;body&gt; section and then finally tells the browser
+       that it's finished with reading all of the HTML.</p>
+
+    <p>The primary goal of Step 7 is understanding this HTML and the Bootstrap Grid system.  I'd like to do
+       a couple modifications to the index.html file so you can get comfortable manipulating both HTML and
+       the Bootstrap grid.</p>
+
+    <p>As we progress through this tutorial we are going to build an Application to track users
+       favorite colors (<a href='https://www.youtube.com/watch?v=Wpx6XnankZ8&start=1m18s'>Monty Python reference</a>).
+       Since this is top secret highly classified information, we need to make sure we add security to our
+       application.  Let's turn this Hello, World index.html page into a login screen for our Favorite Color Tracker.</p>
+
+    <p>Python Flask has an awesome feature called 'Flash Messages' that allows us to give the user information
+       when the page loads.  We can use this Flash feature to tell the user if they messed up their login attempt.
+       let's add a section to the login screen for displaying Flash messages under the Hello, World row.</p>
+
+
+    <p><pre class='prettyprint'>
+&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-12"&gt;
+      &lt;h1&gt;Hello, World&lt;/h1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- New code goes here --&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-12"&gt;
+     {&#37; with messages = get_flashed_messages() &#37;}
+       {&#37; if messages &#37;}
+         {&#37; for message in messages &#37;}
+           &lt;div class="alert alert-warning"&gt;&#123;&#123;message&#125;&#125;&lt;/div&gt;
+         {&#37; endfor &#37;}
+       {&#37; endif &#37;}
+     {&#37; endwith &#37;}
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- End of new code --&gt;
+&lt;/div&gt;</pre></p>
+
+    <p>Notice that we put the code inside the container before the closing &lt;/div&gt; tag.  That code
+       introduces a new concept.  Python Flask uses an HTML template language called Jinja that lets
+       you write logic inside of your templates.  These &#123;&#37; foo &#37;&#125; tags will not
+       display on the site.  Flask will substitute them for the output you want the user to see.</p>
+
+    <p>&#123;&#37; foo &#37;&#125; - these are for directives like if and for statements.<br/>
+       &#123;&#123;foo&#125;&#125; - these are for variable substitution.<br/>
+       Notice there is a space between the &#37; and the foo on both sides but not on the variable tag.</p>
+
+    <p>The Python `with` keyword works a lot like a Try/Except or Try/Finally block in a lot of other languages.
+       it's basically a short cut way of saying Try this thing.  If it doesn't work fail gracefully.</p>
+    <p>The Python `if` and `for` statements work for the most part like every other language.</p>
+
+    <p>So this code snippet is saying, Attempt to load the flash messages (with) and if it doesn't work
+       don't stress the user out about it (if).  Then display every message (for) that was flashed in a special &lt;div&gt;
+       that has bright colors and scary fonts so they will see the message.</p>
+
+    <p>Now we need to add the actual login form.  Put this block of code in the place the &lt;!-- End of new code --&gt; 
+       line is in the block above.</p>
+
+    <p><pre class='prettyprint'>
+  &lt;div class="row"&gt;
+    &lt;div class="col-4"&gt;
+
+      &lt;form method="post" action="/login"&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label for="username"&gt;Username&lt;/label&gt;
+        &lt;input type="text" class="form-control" id="username" name="username"&gt;
+      &lt;/div&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label for="password"&gt;Password&lt;/label&gt;
+        &lt;input type="password" class="form-control" id="password" name="password"&gt;
+      &lt;/div&gt;
+      &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+      &lt;/form&gt;
+
+    &lt;/div&gt;
+    &lt;div class="col-8"&gt;
+      &lt;!-- We could put a clever message here that welcomes our user but for now I'm leaving it blank.--&gt;
+    &lt;/div&gt;
+    </pre></p>
+
+    <p>This code is using HTML 5 Form tags with Bootstrap 4 formatting.  We start by defining a new row and then
+       creating a division that is only 4 columns wide.  This 4 column section is going to contain the login
+       form.  Then we get into some new tags with the &lt;form&gt;.  I'll explain those in a bit.  The last part of the
+       code creates an empty 8 column section.  We could put anything we want over there but for now I'm leaving
+       it blank.  I assume that Jason Dupin will do something beautiful here in the final version of the app.</p>
+
+    <p><pre class='prettyprint'>
+&lt;form method="post" action="/login"&gt;</pre></p>
+
+    <p>The &lt;form&gt; tag tells the browser that we are going to capture input from the user.  The method
+       attribute of `post` is telling the browser how to communicate this data with the server. During the
+       Hack-a-thon we will send data via GET and POST.  The POST is considered more secure. If you are
+       curious about the reason it's more secure you can ask one of the Industry Professionals.  The action
+       attribute is telling the browser which URL to send the data to. In this case we are sending it to the
+       /login URL.  For your flask app that would be http://{{request.cookies.vm_name}}:5000/login.  We will create
+       the /login in Step 8.</p>
+
+    <p><pre class='prettyprint'>
+&lt;div class="form-group"&gt;
+  &lt;label for="username"&gt;Username&lt;/label&gt;
+  &lt;input type="text" class="form-control" id="username" name="username"&gt;
+&lt;/div&gt;</pre></p>
+
+    <p>The form-group class is a Bootstrap class that tells the browser to display the label and the input
+       field together on the screen.  The Label will sit above the input field and doesn't do anything except
+       assist the user in understanding what type of data to put in the field.  The &lt;input&gt; tag has
+       a few super important attributes.  The type="text" tells the browser to expect text and display
+       what they type.  In the next section it is type="password"  That tells the browser to expect a
+       password and print *'s instead of the characters.  The id='username' attribute is for the browser
+       to allow us to reference this field via JavaScript or CSS.  The name='username' field is for
+       the server to know what data this.  It might seem silly to have both id='' and name=''.  I agree
+       but that's just how we do it.  It is considered a best practice to keep these values the same
+       so you are consistent in your programming.</p>
+
+    <p><pre class='prettyprint'>
+&lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+&lt;/form&gt;</pre></p>
+
+    <p>These last two lines are very simple.  The &lt;button&gt; tag creates a... button.  The type="submit" attribute
+       on this tells the browser that when a user clicks this button it needs to perform the 'action' in the form
+       tag.  We call it `submitting the form`.  The &lt;/form&gt; should be obvious.  It closes the form.</p>
+
+    <p>One of the gotcha's for new developers is having more than one form on an HTML page and forgetting
+       to close the form tag.  Don't do it!</p>
+
+    <p>Now if you save your index.html (vim press `:w`) you should be able to see the following when you reload your
+       browser window.  If you don't see that or get an error, ask for help.  This is a Hack-a-thon so time
+       is critical :-).</p>
+
+    <p><img src='/static/img/hello_world/step.7.1.jpg'></p>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>8</span>
+    </div>
+    <div class='col-11'>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!--<script src="static/js/bootstrap.min.js"></script>-->
+
+  </body>
+</html>
