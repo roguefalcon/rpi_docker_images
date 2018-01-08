@@ -319,6 +319,68 @@ def save():
 
       <p><img width='90%' src='/static/img/hello_world/step.11.2.png'></p>
 
+      <p>Something that is good to do at this point is to run the read_sql.py script that you built.
+         it should look like this.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+==&gt; Favorite Colors
+('Bill', 'Yellow')
+==&gt; Users
+('asdf', b'$2b$12$6qZXk96tEbJQv6DVa7G4jeYdhNFwAUnPaNwUUDOnLRMLzvSZuC.jS')</pre></p>
+
+      <p>An important note, if you want to reset everything you can run the load_sql.py script.
+         There is a gotcha here.  You must exit the Flask application in the window where
+         Flask is running.  You can do this with ctrl+c.  If you don't then the Flask app
+         will not see the sql.db file get removed and replaced with a fresh one.  Kenny can
+         explain the nuance here but just remember to stop flask, then reload the database.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>12</span>
+    </div>
+    <div class='col-11'>
+      <p>Now that we can add, let's setup a way to delete them.  This way as we are testing we don't
+         get overwhelmed.</p>
+
+      <p>Add the delete() function below, after your save() in the hello.py file.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Delete =======================================================================
+@app.route("/delete/<id>")
+def delete(id):
+
+   # Delete without confirming anything
+   c.execute('DELETE FROM favorite_color WHERE rowid=?', (id,))
+
+   # Commit causes the system to write to the database file
+   conn.commit()
+
+   # We want to take the user back to the browse screen
+   return redirect(url_for('browse'))</pre></p>
+
+      <p>This delete is a little dangerous because it doesn't confirm anything.  It just removes it.
+         Might be smart to add a JavaScript confirmation dialog to help the user avoid accidentally
+         clicking the button.  For now, they are on their own.</p>
+
+      <p>Since step 12 is fairly short and the logout function is very easy to implement, let's go ahead and
+         add it after the delete() function.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Logout =====================================================================
+@app.route("/logout")
+def logout():
+
+   # Log them out
+   session.pop('username', None)
+
+   # Send them to the index page
+   return redirect(url_for("index"))</pre></p>
+
     </div>
   </div>
 

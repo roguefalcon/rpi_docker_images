@@ -454,7 +454,8 @@ c.execute('''CREATE TABLE IF NOT EXISTS users
              (username text, password text)''')
 
 # Let's load some data
-c.execute('''INSERT INTO users VALUES (?, ?)''', ('asdf', bcrypt.hashpw(b'asdf', bcrypt.gensalt())))
+c.execute('''INSERT INTO users VALUES (?, ?)''',
+          ('asdf', bcrypt.hashpw(b'asdf', bcrypt.gensalt())))
 conn.commit()
     </pre></p>
 
@@ -514,7 +515,8 @@ c.execute('''CREATE TABLE IF NOT EXISTS users
 
     <p><pre class='prettyprint lang-python'>
 # Let's load some data
-c.execute('''INSERT INTO users VALUES (?, ?)''', ('asdf', bcrypt.hashpw(b'asdf', bcrypt.gensalt())))</pre></p>
+c.execute('''INSERT INTO users VALUES (?, ?)''',
+          ('asdf', bcrypt.hashpw(b'asdf', bcrypt.gensalt())))</pre></p>
 
     <p>The INSERT sql statement loads data in a table.  We are creating a user named `asdf` with the password of
        `asdf` for the development environment.  The ?'s in the statement allow the c.execute() function to
@@ -556,7 +558,7 @@ c.execute('''SELECT * FROM favorite_color''')
 colors = c.fetchall()
 
 for color in colors:
-   print(color)
+    print(color)
 
 # Print users =================================================================
 print("==&gt; Users")
@@ -564,7 +566,7 @@ c.execute('''SELECT * FROM users''')
 users = c.fetchall()
 
 for user in users:
-   print(user)</pre></p>
+    print(user)</pre></p>
 
     <p>Since this file is very similar to the load_sql.py script, I'm only going to discuss the SELECT and the for loop.
        The SELECT statement queries data from a table.  In this example I am doing SELECT *.  This is a lazy way
