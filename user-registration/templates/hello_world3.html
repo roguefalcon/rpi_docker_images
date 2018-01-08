@@ -34,13 +34,6 @@
       </ul>
     </div>
   </div>
-  <div class='row'>
-    <div class='col-md-12'>
-      &nbsp;
-    </div>
-  </div>
-  <div class='row'>
-    <div class='col-12'>
   <!-- HR -->
   <div class='row'><div class='col-12'><hr/></div></div>
   <!--/HR -->
@@ -52,15 +45,279 @@
       <p>You are in the final stretch of the Hello World tutorial.  You've already learned a ton.
          Good news is that we are going to continue to learn!  The new concept that I want to introduce
          is the B.R.E.A.D. Application.  In some circles they call this the C.R.U.D. application.  I don't like
-         to call things that I build CRUD.  B.R.E.A.D. stands for:</p>
+         to call things that I build CRUD.</p>
 
-          <p>Browse<br/>
-             Read<br/>
-             Edit<br/>
-             Add<br/>
-             Delete</p>
+      <p>B.R.E.A.D. stands for:</p>
 
-         <p>And it relates to all of the functions that a database application should be able to do.</p>
+      <p>Browse<br/>
+         Read<br/>
+         Edit<br/>
+         Add<br/>
+         Delete</p>
+
+      <p>And it relates to all of the functions that a database application should be able to do. The rest of the tutorial
+         will be building out the BREAD capabilities of the "What is your favorite color" Application.</p>
+
+      <p>We will start with the Browse function.  Paste the following in your hello.py file.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Browse ======================================================================
+@app.route("/browse")
+def browse():
+
+   # Let's query the database and pull the entries
+   c.execute('SELECT rowid, name, color FROM favorite_color')
+   data = c.fetchall()
+
+   # Send these to the template
+   return render_template("browse.html", data=data)</pre></p>
+
+      <p>There are two unique things about the Browse function. First, is the rowid column in the SELECT statement.  SQLite
+         automatically provides an incrementing id column called rowid.  This will be very useful in
+         the later BREAD methods. Second, is the `data=data` in the render_template function.  We are passing
+         the results of the query into the template and naming the data to `data`.  Now let's build the template.</p>
+
+      <p>Open a new file called browse.html in the templates folder.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+vim templates/browse.html</pre></p>
+
+      <p>Paste the following into the file. Then read the discussion below.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+{&#37; include 'header.html' &#37;}
+
+  &lt;!-- Content --&gt;
+  &lt;div class='container'&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-10'&gt;
+        &lt;h1&gt;Browse&lt;/h1&gt;
+      &lt;/div&gt;
+      &lt;div class='col-2'&gt;
+       &lt;a class='btn btn-primary' href='/add' role='button'&gt;Add&lt;/a&gt;
+       &lt;a class='btn btn-secondary' href='/logout' role='button'&gt;Logout&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-md-12'&gt;
+      &#123;&#37; if data &#37;&#125;
+      &lt;table class='table'&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th scope='col'&gt;#&lt;/th&gt;
+          &lt;th scope='col'&gt;Name&lt;/th&gt;
+          &lt;th scope='col'&gt;Color&lt;/th&gt;
+          &lt;th scope='col'&gt; &lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &#123;&#37; for item in data &#37;&#125;
+        &lt;tr&gt;
+          &lt;th scope='row'&gt;&#123;&#123;item.rowid&#125;&#125;&lt;/th&gt;
+          &lt;td&gt;&#123;&#123;item.name&#125;&#125;&lt;/td&gt;
+          &lt;td&gt;&#123;&#123;item.color&#125;&#125;&lt;/td&gt;
+          &lt;td&gt;
+            &lt;a class='btn btn-secondary' href='/edit/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Edit&lt;/a&gt;
+            &lt;a class='btn btn-secondary' href='/delete/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Delete&lt;/a&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &#123;&#37; endfor &#37;&#125;
+      &lt;/tbody&gt;
+      &lt;/table&gt;
+      &#123;&#37; else &#37;&#125;
+         No one has picked a favorite color yet, so you &lt;a href='/add'&gt;can be first&lt;/a&gt;.
+      &#123;&#37; endif &#37;&#125;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!--/Content --&gt;
+
+{&#37; include 'footer.html' &#37;}</pre></p>
+
+      <p>That was a lot but don't worry.  I'll explain the new stuff.</p>
+
+      <p><pre class='prettyprint lang-html'>
+{&#37; include 'header.html' &#37;}</pre></p>
+
+      <p>One of the tenants of programming is DRY (Don't Repeat Yourself).  By including a header.html
+         file we can setup our &lt;head&gt; tag in a single file but get the benefit of it
+         everywhere.  We will create the header file in a moment.</p>
+
+      <p><pre class='prettyprint lang-html'>
+&lt;table class='table'&gt;
+&lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th scope='col'&gt;#&lt;/th&gt;</pre></p>
+
+      <p>The HTML &lt;table&gt; tag is the best way to store what we call tabular data.
+         basically, think of it as antyhing that would look good formated like a spreadsheet.
+         It may not make as much sense for this application but I wanted to show you how to do it
+         and help you get familiar with the &lt;table&gt; tags.</p>
+
+      <p>&lt;thead&gt; - Table Header. Define the first row of a table (normally to provide column names<br/>
+         &lt;tr&gt; - Table Row.  Similar to the &lt;div class='row'&gt; but for the table<br/>
+         &lt;th&gt; - Table Heading. This tag is used to define a column heading<br/>
+         &lt;tbody&gt; - Table Body. This will be the start of the data rows.<br/>
+         &lt;td&gt; - Table Data.  This is the data in a column</p>
+
+      <p>Tables take a little bit of practice to get the hang of.  Just like the Bootstrap Grid.</p>
+
+      <p><pre class='prettyprint lang-html'>
+&lt;a class='btn btn-primary' href='/add' role='button'&gt;Add&lt;/a&gt;
+&lt;a class='btn btn-secondary' href='/logout' role='button'&gt;Logout&lt;/a&gt;</pre></p>
+
+      <p>This is a different type of button in Bootstrap.  It doesn't submit a form  It just links
+         to another page.  In this case we created buttons to go to the /create and /logout pages. The CSS
+         classes will set the color so that btn-primary and btn-secondary will be different.</p>
+
+      <p><pre class='prettyprint lang-html'>
+&#123;&#37; for item in data &#37;&#125;
+&lt;tr&gt;
+  &lt;th scope='row'&gt;&#123;&#123;item.rowid&#125;&#125;&lt;/th&gt;
+  &lt;td&gt;&#123;&#123;item.name&#125;&#125;&lt;/td&gt;
+  &lt;td&gt;&#123;&#123;item.color&#125;&#125;&lt;/td&gt;
+  &lt;td&gt;
+    &lt;a class='btn btn-secondary' href='/edit/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Edit&lt;/a&gt;
+    &lt;a class='btn btn-secondary' href='/delete/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Delete&lt;/a&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&#123;&#37; endfor &#37;&#125;</pre></p>
+
+        <p>If you recall the `data=data` in the browse() function, this for loop takes that data and breaks
+           it down into table rows.  When we did the `SELECT rowid, name, color FROM favorite_color` we loaded
+           the data variable with rows that had columns labeled rowid, name and color.  Now we can access those
+           as &#123;&#123;item.rowid&#125;&#125;.  We also create a few additional buttons here that link to
+           specific rows.  We do that by passing the rowid on the URL. More on that later.  This feature
+           is also why I defined the conn.row_factory function.  Otherwise we'd have to reference items as
+           tuples so it'd look like &#123;&#123;item[0]&#125;&#125; and you'd have to remember in your head
+           the order of the columns.  I think it is much more readable as a dictionary.</p>
+
+
+      <p><pre class='prettyprint lang-html'>
+&#123;&#37; if data &#37;&#125;</pre></p>
+
+      <p>One last little trick here.  By putting in the `if data` test.  We can decide how to have the screen
+         behave if there are no records.  This is called `Blank Slate Design`.  We want to guide our users
+         on how to use our software.  By adding a sentence and a link in the `else` section we make the
+         users life a little easier by showing them how to add the very first record.</p>
+
+      <p>Now we need to make the header.html and footer.html.  Here is the code for the header.html:</p>
+
+      <p><pre class='prettyprint lang-html'>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+
+    &lt;title&gt;Team KP - Hello World&lt;/title&gt;
+
+    &lt;!-- Style --&gt;
+    &lt;link href="static/css/bootstrap.min.css" rel="stylesheet"&gt;
+    &lt;link href="static/css/style.css" rel="stylesheet"&gt;
+    &lt;!--/Style --&gt;
+  &lt;/head&gt;
+  &lt;body&gt;</pre></p>
+
+      <p>That code should look familiar because it is at the top of your index.html page.  Put the following in the 
+         footer.html:</p>
+
+      <p><pre class='prettyprint lang-html'>
+  &lt;!-- Javascript --&gt;
+  &lt;script src="static/js/bootstrap.min.js"&gt;&lt;/script&gt;
+  &lt;script src="static/js/jquery.min.js"&gt;&lt;/script&gt;
+  &lt;!--/Javascript --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre></p>
+
+    <p>This shouldn't be a surprise either.  It is the HTML at the bottom of your index page.  Bonus points if you put header and footer include tags in the index.html template.</p>
+
+    <p>You should now be able to login to your application and land on the browse page.  Mine looked like this:</p>
+
+    <p><img width='90%' src='/static/img/hello_world/step.10.jpg'></p>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>11</span>
+    </div>
+    <div class='col-11'>
+      <p>Now we want to create the `add` method so we can make somethings to edit and delete later.</p>
+
+      <p>In your hello.py file place the following function under the browse() function:</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Add =========================================================================
+@app.route("/add")
+def add():
+
+   return render_template("add.html")</pre></p>
+
+    <p>This function simply displays an HTML page.  I couple the add function with the `save` function which
+       will actually write it to the database. Add the save function under the add().</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Save ========================================================================
+@app.route("/save", methods=["POST"])
+def save():
+
+   # We want to save this response to the database
+   c.execute('INSERT INTO favorite_color VALUES(?, ?)', (request.form['name'], request.form['color']))
+
+   # Commit causes the system to write to the database file
+   conn.commit()
+
+   return redirect(url_for('browse'))</pre></p>
+
+   <p>Let's create the add.html template with the following HTML:</p>
+
+
+      <p><pre class='prettyprint lang-html'>
+{&#37; include 'header.html' &#37;}
+
+  &lt;!-- Content --&gt;
+  &lt;div class='container'&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-md-12'&gt;
+        &lt;h1&gt;Add&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-md-6 col-md-offset-6'&gt;
+        &lt;form method='post' action='/save'&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label for="name"&gt;Name&lt;/label&gt;
+            &lt;input type="text" class="form-control" id="name" name='name' placeholder="Enter Full Name"&gt;
+          &lt;/div&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label for="color"&gt;Favorite Color&lt;/label&gt;
+            &lt;input type="text" class="form-control" id="color" name='color' placeholder="What is your favorite color?"&gt;
+          &lt;/div&gt;
+          &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!--/Content --&gt;
+
+{&#37; include 'footer.html' &#37;}</pre></p>
+
+      <p>There is only one new concept here and that is the `placeholder` attribute in the &lt;input&gt; tags.
+         This puts some `hint` text in the field that will disappear when the user starts typing.</p>
+
+      <p>Now try clicking on the `Add` button and putting in a person and their favorite color.</p>
+
+      <p>This is what my Add screen looked like.</p>
+
+      <p><img src='/static/img/hello_world/step.11.png'></p>
+
+      <p>I typed in `Bill` and `Yellow`.  When I clicked saved I got this on my Browse screen.</p>
+
+      <p><img width='90%' src='/static/img/hello_world/step.11.2.png'></p>
 
     </div>
   </div>
