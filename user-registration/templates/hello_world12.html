@@ -1,0 +1,92 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>12</span>
+    </div>
+    <div class='col-11'>
+      <p>Now that we can add, let's setup a way to delete them.  This way as we are testing we don't
+         get overwhelmed.</p>
+
+      <p>Add the delete() function below, after your save() in the hello.py file.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Delete =======================================================================
+@app.route("/delete/<id>")
+def delete(id):
+
+   # Delete without confirming anything
+   c.execute('DELETE FROM favorite_color WHERE rowid=?', (id,))
+
+   # Commit causes the system to write to the database file
+   conn.commit()
+
+   # We want to take the user back to the browse screen
+   return redirect(url_for('browse'))</pre></p>
+
+      <p>This delete is a little dangerous because it doesn't confirm anything.  It just removes it.
+         Might be smart to add a JavaScript confirmation dialog to help the user avoid accidentally
+         clicking the button.  For now, they are on their own.</p>
+
+      <p>Since step 12 is fairly short and the logout function is very easy to implement, let's go ahead and
+         add it after the delete() function.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Logout =====================================================================
+@app.route("/logout")
+def logout():
+
+   # Log them out
+   session.pop('username', None)
+
+   # Send them to the index page
+   return redirect(url_for("index"))</pre></p>
+
+    <p>Now if you click the logout screen you should end up on the login screen again</p>
+    </div>
+  </div>
+
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>13</span>
+    </div>
+    <div class='col-11'>
+    <p>Step 13 is continued on the <a href='/hello_world/13'>next page</a>.</p>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

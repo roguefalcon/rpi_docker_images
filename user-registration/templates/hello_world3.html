@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>TeamKP VM Registration</title>
-
-    <!-- Bootstrap -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
-    <link href="static/css/style.css" rel="stylesheet">
-  </head>
-  <body>
+{% include 'header.html' %}
 
   <div class='container'>
   <div class='row'>
-    <div class='col-12 text-center'>
+    <div class='col-md-12 text-center'>
       <h1>Hello World Tutorial</h1>
       {% if 'username' in request.cookies %}
       {{request.cookies.username}}@{{request.cookies.vm_name}}
@@ -24,7 +10,7 @@
     </div>
   </div>
  <div class='row'>
-    <div class='col-12'>
+    <div class='col-md-12'>
       <ul id="progressbar">
         <li class='active'><a href='/'>Register</a></li>
         <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
@@ -34,556 +20,55 @@
       </ul>
     </div>
   </div>
-  <!-- HR -->
-  <div class='row'><div class='col-12'><hr/></div></div>
-  <!--/HR -->
   <div class='row'>
-    <div class='col-1'>
-       <span class='giant'>10</span>
-    </div>
-    <div class='col-11'>
-      <p>You are in the final stretch of the Hello World tutorial.  You've already learned a ton.
-         Good news is that we are going to continue to learn!  The new concept that I want to introduce
-         is the B.R.E.A.D. Application.  In some circles they call this the C.R.U.D. application.  I don't like
-         to call things that I build CRUD.</p>
-
-      <p>B.R.E.A.D. stands for:</p>
-
-      <p>Browse<br/>
-         Read<br/>
-         Edit<br/>
-         Add<br/>
-         Delete</p>
-
-      <p>And it relates to all of the functions that a database application should be able to do. The rest of the tutorial
-         will be building out the BREAD capabilities of the "What is your favorite color" Application.</p>
-
-      <p>We will start with the Browse function.  Paste the following in your hello.py file.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Browse ======================================================================
-@app.route("/browse")
-def browse():
-
-   # Let's query the database and pull the entries
-   c.execute('SELECT rowid, name, color FROM favorite_color')
-   data = c.fetchall()
-
-   # Send these to the template
-   return render_template("browse.html", data=data)</pre></p>
-
-      <p>There are two unique things about the Browse function. First, is the rowid column in the SELECT statement.  SQLite
-         automatically provides an incrementing id column called rowid.  This will be very useful in
-         the later BREAD methods. Second, is the `data=data` in the render_template function.  We are passing
-         the results of the query into the template and naming the data to `data`.  Now let's build the template.</p>
-
-      <p>Open a new file called browse.html in the templates folder.</p>
-
-      <p><pre class='prettyprint lang-bash'>
-vim templates/browse.html</pre></p>
-
-      <p>Paste the following into the file. Then read the discussion below.</p>
-
-      <p><pre class='prettyprint lang-bash'>
-{&#37; include 'header.html' &#37;}
-
-  &lt;!-- Content --&gt;
-  &lt;div class='container'&gt;
-    &lt;div class='row'&gt;
-      &lt;div class='col-10'&gt;
-        &lt;h1&gt;Browse&lt;/h1&gt;
-      &lt;/div&gt;
-      &lt;div class='col-2'&gt;
-       &lt;a class='btn btn-primary' href='/add' role='button'&gt;Add&lt;/a&gt;
-       &lt;a class='btn btn-secondary' href='/logout' role='button'&gt;Logout&lt;/a&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class='row'&gt;
-      &lt;div class='col-md-12'&gt;
-      &#123;&#37; if data &#37;&#125;
-      &lt;table class='table'&gt;
-      &lt;thead&gt;
-        &lt;tr&gt;
-          &lt;th scope='col'&gt;#&lt;/th&gt;
-          &lt;th scope='col'&gt;Name&lt;/th&gt;
-          &lt;th scope='col'&gt;Color&lt;/th&gt;
-          &lt;th scope='col'&gt; &lt;/th&gt;
-        &lt;/tr&gt;
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        &#123;&#37; for item in data &#37;&#125;
-        &lt;tr&gt;
-          &lt;th scope='row'&gt;&#123;&#123;item.rowid&#125;&#125;&lt;/th&gt;
-          &lt;td&gt;&#123;&#123;item.name&#125;&#125;&lt;/td&gt;
-          &lt;td&gt;&#123;&#123;item.color&#125;&#125;&lt;/td&gt;
-          &lt;td&gt;
-            &lt;a class='btn btn-secondary' href='/edit/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Edit&lt;/a&gt;
-            &lt;a class='btn btn-secondary' href='/delete/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Delete&lt;/a&gt;
-          &lt;/td&gt;
-        &lt;/tr&gt;
-        &#123;&#37; endfor &#37;&#125;
-      &lt;/tbody&gt;
-      &lt;/table&gt;
-      &#123;&#37; else &#37;&#125;
-         No one has picked a favorite color yet, so you &lt;a href='/add'&gt;can be first&lt;/a&gt;.
-      &#123;&#37; endif &#37;&#125;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;!--/Content --&gt;
-
-{&#37; include 'footer.html' &#37;}</pre></p>
-
-      <p>That was a lot but don't worry.  I'll explain the new stuff.</p>
-
-      <p><pre class='prettyprint lang-html'>
-{&#37; include 'header.html' &#37;}</pre></p>
-
-      <p>One of the tenants of programming is DRY (Don't Repeat Yourself).  By including a header.html
-         file we can setup our &lt;head&gt; tag in a single file but get the benefit of it
-         everywhere.  We will create the header file in a moment.</p>
-
-      <p><pre class='prettyprint lang-html'>
-&lt;table class='table'&gt;
-&lt;thead&gt;
-  &lt;tr&gt;
-    &lt;th scope='col'&gt;#&lt;/th&gt;</pre></p>
-
-      <p>The HTML &lt;table&gt; tag is the best way to store what we call tabular data.
-         basically, think of it as antyhing that would look good formated like a spreadsheet.
-         It may not make as much sense for this application but I wanted to show you how to do it
-         and help you get familiar with the &lt;table&gt; tags.</p>
-
-      <p>&lt;thead&gt; - Table Header. Define the first row of a table (normally to provide column names<br/>
-         &lt;tr&gt; - Table Row.  Similar to the &lt;div class='row'&gt; but for the table<br/>
-         &lt;th&gt; - Table Heading. This tag is used to define a column heading<br/>
-         &lt;tbody&gt; - Table Body. This will be the start of the data rows.<br/>
-         &lt;td&gt; - Table Data.  This is the data in a column</p>
-
-      <p>Tables take a little bit of practice to get the hang of.  Just like the Bootstrap Grid.</p>
-
-      <p><pre class='prettyprint lang-html'>
-&lt;a class='btn btn-primary' href='/add' role='button'&gt;Add&lt;/a&gt;
-&lt;a class='btn btn-secondary' href='/logout' role='button'&gt;Logout&lt;/a&gt;</pre></p>
-
-      <p>This is a different type of button in Bootstrap.  It doesn't submit a form  It just links
-         to another page.  In this case we created buttons to go to the /create and /logout pages. The CSS
-         classes will set the color so that btn-primary and btn-secondary will be different.</p>
-
-      <p><pre class='prettyprint lang-html'>
-&#123;&#37; for item in data &#37;&#125;
-&lt;tr&gt;
-  &lt;th scope='row'&gt;&#123;&#123;item.rowid&#125;&#125;&lt;/th&gt;
-  &lt;td&gt;&#123;&#123;item.name&#125;&#125;&lt;/td&gt;
-  &lt;td&gt;&#123;&#123;item.color&#125;&#125;&lt;/td&gt;
-  &lt;td&gt;
-    &lt;a class='btn btn-secondary' href='/edit/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Edit&lt;/a&gt;
-    &lt;a class='btn btn-secondary' href='/delete/&#123;&#123;item.rowid&#125;&#125;' role='button'&gt;Delete&lt;/a&gt;
-  &lt;/td&gt;
-&lt;/tr&gt;
-&#123;&#37; endfor &#37;&#125;</pre></p>
-
-        <p>If you recall the `data=data` in the browse() function, this for loop takes that data and breaks
-           it down into table rows.  When we did the `SELECT rowid, name, color FROM favorite_color` we loaded
-           the data variable with rows that had columns labeled rowid, name and color.  Now we can access those
-           as &#123;&#123;item.rowid&#125;&#125;.  We also create a few additional buttons here that link to
-           specific rows.  We do that by passing the rowid on the URL. More on that later.  This feature
-           is also why I defined the conn.row_factory function.  Otherwise we'd have to reference items as
-           tuples so it'd look like &#123;&#123;item[0]&#125;&#125; and you'd have to remember in your head
-           the order of the columns.  I think it is much more readable as a dictionary.</p>
-
-
-      <p><pre class='prettyprint lang-html'>
-&#123;&#37; if data &#37;&#125;</pre></p>
-
-      <p>One last little trick here.  By putting in the `if data` test.  We can decide how to have the screen
-         behave if there are no records.  This is called `Blank Slate Design`.  We want to guide our users
-         on how to use our software.  By adding a sentence and a link in the `else` section we make the
-         users life a little easier by showing them how to add the very first record.</p>
-
-      <p>Now we need to make the header.html and footer.html.  Here is the code for the header.html:</p>
-
-      <p><pre class='prettyprint lang-html'>
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
-
-    &lt;title&gt;Team KP - Hello World&lt;/title&gt;
-
-    &lt;!-- Style --&gt;
-    &lt;link href="/static/css/bootstrap.min.css" rel="stylesheet"&gt;
-    &lt;link href="/static/css/style.css" rel="stylesheet"&gt;
-    &lt;!--/Style --&gt;
-  &lt;/head&gt;
-  &lt;body&gt;</pre></p>
-
-      <p>That code should look familiar because it is at the top of your index.html page.  Put the following in the 
-         footer.html:</p>
-
-      <p><pre class='prettyprint lang-html'>
-  &lt;!-- Javascript --&gt;
-  &lt;script src="/static/js/bootstrap.min.js"&gt;&lt;/script&gt;
-  &lt;script src="/static/js/jquery.min.js"&gt;&lt;/script&gt;
-  &lt;!--/Javascript --&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</pre></p>
-
-    <p>This shouldn't be a surprise either.  It is the HTML at the bottom of your index page.  Bonus points if you put header and footer include tags in the index.html template.</p>
-
-    <p>You should now be able to login to your application and land on the browse page.  Mine looked like this:</p>
-
-    <p><img width='90%' src='/static/img/hello_world/step.10.jpg'></p>
+    <div class='col-md-12'>
+      &nbsp;
     </div>
   </div>
   <!-- HR -->
   <div class='row'><div class='col-12'><hr/></div></div>
   <!--/HR -->
   <div class='row'>
-    <div class='col-1'>
-       <span class='giant'>11</span>
+    <div class='col-2'>
+       <span class='giant'>3</span>
     </div>
-    <div class='col-11'>
-      <p>Now we want to create the `add` method so we can make somethings to edit and delete later.</p>
+    <div class='col-10'>
+      <p>Now let's setup a couple of directories for our new hello world python flask app.</p>
 
-      <p>In your hello.py file place the following function under the browse() function:</p>
+      <p>
+         <pre class='prettyprint lang-bash'>
+mkdir hello_world
+cd hello_world
+mkdir static
+mkdir templates
+ls
+         </pre>
+      </p>
 
-      <p><pre class='prettyprint lang-python'>
-# Add =========================================================================
-@app.route("/add")
-def add():
-
-   return render_template("add.html")</pre></p>
-
-    <p>This function simply displays an HTML page.  I couple the add function with the `save` function which
-       will actually write it to the database. Add the save function under the add().</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Save ========================================================================
-@app.route("/save", methods=["POST"])
-def save():
-
-   # We want to save this response to the database
-   c.execute('INSERT INTO favorite_color VALUES(?, ?)', (request.form['name'], request.form['color']))
-
-   # Commit causes the system to write to the database file
-   conn.commit()
-
-   return redirect(url_for('browse'))</pre></p>
-
-   <p>Let's create the add.html template with the following HTML:</p>
-
-
-      <p><pre class='prettyprint lang-html'>
-{&#37; include 'header.html' &#37;}
-
-  &lt;!-- Content --&gt;
-  &lt;div class='container'&gt;
-    &lt;div class='row'&gt;
-      &lt;div class='col-md-12'&gt;
-        &lt;h1&gt;Add&lt;/h1&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class='row'&gt;
-      &lt;div class='col-md-6 col-md-offset-6'&gt;
-        &lt;form method='post' action='/save'&gt;
-          &lt;div class="form-group"&gt;
-            &lt;label for="name"&gt;Name&lt;/label&gt;
-            &lt;input type="text" class="form-control" id="name" name='name' placeholder="Enter Full Name"&gt;
-          &lt;/div&gt;
-          &lt;div class="form-group"&gt;
-            &lt;label for="color"&gt;Favorite Color&lt;/label&gt;
-            &lt;input type="text" class="form-control" id="color" name='color' placeholder="What is your favorite color?"&gt;
-          &lt;/div&gt;
-          &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
-        &lt;/form&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;!--/Content --&gt;
-
-{&#37; include 'footer.html' &#37;}</pre></p>
-
-      <p>There is only one new concept here and that is the `placeholder` attribute in the &lt;input&gt; tags.
-         This puts some `hint` text in the field that will disappear when the user starts typing.</p>
-
-      <p>Now try clicking on the `Add` button and putting in a person and their favorite color.</p>
-
-      <p>This is what my Add screen looked like.</p>
-
-      <p><img src='/static/img/hello_world/step.11.png'></p>
-
-      <p>I typed in `Bill` and `Yellow`.  When I clicked saved I got this on my Browse screen.</p>
-
-      <p><img width='90%' src='/static/img/hello_world/step.11.2.png'></p>
-
-      <p>Something that is good to do at this point is to run the read_sql.py script that you built.
-         it should look like this.</p>
-
-      <p><pre class='prettyprint lang-bash'>
-==&gt; Favorite Colors
-('Bill', 'Yellow')
-==&gt; Users
-('asdf', b'$2b$12$6qZXk96tEbJQv6DVa7G4jeYdhNFwAUnPaNwUUDOnLRMLzvSZuC.jS')</pre></p>
-
-      <p>An important note, if you want to reset everything you can run the load_sql.py script.
-         There is a gotcha here.  You must exit the Flask application in the window where
-         Flask is running.  You can do this with ctrl+c.  If you don't then the Flask app
-         will not see the sql.db file get removed and replaced with a fresh one.  Kenny can
-         explain the nuance here but just remember to stop flask, then reload the database.</p>
-
+      <p><b>mkdir</b> is a command to create (make) a new directory.<br />
+         <b>cd</b> is the command to change directories.<br />
+         <b>ls</b> is the command to list everything in a directory<br />
+      </p>
     </div>
   </div>
   <!-- HR -->
   <div class='row'><div class='col-12'><hr/></div></div>
   <!--/HR -->
   <div class='row'>
-    <div class='col-1'>
-       <span class='giant'>12</span>
+    <div class='col-md-2'>
+       <span class='giant'>4</span>
     </div>
-    <div class='col-11'>
-      <p>Now that we can add, let's setup a way to delete them.  This way as we are testing we don't
-         get overwhelmed.</p>
-
-      <p>Add the delete() function below, after your save() in the hello.py file.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Delete =======================================================================
-@app.route("/delete/<id>")
-def delete(id):
-
-   # Delete without confirming anything
-   c.execute('DELETE FROM favorite_color WHERE rowid=?', (id,))
-
-   # Commit causes the system to write to the database file
-   conn.commit()
-
-   # We want to take the user back to the browse screen
-   return redirect(url_for('browse'))</pre></p>
-
-      <p>This delete is a little dangerous because it doesn't confirm anything.  It just removes it.
-         Might be smart to add a JavaScript confirmation dialog to help the user avoid accidentally
-         clicking the button.  For now, they are on their own.</p>
-
-      <p>Since step 12 is fairly short and the logout function is very easy to implement, let's go ahead and
-         add it after the delete() function.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Logout =====================================================================
-@app.route("/logout")
-def logout():
-
-   # Log them out
-   session.pop('username', None)
-
-   # Send them to the index page
-   return redirect(url_for("index"))</pre></p>
-
-    <p>Now if you click the logout screen you should end up on the login screen again</p>
-    </div>
-  </div>
-  <!-- HR -->
-  <div class='row'><div class='col-12'><hr/></div></div>
-  <!--/HR -->
-  <div class='row'>
-    <div class='col-1'>
-       <span class='giant'>13</span>
-    </div>
-    <div class='col-11'>
-
-    <p>We can add and delete things but what if we want to change our answer?  We need to create the edit mode.</p>
-
-    <p>We will need two functions for this.  The edit which will display the page loaded with existing values and
-       the update function to save the updated values in the database.</p>
-
-    <p>Let's start with the edit function.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Edit =========================================================================
-@app.route("/edit/&lt;id&gt;")
-def edit(id):
-
-   data = {}
-   c.execute('SELECT rowid, name, color FROM favorite_color WHERE rowid=?', (id,))
-   data = c.fetchone()
-
-   return render_template("edit.html", data=data)</pre></p>
-
-   <p>You've seen most of this before. One difference is the variable passed on the URL.
-      The @app.route has an &lt;id&gt; being passed in.  That lines up with the id being
-      passed in the edit(id) function definition.  This helps us know which item we are
-      editting.  Another difference is the c.fetchone() instead of the c.fetchall().</p>
-
-   <p>Now we can add the update() function.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Update =======================================================================
-@app.route("/update", methods=["POST"])
-def update():
-
-   # We want to save this response to the database
-   c.execute('UPDATE favorite_color SET name = ?, color=? WHERE rowid = ?',
-             (request.form['name'], request.form['color'], request.form['id']))
-
-   # Commit causes the system to write to the database file
-   conn.commit()
-
-   return redirect(url_for('browse'))</pre></p>
-
-   <p>The main new thing in this function is the SQL UPDATE statement.  The format is different
-      than an INSERT but the ? variable substitution idea is the same.  The 3 ?'s are replaced
-      by the variables in the tuple.  We are pulling those variables from the HTML form via
-      the Flask request object.</p>
-
-   <p>For the update, we've decided to just go back to the browse() screen so we won't need a template for it.  Let's go ahead and create the edit template.</p>
-
-
-      <p><pre class='prettyprint lang-html'>
-&#123;&#37; include 'header.html' &#37;&#125;
-
-  &lt;!-- Content --&gt;
-  &lt;div class='container'&gt;
-    &lt;div class='row'&gt;
-      &lt;div class='col-md-12'&gt;
-        &lt;h1&gt;Edit&lt;/h1&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class='row'&gt;
-      &lt;div class='col-md-6 col-md-offset-6'&gt;
-        &lt;form method='post' action='/update'&gt;
-        &lt;input type='hidden' name='id' value='&#123;&#123;data.rowid&#125;&#125;'&gt;
-          &lt;div class="form-group"&gt;
-            &lt;label for="name"&gt;Name&lt;/label&gt;
-            &lt;input type="text" class="form-control" id="name" name='name' value="&#123;&#123;data.name&#125;&#125;"&gt;
-          &lt;/div&gt;
-          &lt;div class="form-group"&gt;
-            &lt;label for="color"&gt;Favorite Color&lt;/label&gt;
-            &lt;input type="text" class="form-control" id="color" name='color' value="&#123;&#123;data.color&#125;&#125;"&gt;
-          &lt;/div&gt;
-          &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
-        &lt;/form&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;!--/Content --&gt;
-
-&#123;&#37; include 'footer.html' &#37;&#125;
-</pre></p>
-
-    <p>This template uses a lot of the same concepts that we've seen before.  We are using
-       one trick with the &#123;&#123;data.rowid&#125;&#125;.  We are using
-       the &lt;input type='hidden'&gt; to pass that value in the HTTP POST back to the server.
-       It's primarily a trick because the user can't see it on the screen.  In general we want
-       to hide the database id's from our users.  We've displayed it on the browse screen so
-       you can see it, but in a normal application we would keep it hidden as often as possible.</p>
-
-    </div>
-  </div>
-  <!-- HR -->
-  <div class='row'><div class='col-12'><hr/></div></div>
-  <!--/HR -->
-  <div class='row'>
-    <div class='col-1'>
-       <span class='giant'>14</span>
-    </div>
-    <div class='col-11'>
-
-    <p>Our program has one fatal security flaw that we need to fix.  When we added the login page
-       we didn't put in any logic to force the user to go to the login screen if they aren't logged
-       in.  We need to add that layer of security!</p>
-
-    <p>To see what I mean click the `logout` button then visit <a href=='http://{{request.cookies.vm_name}}/browse'>http://{{request.cookies.vm_name}}/browse</a></p>
-    <p>Oops!  Luckily Python Flask offers a simple solution to this problem.  There is an @app.before_request
-       function that will allow you to run code before any other function on every single browser request.</p>
-
-    <p>Let's add the following check_session() function to check if the user has a session and if not we can
-       send them to the login screen.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Check the session to make sure they are logged in ============================
-@app.before_request
-def check_session():
-
-   # if we don't see the session then we need to send them to the login
-   if 'username' not in session or not session['username']:
-
-      # We also don't want to send them to the login screen if they are looking for
-      # Something insecure (i.e. static js files or if they are in the process of
-      # Logging in.
-      exclude_paths = ['/', '/login']
-      if not re.search('static', request.path) and request.path not in exclude_paths:
-
-         # We need to go back to the index page
-         return redirect(url_for("index"))</pre></p>
-
-    <p>Let's look at each section of this code.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# Check the session to make sure they are logged in ============================
-@app.before_request
-def check_session():</pre></p>
-
-      <p>This section starts with the @app.before_request decorator that tells Flask to
-         run this function before every request.  Now it's important to understand that this
-         will run before EVERY request, including the ones to static files like bootstrap.min.css.
-         Since we don't want users to have to login to get CSS or JS files, we will have to handle
-         that in the code below.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# if we don't see the session then we need to send them to the login
-if 'username' not in session or not session['username']:</pre></p>
-
-      <p>The session object is the magic on Flask sessions.  We look first to see if there is any
-         value called username and then second to see if the value is populated with something.
-         In Python the test `if variable` will test for the variable to have any value.
-         at this point we are letting sessions live until the browser window is closed.  If you
-         needed to limit a session to a specific amount of time you could add that to the session
-         object.  Perhaps like session['expire_time'].</p>
-
-      <p><pre class='prettyprint lang-python'>
-# We also don't want to send them to the login screen if they are looking for
-# Something insecure (i.e. static js files or if they are in the process of
-# Logging in.
-exclude_paths = ['/', '/login']
-if not re.search('static', request.path) and request.path not in exclude_paths:</pre></p>
-
-      <p>This section above allows us to ignore the pages in exclude_paths as well as any URL
-         that contains the word static.  The re.search is a feature in Python to look for that
-         pattern anywhere in a string.  In this case the url `/static/css/bootstrap.min.css` will match
-         and we won't redirect them to the login page when they request the Bootstrap CSS.</p>
-
-      <p><pre class='prettyprint lang-python'>
-# We need to go back to the index page
-return redirect(url_for("index"))</pre></p>
-
-      <p>We have one more thing we need to do before this code will run.  We are using a python
-         built-in function called re.search() but we haven't imported the re object into our
-         program's scope.  Let's include the following line at the bottom of our import section.</p>
-
-      <p><pre class='prettyprint lang-python'>
-import re</pre></p>
-
+    <div class='col-md-10'>
+    Step 4 is continued on the <a href='/hello_world/4'>next page</a>.
     </div>
   </div>
 
   <!-- End of tutorial -->
   <div class='row'>
-    <div class='col-12'>
+    <div class='col-md-12'>
       &nbsp;
     </div>
   </div>
   </div> <!-- End container -->
 
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <!--<script src="static/js/bootstrap.min.js"></script>-->
-
-  </body>
-</html>
+{% include 'footer.html' %}

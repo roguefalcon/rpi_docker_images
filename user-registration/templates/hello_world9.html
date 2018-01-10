@@ -1,0 +1,222 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>9</span>
+    </div>
+    <div class='col-11'>
+      <p>Jump back into your hello.py file (`vim hello.py`). We are going to add several more imports to
+         get all the code we need to do everything the login will need to do.  Add these to the top
+         of your file in the imports section above the line `app = Flask(__name__)`.</p>
+
+    <p><pre class='prettyprint lang-python'>
+from flask import request
+from flask import redirect
+from flask import url_for
+from flask import session
+from flask import flash
+import bcrypt
+import sqlite3</pre></p>
+
+    <p>Python wants you to do each import on a separate line so it's more readable.  Guido (the creator of Python)
+       believed that since code is read more often than it is written, it should be as readable as possible.</p>
+
+    <p>Now we need to setup the SQL Connection.  Let's do this in a new section below the line `app = Flask(__name__)`.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# The SQL connection ==========================================================
+conn = sqlite3.connect('sql.db', check_same_thread=False)
+# This tells SQLite that I want dictionaries instead of tuples for fetch statements
+conn.row_factory = lambda c, r: dict([(col[0], r[idx]) for idx, col in enumerate(c.description)])
+# SQL cursor
+c = conn.cursor()</pre></p>
+
+    <p>We are doing things similar to the read_sql.py and load_sql.py with a few differences.  In the first line
+       we've hadded the `check_same_thread=False` which will allow SQLite to run in flask in a manner that
+       is Thread safe.  The Thread Safe topic is to big for this tutorial.  Feel free to ask Kenny.</p>
+
+    <p>The conn.row_factory line is advanced Python which slightly violates the `readable` rule.  The comment
+       gives the clue that I want to get back Python Dictionaries with key/value pairs instead of just
+       tuples full of values.  This will make our lives easier when we load data from the database into templates.</p>
+
+    <p>The final line is the same as the database scripts. It gives us a cursor that will let us execute statements.</p>
+
+    <p>Now we are ready to write the login function.  I'm going to paste the entire thing here and let you copy/paste it.
+       Then we will go through each section in the same manner we've been working.</p>
+
+    <p>We need to rename the hello() function to be index() so our program will make more sense.</p>
+    <p><pre class='prettyprint lang-python'>
+def index():</pre></p>
+
+    <p>Paste this after the return line in the index() function.  I leave two empty lines between functions.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Login =======================================================================
+@app.route("/login", methods=["POST"])
+def login():
+
+   # First let's confirm they sent us a username and password.
+   if not request.form['username'] or not request.form['password']:
+      flash("No username or password entered")
+
+      return redirect(url_for("index"))
+
+   # Let's check their password against the database
+   c.execute('SELECT username, password FROM users WHERE username=?', (request.form['username'],))
+   user = c.fetchone()
+
+   # Let's check the bcrypt password
+   if bcrypt.checkpw(request.form['password'].encode('utf8'), user['password']):
+
+      # This actually 'logs' the user in by saving the username in the session
+      session['username'] = request.form['username']
+
+      # Take them to the browse page (they made it in)
+      return redirect(url_for("browse"))
+
+   # The login didn't work
+   else:
+
+      # Let's tell them they need to try again
+      flash("Login failed")
+
+   # We need to go back to the index page
+   return redirect(url_for("index"))</pre></p>
+
+   <p>Now let's discuss each part of the login function</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Login =======================================================================
+@app.route("/login", methods=["POST"])
+def login():</pre></p>
+
+    <p>This section is very similar to the hello() function except that we are telling Flask
+       we only want to accept the POST method for this function.  If you remember in our HTML
+       &lt;form&gt; tag we put method="post" so these need to line up.</p>
+
+    <p><pre class='prettyprint lang-python'>
+   # First let's confirm they sent us a username and password.
+   if not request.form['username'] or not request.form['password']:
+      flash("No username or password entered")
+
+      return redirect(url_for("index"))</pre></p>
+
+    <p>In Flask the request object let's you access the data the user input into the HTML form.
+       I am referencing the username and password values.  The test is basically saying
+       if they submited the form without sending a username or a password let's tell them
+       and reload the page so they have to try again.</p>
+
+    <p><pre class='prettyprint lang-python'>
+   # Let's check their password against the database
+   c.execute('SELECT username, password FROM users WHERE username=?', (request.form['username'],))
+   user = c.fetchone()
+
+   # Let's check the bcrypt password
+   if bcrypt.checkpw(request.form['password'].encode('utf8'), user['password']):
+
+      # This actually 'logs' the user in by saving the username in the session
+      session['username'] = request.form['username']
+
+      # Take them to the browse page (they made it in)
+      return redirect(url_for("browse"))</pre></p>
+
+    <p>This section has a lot going on.  First we query the database to get the username/password for this user.
+       Then we check the password the user entered vs the one we have in in the database.  BCrypt offers the
+       checkpw() function for this.  If the username is in the database and the password checks out we will
+       use the Flask session object to save the username in the browser session.  Then we will take them
+       to the browse screen (which we will create in a little bit).</p>
+
+    <p><pre class='prettyprint lang-python'>
+   # The login didn't work
+   else:
+
+      # Let's tell them they need to try again
+      flash("Login failed")
+
+   # We need to go back to the index page
+   return redirect(url_for("index"))</pre></p>
+
+    <p>The else block here takes them back to the index page and tells them the login failed.</p>
+
+    <p>Before we can test this we need to do one more thing.  The Flask session object needs setup
+       at the bottom of our hello.py file. Update your Runtime Settings to the following.</p>
+
+    <p><pre class='prettyprint lang-python'>
+if __name__ == "__main__":
+    # Setting up Flask Sessions
+    app.secret_key = 'Ssa0dfloi30s9adflkj3/{}asdf9#@'
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    app.run(host='0.0.0.0', port=5000, debug=True)</pre></p>
+
+    <p>We are telling Flask Sessions to use the file system to store it's state and we are setting up a secret_key
+       that will allow for encryption.  In order to make your app secure, you need to type random characters into
+       the secret key.  It's fine if you just copy mine for this tutorial.</p>
+
+    <p>Now save your file (:w).  If you have an error the 2nd terminal running flask may exit.  If it does fix
+       the error and just run the hello.py again (./hello.py).</p>
+
+    <p>To test your program you can do the following:
+
+       <ol>
+          <li>Click the Login Button without entering anything</li>
+          <li>Enter a user without a password and click the Login Button</li>
+          <li>Enter an incorrect username and password</li>
+          <li>Enter the correct username and password (asdf/asdf) [Hint: this will error]</li>
+       </ol>
+    </p>
+
+    <p>When you enter the correct username and password it will fail (werkzeug.routing.BuildError)
+       because we haven't built the Browse function.  We will do that in the next step.</p>
+    </div>
+  </div>
+
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>10</span>
+    </div>
+    <div class='col-11'>
+    <p>Step 10 is continued on the <a href='/hello_world/10'>next page</a>.</p>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

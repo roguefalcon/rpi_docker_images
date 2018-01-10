@@ -1,0 +1,141 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>13</span>
+    </div>
+    <div class='col-11'>
+
+    <p>We can add and delete things but what if we want to change our answer?  We need to create the edit mode.</p>
+
+    <p>We will need two functions for this.  The edit which will display the page loaded with existing values and
+       the update function to save the updated values in the database.</p>
+
+    <p>Let's start with the edit function.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Edit =========================================================================
+@app.route("/edit/&lt;id&gt;")
+def edit(id):
+
+   data = {}
+   c.execute('SELECT rowid, name, color FROM favorite_color WHERE rowid=?', (id,))
+   data = c.fetchone()
+
+   return render_template("edit.html", data=data)</pre></p>
+
+   <p>You've seen most of this before. One difference is the variable passed on the URL.
+      The @app.route has an &lt;id&gt; being passed in.  That lines up with the id being
+      passed in the edit(id) function definition.  This helps us know which item we are
+      editting.  Another difference is the c.fetchone() instead of the c.fetchall().</p>
+
+   <p>Now we can add the update() function.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Update =======================================================================
+@app.route("/update", methods=["POST"])
+def update():
+
+   # We want to save this response to the database
+   c.execute('UPDATE favorite_color SET name = ?, color=? WHERE rowid = ?',
+             (request.form['name'], request.form['color'], request.form['id']))
+
+   # Commit causes the system to write to the database file
+   conn.commit()
+
+   return redirect(url_for('browse'))</pre></p>
+
+   <p>The main new thing in this function is the SQL UPDATE statement.  The format is different
+      than an INSERT but the ? variable substitution idea is the same.  The 3 ?'s are replaced
+      by the variables in the tuple.  We are pulling those variables from the HTML form via
+      the Flask request object.</p>
+
+   <p>For the update, we've decided to just go back to the browse() screen so we won't need a template for it.  Let's go ahead and create the edit template.</p>
+
+
+      <p><pre class='prettyprint lang-html'>
+&#123;&#37; include 'header.html' &#37;&#125;
+
+  &lt;!-- Content --&gt;
+  &lt;div class='container'&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-md-12'&gt;
+        &lt;h1&gt;Edit&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-md-6 col-md-offset-6'&gt;
+        &lt;form method='post' action='/update'&gt;
+        &lt;input type='hidden' name='id' value='&#123;&#123;data.rowid&#125;&#125;'&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label for="name"&gt;Name&lt;/label&gt;
+            &lt;input type="text" class="form-control" id="name" name='name' value="&#123;&#123;data.name&#125;&#125;"&gt;
+          &lt;/div&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label for="color"&gt;Favorite Color&lt;/label&gt;
+            &lt;input type="text" class="form-control" id="color" name='color' value="&#123;&#123;data.color&#125;&#125;"&gt;
+          &lt;/div&gt;
+          &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!--/Content --&gt;
+
+&#123;&#37; include 'footer.html' &#37;&#125;
+</pre></p>
+
+    <p>This template uses a lot of the same concepts that we've seen before.  We are using
+       one trick with the &#123;&#123;data.rowid&#125;&#125;.  We are using
+       the &lt;input type='hidden'&gt; to pass that value in the HTTP POST back to the server.
+       It's primarily a trick because the user can't see it on the screen.  In general we want
+       to hide the database id's from our users.  We've displayed it on the browse screen so
+       you can see it, but in a normal application we would keep it hidden as often as possible.</p>
+
+    </div>
+  </div>
+
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>14</span>
+    </div>
+    <div class='col-11'>
+    <p>Step 14 is continued on the <a href='/hello_world/14'>next page</a>.</p>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

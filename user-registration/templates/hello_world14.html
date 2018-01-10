@@ -1,0 +1,131 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>14</span>
+    </div>
+    <div class='col-11'>
+
+    <p>Our program has one fatal security flaw that we need to fix.  When we added the login page
+       we didn't put in any logic to force the user to go to the login screen if they aren't logged
+       in.  We need to add that layer of security!</p>
+
+    <p>To see what I mean click the `logout` button then visit <a href=='http://{{request.cookies.vm_name}}/browse'>http://{{request.cookies.vm_name}}/browse</a></p>
+    <p>Oops!  Luckily Python Flask offers a simple solution to this problem.  There is an @app.before_request
+       function that will allow you to run code before any other function on every single browser request.</p>
+
+    <p>Let's add the following check_session() function to check if the user has a session and if not we can
+       send them to the login screen.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Check the session to make sure they are logged in ============================
+@app.before_request
+def check_session():
+
+   # if we don't see the session then we need to send them to the login
+   if 'username' not in session or not session['username']:
+
+      # We also don't want to send them to the login screen if they are looking for
+      # Something insecure (i.e. static js files or if they are in the process of
+      # Logging in.
+      exclude_paths = ['/', '/login']
+      if not re.search('static', request.path) and request.path not in exclude_paths:
+
+         # We need to go back to the index page
+         return redirect(url_for("index"))</pre></p>
+
+    <p>Let's look at each section of this code.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Check the session to make sure they are logged in ============================
+@app.before_request
+def check_session():</pre></p>
+
+      <p>This section starts with the @app.before_request decorator that tells Flask to
+         run this function before every request.  Now it's important to understand that this
+         will run before EVERY request, including the ones to static files like bootstrap.min.css.
+         Since we don't want users to have to login to get CSS or JS files, we will have to handle
+         that in the code below.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# if we don't see the session then we need to send them to the login
+if 'username' not in session or not session['username']:</pre></p>
+
+      <p>The session object is the magic on Flask sessions.  We look first to see if there is any
+         value called username and then second to see if the value is populated with something.
+         In Python the test `if variable` will test for the variable to have any value.
+         at this point we are letting sessions live until the browser window is closed.  If you
+         needed to limit a session to a specific amount of time you could add that to the session
+         object.  Perhaps like session['expire_time'].</p>
+
+      <p><pre class='prettyprint lang-python'>
+# We also don't want to send them to the login screen if they are looking for
+# Something insecure (i.e. static js files or if they are in the process of
+# Logging in.
+exclude_paths = ['/', '/login']
+if not re.search('static', request.path) and request.path not in exclude_paths:</pre></p>
+
+      <p>This section above allows us to ignore the pages in exclude_paths as well as any URL
+         that contains the word static.  The re.search is a feature in Python to look for that
+         pattern anywhere in a string.  In this case the url `/static/css/bootstrap.min.css` will match
+         and we won't redirect them to the login page when they request the Bootstrap CSS.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# We need to go back to the index page
+return redirect(url_for("index"))</pre></p>
+
+      <p>We have one more thing we need to do before this code will run.  We are using a python
+         built-in function called re.search() but we haven't imported the re object into our
+         program's scope.  Let's include the following line at the bottom of our import section.</p>
+
+      <p><pre class='prettyprint lang-python'>
+import re</pre></p>
+
+    <p>You should be good to test now.  If it isn't working ask for help from one of the industry
+       professionals.</p>
+
+    <p>This concludes our Hello, World Tutorial.  Whew.  That was a lot.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-12'>
+     <center>Now you can proceed to the <a href='/rest_api'>REST API tutorial</a>.  It's MUCH shorter.</center>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

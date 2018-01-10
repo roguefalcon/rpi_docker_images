@@ -1,0 +1,223 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-2'>
+       <span class='giant'>5</span>
+    </div>
+    <div class='col-10'>
+      <p>I'm going to assume Vim for the rest of this tutorial and weave the instructions
+         on how to use it throughout.  If you don't want to use Vim the other editors will
+         work fine.  Just ignore the vim commands.</p>
+
+      <p>Flask is a lightweight web framework written in Python.  It is very simple because it only
+         requires a few lines of code to make a complete web application.  Let's create a new file called hello.py
+         and make our first flask app.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+vim hello.py</pre>
+      </p>
+
+      <p>When you first start Vim it starts in what is called Visual mode.  This is hotkey mode.  The hotkeys are
+         the power of Vim.  But getting started we just want to type in text.  Press `i` to go into Insert mode and
+         then you can start typing like you'd expect.  If you get stuck at any point.  Press the escape key a
+         few times and then press `i`.  Escape takes you back to Visual mode.</p>
+
+      <p>This is what we want in our file.  You can copy paste into you putty window or terminal.  With putty
+         it is a right click to paste.  You must be in insert mode in Vim before you can paste (press `i`).
+         Then look for the `-- INSERT --` at the bottom of the screen.
+
+      <p><pre class='prettyprint lang-python'>
+#!/usr/bin/python3
+
+# Include Flask and setup the application object
+from flask import Flask
+app = Flask(__name__)
+
+# The index page
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+# Runtime settings
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
+         </pre>
+      </p>
+
+      <p>If you are using Putty the comment colors are probably a very dark blue that is hard to read.
+         You can change that by clicking on the icon in the top of the window.  Then click on Change
+         Settings -&gt; Colours -&gt; and select the color for `ANSI BLUE` and make it 110 110 255
+         and click apply.  Might be a good time to also disable the annoying bell sound.</p>
+
+      <p>Let's discuss what each group of lines is doing</p>
+
+      <p><pre class='prettyprint lang-python'>#!/usr/bin/python3</pre></p>
+
+      <p>This line tells the server which program to use to run this file.  In our case we are using
+         the python3 program to interpret/run the file.  This line is called the `shebang`.  I'm
+         honestly not sure why we call it that (neither is Wikipedia) but if you Google 
+         `shebang python` you'll see that I'm not crazy.  I think it's because we are in the `Shell`
+         and in the old days of typing the ! was called a `bang` and over time it was shortened
+         to `shebang` but I'm just guessing.  When I started coding the # was called a `pound` and
+         not a `hashtag`.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Include Flask and setup the application object
+from flask import Flask
+app = Flask(__name__)</pre></p>
+
+      <p>This section starts by pulling code into your program.  The `from flask import Flask` is telling
+         python to put the code in the Flask module in scope so you can use it.  The second line creates
+         a new object called app and set's it as a Flask object.  The __name__ is a python trick to send
+         the name of your app to the Flask function.  I wouldn't worry about that part to much.  If you really
+         want to know then the value of __name__ is almost always going to be the string "__main__".</p>
+
+      <p><pre class='prettyprint lang-python'>
+# The index page
+@app.route("/")
+def hello():
+    return "Hello World!"</pre></p>
+
+      <p>This code is the `meat` of the program.  In Flask each function is a single screen of a web application.
+         In this case the @app.route("/") is telling Flask the url at http://{{request.cookies.vm_name}}:5000<b>/</b> is
+         should run the hello() function.  The magic is the / at the end of the url.  If we had wanted
+         http://{{request.cookies.vm_name}}:5000<b>/asdf</b> then our line would have read @app.route("/asdf").  We'd say
+         that we are mapping a url to a function.  The return "Hello World!" is the string that will display in the
+         browser.  We will make this more complex later in the tutorial.</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Runtime settings
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)</pre></p>
+
+      <p>This section is telling the Flask app how to run.  The first line `if __name__ == "__main__":` is a
+         python trick to determine if you are the running application or if someone else imported you.  If you
+         don't understand this then I wouldn't stress out about it.  Just know it makes your program safer.
+         The second line `app.run(host='0.0.0.0', port=5000, debug=True)` actually runs the Flask app
+         with a few arguments.  The host='0.0.0.0' is saying run on any IP Address.  The port=5000 is
+         asking for the specific port on the server (this is another complex subject that you don't
+         fully need to understand but Kenny is happy to explain to you).  The last argument `debut=True` makes your life
+         easier because it prints errors to the browser screen and terminal as well as reloading the program
+         if any changes are made.  You don't want this turned on in Production but for development it's great!</p>
+
+      <p>Now that you have everything in your file it's time to save it.  Press escape and then type `:w`.</p>
+
+      <p>You will now want to open a second terminal.  If you are using putty, you can do this by clicking
+         on the icon and click `Duplicate Session`.  You'll need to type your password.  Then change into the
+         same directory.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+cd hello_world
+ls
+chmod u+x hello.py
+ls -l</pre></p>
+
+      <p>It should look something like the items below.
+
+      <p><img src='/static/img/hello_world/step.5.jpg'></p>
+
+      <p>You've seen the `cd` and `ls` before.  The <b>chmod u+x hello.py</b> is telling the linux
+         system that you what to change the mode of this file (`chmod`) to allow the user (`u`) to
+         be allowed to run or execute (`+x`) the file hello.py.</p>
+
+      <p>When you type `ls -l` it is saying list everything in long format.  There you can see the
+         permissions on the files, who owns them, how big they are (in bytes) and the date and time
+         they were created.  There is a simple way to learn permissions and that is to remember The old
+         Yugo cars from the 1980s.</p>
+
+      <p><img src='http://www.carbuzz.com/resizeimg/imageshandler.ashx?w=640&h=480&url=http://db.carbuzz.com/images2/220000/6000/900/226923.jpg' width=250px></p>
+
+      <p>Drop the `y` and you are left with `ugo` which stands for user - group - other.  In the picture
+         of the terminal above you can see the line that says hello.py starts with `-rwxr--r--`.  This
+         is telling you the permissions of the hello.py file.  The first - is reserved for something special
+         so you can ignore it.
+         The next three characters `rwx` are saying the User (remember Ugo) has read write and execute permissions on
+         the file.  The next three characters `r--` is saying that the members of the Group (uGo) have read permissions
+         but can not write or execute.  The last three characters are showing that everyone else or `Other` (ugO) has
+         read permissions.  It's normallly best not to let people have read permissions on your personal files.  In this case
+         it's probably ok since this is a Hack-a-thon and these are your personal files on your personal VM.  If you want
+         to lock it down you can issue `chmod o-r hello.py` and it will remove that last r.</p>
+
+      <p>We did all of that so we could run our program.  Whew.  Now issue the following command in your new terminal.<p>
+
+      <p><pre class='prettyprint lang-bash'>
+./hello.py
+      </pre></p>
+
+      <p>If it worked you will see this.</p>
+
+      <p><img src='/static/img/hello_world/step.5.2.jpg'></p>
+
+      <p>If not you probably need to ask for help.</p>
+
+      <p>Step 5 is almost complete.  Now let's go to a browser and see if we can load our
+         Hello World web page.</p>
+
+      <p>This link should work <a href='http://{{request.cookies.vm_name}}:5000/' target='_new'>http://{{request.cookies.vm_name}}:5000/</a> (opens a new tab).</p>
+
+      <p>If everything went according to plan you should see two new lines in the 2nd terminal window.<p>
+
+      <p><img src='/static/img/hello_world/step.5.3.jpg'></p>
+
+      <p>  I'm using Chrome
+         so it fetched the index page (`GET /`) and then tried to get the icon file (`GET /favicon.ico`).  The first one
+         worked and issued a 200 (which means Success).  The second one didn't work since we don't have an icon.  It
+         issued a 404 code.  That code means Not Found.  These are called HTTP Status Codes.  You don't need this right now but for the future, <a href='https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_errors' target='_new'>here</a> 
+         is the complete list of codes that you could see.</p>
+
+      <p>Every time you reload the page you should see another line in the terminal.  If possible try to get your terminal
+         and your browser aligned so you can see both at the same time.  In a perfect world you'd be able to see your
+         code, the terminal running flask and the browser window at the same time.  A laptop might make this difficult.
+
+      <p>Congrats!  You just built your first python flask app!  Now let's make it do something.</p>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-2'>
+       <span class='giant'>6</span>
+    </div>
+    <div class='col-md-10'>
+    Step 6 is continued on the <a href='/hello_world/6'>next page</a>.
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

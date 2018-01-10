@@ -1,0 +1,177 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-12'>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>6</span>
+    </div>
+    <div class='col-11'>
+    <p>In the last step we built a fully functional web application but it really doesn't do much.  Let's make it
+       more robust and start adding features.</p>
+
+    <p>You should still have two terminal windows open.  Flask should be running in one and you should have
+       the other one viewing the file in your text editor.  Let's change the following line:</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Change this line
+return "Hello World!"
+
+# To this line
+return render_template("index.html")</pre></p>
+
+    <p>Vim tip (Delete a line):  Press escape to go back to visual mode.  Move the cursor to the line you want to delete.
+       press 'dd' to delete the line.  Then press 'i' to go back into insert mode.</p>
+
+    <p>Now we need to add another line of code to import the render_template function into our program. We want
+       to add the line below the `from flask import Flask` line.</p>
+
+    <p><pre class='prettyprint lang-python'>
+from flask import Flask
+from flask import render_template  # &lt;-- This is your new line
+app = Flask(__name__)</pre></p>
+
+    <p>Vim tip (Insert a line):  There are a few ways to do this.  From visual mode press the 'o' key
+       and it will insert a new line below the one your are on and put you in insert mode.  IF you want
+       to place a line above the line you are on you can press the 'O' (captial o).</p>
+
+    <p>Now you need to press escape and type ':w' to write the file.</p>  When you do this the other terminal
+       where flask is running should say the following:</p>
+
+    <p><img src='/static/img/hello_world/step.6.jpg'></p>
+
+    <p>Flask is watching for changes in the file.  When you save it, Flask will reload the entire web application.</p>
+
+    <p>Now if you reload the browser window it's going to complain "TemplateNotFound: index.html"</p>
+
+    <p>In your vim window, type ':wq' which will write the file and quit.</p>
+
+    <p>We need to create the index.html template.  Type the following command:</p>
+
+    <p><pre class='prettyprint lang-html'>
+vim templates/index.html</pre></p>
+
+    <p>And copy paste the file below into your index.html then press escape then ':wq'</p>
+
+    <p><pre class='prettyprint lang-html'>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+
+  &lt;!-- Style --&gt;
+  &lt;link href="static/css/bootstrap.min.css" rel="stylesheet"&gt;
+  &lt;link href="static/css/style.css" rel="stylesheet"&gt;
+  &lt;!--/Style --&gt;
+
+  &lt;title&gt;Team KP - Hello World&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;!-- Content --&gt;
+&lt;div class="container"&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-md-12"&gt;
+      &lt;h1&gt;Hello, World&lt;/h1&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!--/Content --&gt;
+
+&lt;!-- Javascript --&gt;
+&lt;script src="static/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script src="static/js/jquery.min.js"&gt;&lt;/script&gt;
+&lt;!--/Javascript --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></p>
+
+    <p>Whoa!  That was a lot of stuff.  This HTML 5 file sets up Bootstrap and Jquery and lays out the screen.
+       It also references a few files in the static folder that we don't have.  For example bootstrap.min.js.
+       I'll cover the basics of this file and HTML in Step 7 but for now we want to get everything installed
+       and watch it run.  The next commands are going to get the "dependencies" for Bootstrap 4 and JQuery 3.
+    </p>
+
+    <p><pre class='prettyprint lang-bash'>
+cd static
+mkdir css
+mkdir js
+cd css
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/css/bootstrap.min.css
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/css/style.css
+cd ../js
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/js/jquery.min.js
+wget https://raw.githubusercontent.com/roguefalcon/rpi_docker_images/master/hello_world/static/js/bootstrap.min.js
+cd ../..
+ls -R</pre></p>
+
+    <p>So we created two static directories.  One for our CSS Style sheets and one for our JavaScript files.
+       We then downloaded "minified" versions of Bootstrap and Jquery as well as a simple style sheet.</p>
+
+    <p>Go to the browser and reload the page.  Hopefully it worked and you see a black background with the large
+       white Hello, World text. In your Flask terminal you should see the following:</p>
+
+    <p><img src='/static/img/hello_world/step.6.2.jpg'></p>
+
+    <p>Something neat about the browser.  In that first load you can see the browser load each file it needs.  If you
+       reload the browser window again it will only load the index page (indicated by the /).  That's because it will cache the other files
+       on your computer and not download them again.  This makes loading things the 2nd time much faster.  But it can drive
+       you crazy as a web developer because you can change a secondary file and it will keep loading the file from cache.
+       Chrome has a couple of tricks to avoid using cached versions for developers.
+       One trick is the developer tools console.  You can access it by pressing ctrl+shift+i.
+       Then click the disable cache checkbox under the network tab.  This only works while that console is open.</p>
+
+    <p>I think you are ready for step 7.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>7</span>
+    </div>
+    <div class='col-11'>
+    <p>Step 7 is continued on the <a href='/hello_world/7'>next page</a>.</p>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

@@ -1,0 +1,74 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-2'>
+       <span class='giant'>4</span>
+    </div>
+    <div class='col-10'>
+       <p>Now you are going to need to make the decision about which text editor you want to
+          use.  There are hundres to choose from but in Kenny's opinion, the best developers
+          use Vim (or at least vim bindings).  There is a learning curve but the basics are
+          pretty easy to get started.  Kenny loves to teach people Vim.  Once you learn it
+          you will appreciate how fast it is to do things with text.  Also it's installed on
+          almost every linux box so learning to use it is very helpful in your career.</p>
+
+       <p>Your development VM has two text editors installed that will work in the terminal.  <b>Vim</b> and <b>Nano</b>.</p>
+
+       <p>You can also connect <a href='https://notepad-plus-plus.org/download/v7.5.4.html'>Notepad++</a> to the <a href='https://blog.sleeplessbeastie.eu/2015/07/27/how-to-edit-files-using-notepad-plus-plus-over-ssh-file-transfer-protocol/'>Virtual Machine via SSH</a> if you prefer a GUI.</p>
+
+       <p>Mac users may want to use <a href='https://www.sublimetext.com/'>Sublime Text</a> which also connects to
+          <a href='https://stackoverflow.com/questions/15958056/how-to-use-sublime-over-ssh'>servers via SSH</a> via osxfuse
+          and sshfs but it's a bit complex to setup.</p>
+
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-2'>
+       <span class='giant'>5</span>
+    </div>
+    <div class='col-md-10'>
+    Step 5 is continued on the <a href='/hello_world/5'>next page</a>.
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

@@ -108,21 +108,19 @@ def vpn_setup_windows():
 
 
 @app.route("/hello_world")
-def hello_world():
+@app.route("/hello_world/<page_id>")
+def hello_world(page_id=None):
 
-   return render_template('hello_world.html')
-
-
-@app.route("/hello_world2")
-def hello_world2():
-
-   return render_template('hello_world2.html')
+   if page_id:
+       return render_template('hello_world' + str(page_id) + '.html')
+   else:
+       return render_template('hello_world.html')
 
 
-@app.route("/hello_world3")
-def hello_world3():
+@app.route("/rest_api")
+def rest_api():
 
-   return render_template('hello_world3.html')
+   return render_template('rest_api.html')
 
 
 @app.route("/dashboard")

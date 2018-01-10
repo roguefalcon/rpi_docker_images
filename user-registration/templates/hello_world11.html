@@ -1,0 +1,142 @@
+{% include 'header.html' %}
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li>REST API Tutorial</li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>11</span>
+    </div>
+    <div class='col-11'>
+      <p>Now we want to create the `add` method so we can make somethings to edit and delete later.</p>
+
+      <p>In your hello.py file place the following function under the browse() function:</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Add =========================================================================
+@app.route("/add")
+def add():
+
+   return render_template("add.html")</pre></p>
+
+    <p>This function simply displays an HTML page.  I couple the add function with the `save` function which
+       will actually write it to the database. Add the save function under the add().</p>
+
+      <p><pre class='prettyprint lang-python'>
+# Save ========================================================================
+@app.route("/save", methods=["POST"])
+def save():
+
+   # We want to save this response to the database
+   c.execute('INSERT INTO favorite_color VALUES(?, ?)', (request.form['name'], request.form['color']))
+
+   # Commit causes the system to write to the database file
+   conn.commit()
+
+   return redirect(url_for('browse'))</pre></p>
+
+   <p>Let's create the add.html template with the following HTML:</p>
+
+
+      <p><pre class='prettyprint lang-html'>
+{&#37; include 'header.html' &#37;}
+
+  &lt;!-- Content --&gt;
+  &lt;div class='container'&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-md-12'&gt;
+        &lt;h1&gt;Add&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class='row'&gt;
+      &lt;div class='col-md-6 col-md-offset-6'&gt;
+        &lt;form method='post' action='/save'&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label for="name"&gt;Name&lt;/label&gt;
+            &lt;input type="text" class="form-control" id="name" name='name' placeholder="Enter Full Name"&gt;
+          &lt;/div&gt;
+          &lt;div class="form-group"&gt;
+            &lt;label for="color"&gt;Favorite Color&lt;/label&gt;
+            &lt;input type="text" class="form-control" id="color" name='color' placeholder="What is your favorite color?"&gt;
+          &lt;/div&gt;
+          &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!--/Content --&gt;
+
+{&#37; include 'footer.html' &#37;}</pre></p>
+
+      <p>There is only one new concept here and that is the `placeholder` attribute in the &lt;input&gt; tags.
+         This puts some `hint` text in the field that will disappear when the user starts typing.</p>
+
+      <p>Now try clicking on the `Add` button and putting in a person and their favorite color.</p>
+
+      <p>This is what my Add screen looked like.</p>
+
+      <p><img src='/static/img/hello_world/step.11.png'></p>
+
+      <p>I typed in `Bill` and `Yellow`.  When I clicked saved I got this on my Browse screen.</p>
+
+      <p><img width='90%' src='/static/img/hello_world/step.11.2.png'></p>
+
+      <p>Something that is good to do at this point is to run the read_sql.py script that you built.
+         it should look like this.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+==&gt; Favorite Colors
+('Bill', 'Yellow')
+==&gt; Users
+('asdf', b'$2b$12$6qZXk96tEbJQv6DVa7G4jeYdhNFwAUnPaNwUUDOnLRMLzvSZuC.jS')</pre></p>
+
+      <p>An important note, if you want to reset everything you can run the load_sql.py script.
+         There is a gotcha here.  You must exit the Flask application in the window where
+         Flask is running.  You can do this with ctrl+c.  If you don't then the Flask app
+         will not see the sql.db file get removed and replaced with a fresh one.  Kenny can
+         explain the nuance here but just remember to stop flask, then reload the database.</p>
+
+    </div>
+  </div>
+
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>12</span>
+    </div>
+    <div class='col-11'>
+    <p>Step 12 is continued on the <a href='/hello_world/12'>next page</a>.</p>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}
