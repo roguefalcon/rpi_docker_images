@@ -24,6 +24,7 @@ COPY pam_ldap.conf /etc/pam_ldap.conf
 COPY ldap.conf /etc/ldap/ldap.conf
 COPY sudoers /etc/sudoers
 COPY nsswitch.conf /etc/nsswitch.conf
+COPY defaults.vim /usr/share/vim/vim80/defaults.vim
 
 RUN pam-auth-update --force
 

@@ -113,6 +113,16 @@ hr {
 .faq dt, .faq dd {
   padding-left: 50px;
 }
+/*.faq dt {
+  position: relative;
+  padding: 4px 0 5px 50px;
+  font-weight: 700;
+  font-size: 16px;
+}
+h4 {
+    color: #aaa;
+    line-height:1.5;
+}*/
 
 .top-buffer { margin-top:20px; }
 .bottom-buffer { margin-bottom:20px; }
