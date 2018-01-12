@@ -16,7 +16,7 @@
 
   <div class='container'>
   <div class='row'>
-    <div class='col-md-12 text-center'>
+    <div class='col-12 text-center'>
       <h1>VPN Setup</h1>
       {% if 'username' in request.cookies %}
       {{request.cookies.username}}@{{request.cookies.vm_name}}
@@ -24,7 +24,7 @@
     </div>
   </div>
  <div class='row'>
-    <div class='col-md-12'>
+    <div class='col-12'>
       <ul id="progressbar">
         <li class='active'><a href='/'>Register</a></li>
         <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
@@ -35,44 +35,52 @@
     </div>
   </div>
   <div class='row'>
-    <div class='col-md-12'>
+    <div class='col-12'>
       &nbsp;
     </div>
   </div>
   <div class='row'>
-    <div class='col-md-12 bg-inverse text-white text-center' style='padding-top:20px; padding-bottom:20px; margin-bottom:40px'>
+    <div class='col-12 bg-inverse text-white text-center' style='padding-top:20px; padding-bottom:20px; margin-bottom:40px'>
        You've been assigned the following VM:
        <h2>{{request.cookies.vm_name}}</h2>
     </div>
   </div>
   <div class='row'>
-    <div class='col-md-2'>
+    <div class='col-2 align-self-center'>
        <span class='giant'>1</span>
     </div>
-    <div class='col-md-10'>
+    <div class='col-10 align-self-center'>
       <span class='align-bottom'><a href='/ovpn_file'>Click Here</a> to download your VPN key file.  You will need this file in the next step.</span>
     </div>
   </div>
   <div class='row'>
-    <div class='col-md-12'>
+    <div class='col-12'>
       &nbsp;
     </div>
   </div>
   <div class='row'>
-    <div class='col-md-2'>
+    <div class='col-2 align-self-center'>
       <span class='giant'>2</span>
     </div>
-    <div class='col-md-2'>
+    <div class='col-2 align-self-center'>
        <h3><a href='/vpn_setup_windows'>Windows</a></h3>
     </div>
-    <div class='col-md-2'>
-       <h3>Mac</h3>
+    <div class='col-2 align-self-center'>
+       <h3><a href='https://nordvpn.com/tutorials/x-mac-os-x/openvpn/' target='_new'>Mac</a></h3>
     </div>
-    <div class='col-md-2'>
+    <div class='col-2 align-self-center'>
        <h3>Linux</h3>
     </div>
-    <div class='col-md-2'>
+    <div class='col-2 align-self-center'>
        <h3>Chromebook</h3>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-2 align-self-center'>
+      <span class='giant'>3</span>
+    </div>
+    <div class='col-10 align-self-center'>
+       Continue to the <a href='/hello_world'>Hello, World Tutorial</a>
     </div>
   </div>
   </div> <!-- End container -->
@@ -84,6 +92,5 @@
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!--<script src="static/js/bootstrap.min.js"></script>-->
-
   </body>
 </html>

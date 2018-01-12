@@ -89,8 +89,8 @@ def register():
 
    # We want to set a cookie for this user so we can track who it is
    resp = make_response(redirect(url_for('vpn_setup')))
-   resp.set_cookie('username', username)
-   resp.set_cookie('vm_name', vm_name)
+   resp.set_cookie('username', username, max_age=2592000)
+   resp.set_cookie('vm_name', vm_name, max_age=2592000)
 
    return resp
 
