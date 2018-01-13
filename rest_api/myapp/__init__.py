@@ -9,7 +9,6 @@ import sqlite3
 # Setup my flask object
 app = Flask(__name__)
 
-
 # Database Connection =========================================================
 @app.before_request
 def db_connect():
@@ -31,5 +30,9 @@ def index():
 
     return "Employee API"
 
+
 # App Modules =================================================================
 from myapp import passenger
+from myapp import car
+from myapp import destination
+from myapp import trip

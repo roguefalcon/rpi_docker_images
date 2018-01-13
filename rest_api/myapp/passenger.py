@@ -61,11 +61,16 @@ def passenger_read(passenger_id):
 def passenger_edit(passenger_id):
 
     # User input
-    name = request.form['name']
+    name = request.form.get('name')
+
+    # Let's tell the user they forget to send values we need
+    if not name:
+       return jsonify({'success': False, 'error': 'Missing values'})
 
     g.c.execute('''
                   UPDATE passenger
-                     SET name=?
+                     SET name=?,
+                         active=1
                    WHERE rowid=?
                 ''', (name, passenger_id))
     g.conn.commit()
@@ -79,7 +84,11 @@ def passenger_edit(passenger_id):
 def passenger_add():
 
     # User input
-    name = request.form['name']
+    name = request.form.get('name')
+
+    # Let's tell the user they forget to send values we need
+    if not name:
+       return jsonify({'success': False, 'error': 'Missing values'})
 
     g.c.execute('''
                   INSERT INTO passenger

@@ -51,7 +51,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS destination
              (street TEXT,
                 city TEXT,
                state TEXT,
-                 zip INTEGER,
+            zip_code INTEGER,
               active INTEGER)''')
 
 # This uses executemany() which is faster for larger sets of data

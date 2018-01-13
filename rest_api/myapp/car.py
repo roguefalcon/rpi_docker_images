@@ -61,11 +61,14 @@ def car_read(car_id):
 def car_edit(car_id):
 
     # User input
-    make = request.form['make']
-    model = request.form['model']
-    year = request.form['year']
-    mileage = request.form['mileage']
-    active = request.form['active']
+    make = request.form.get('make')
+    model = request.form.get('model')
+    year = request.form.get('year')
+    mileage = request.form.get('mileage')
+
+    # Let's tell the user they forget to send values we need
+    if not make or not model or not year or not mileage:
+       return jsonify({'success': False, 'error': 'Missing values'})
 
     # Update the car in the database
     g.c.execute('''
@@ -73,10 +76,9 @@ def car_edit(car_id):
                      SET make=?,
                          model=?,
                          year=?,
-                         mileage=?,
-                         active=?
+                         mileage=?
                    WHERE rowid=?
-                ''', (make, model, year, mileage, active, car_id))
+                ''', (make, model, year, mileage, car_id))
     g.conn.commit()
 
     # Let's tell them it worked
@@ -88,17 +90,20 @@ def car_edit(car_id):
 def car_add():
 
     # User input
-    make = request.form['make']
-    model = request.form['model']
-    year = request.form['year']
-    mileage = request.form['mileage']
-    active = request.form['active']
+    make = request.form.get('make')
+    model = request.form.get('model')
+    year = request.form.get('year')
+    mileage = request.form.get('mileage')
+
+    # Let's tell the user they forget to send values we need
+    if not make or not model or not year or not mileage:
+       return jsonify({'success': False, 'error': 'Missing values'})
 
     # Insert the new car into the database
     g.c.execute('''
                   INSERT INTO car
-                       VALUES (?, ?, ?, ?, ?, ?)
-                ''', (name, make, model, year, mileage, 1))
+                       VALUES (?, ?, ?, ?, ?)
+                ''', (make, model, year, mileage, 1))
     g.conn.commit()
 
     # Let's tell them it worked

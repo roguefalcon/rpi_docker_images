@@ -38,7 +38,7 @@ c.execute('''SELECT rowid,
                     street,
                     city,
                     state,
-                    zip,
+                    zip_code,
                     active
                FROM destination''')
 data = c.fetchall()
