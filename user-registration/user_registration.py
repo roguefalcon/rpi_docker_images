@@ -107,6 +107,7 @@ def vpn_setup_windows():
    return render_template('vpn_setup_windows.html')
 
 
+# Hello World Tutorial
 @app.route("/hello_world")
 @app.route("/hello_world/<page_id>")
 def hello_world(page_id=None):
@@ -116,11 +117,15 @@ def hello_world(page_id=None):
    else:
        return render_template('hello_world.html')
 
-
+# Rest API Tutorial
 @app.route("/rest_api")
-def rest_api():
+@app.route("/rest_api/<page_id>")
+def rest_api(page_id=None):
 
-   return render_template('rest_api.html')
+   if page_id:
+       return render_template('rest_api' + str(page_id) + '.html')
+   else:
+       return render_template('rest_api.html')
 
 
 @app.route("/dashboard")

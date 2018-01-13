@@ -39,50 +39,28 @@
       &nbsp;
     </div>
   </div>
-  <div class='row'>
-    <div class='col-md-12'>
-    <p>In this tutorial you will get a deep intro into building a REST API.  We call APIs the "back end" because we think
-       of the browser as being the front end (on the client computer) and the API/database/etc being on the server at
-       the "back end" of the process. </p>
-
-    <p>We will use the following technology:</p>
-
-    <center>
-    <h2>Back End</h2>
-    <img height='100px' src='/static/img/Python-logo.png' style='background: #fff'>
-    <img height='100px' src='/static/img/flask.png' style='background: #fff'>
-    <img height='100px' src='/static/img/SQLite.png' style='background: #fff'>
-    <img height='100px' src='/static/img/zeromq.png' style='background: #fff'>
-    </center>
-
-    </div>
-  </div>
   <!-- HR -->
   <div class='row'><div class='col-12'><hr/></div></div>
   <!--/HR -->
   <div class='row'>
     <div class='col-md-1'>
-       <span class='giant'>1</span>
+       <span class='giant'>2</span>
     </div>
     <div class='col-md-11'>
+      <p>Now we need to connect to your personal development server at {{request.cookies.username}}@{{request.cookies.vm_name}}.</p>
 
-      <h1>This tutorial is not ready for use!</h1>
-      <h1>Please wait until Kenny says it's ready.</h1>
+      <p><img src='/static/img/hello_world/step.2.putty.2.jpg'></p>
 
-      <p>If you already did the Hello, World tutorial you can skip to <a href='/rest_api/4'>step 4</a>.</p>
+      <p>If you are using putty.exe you will want to put <i>{{request.cookies.username}}@{{request.cookies.vm_name}}</i> into the host field and then click open.</p>
 
-      <p>It is important that you don't rush this tutorial.  If you've never done this before it will take some
-         time.  That's ok.  You are here to learn.  The industry professionals are here to help you.  If you've
-         already built a couple Flask apps then you'll breeze through this tutorial.  I still recommend you
-         follow it because you'll write code that will be valuable on the project we are building.</p>
 
-      <p>You are going to need a terminal to run the Flask app. In Linux and Mac
-      they are built in.  In Windows we will need to download/save putty.exe.
-      I typically create a folder on the c:\ drive called `bin` and put it in there.</p>
+      <p>If you are using Linux or Mac then in the terminal type <i>ssh {{request.cookies.username}}@{{request.cookies.vm_name}}</i> and press enter</p>
 
-      <p>Windows - <a href='/static/files/putty64/putty.exe'>Putty 64bit</a> or <a href='/static/files/putty32/putty.exe'>Putty 32bit</a> (right click - save file as).  The odds are that you want 64bit.</p>
-      <p>Linux &amp; Mac - Open a Terminal.</p>
-      <p>Chromebook - Google `Chromebook Developer Mode` and follow those steps for a Chronos shell OR you can just install the SSH extension.</p>
+      <p>You will be prompted for your password.  This is the one you set at registration.</p>
+      <img src='/static/img/hello_world/step.1.putty.jpg'>
+
+      <p>Once logged in you should see this:</p>
+      <img src='/static/img/hello_world/step.2.putty.jpg'>
     </div>
   </div>
   <!-- HR -->
@@ -90,10 +68,10 @@
   <!--/HR -->
   <div class='row'>
     <div class='col-1'>
-       <span class='giant'>2</span>
+       <span class='giant'>3</span>
     </div>
     <div class='col-11'>
-    Step 2 is continued on the <a href='/rest_api/2'>next page</a>.
+    Step 3 is continued on the <a href='/rest_api/3'>next page</a>.
     </div>
   </div>
 

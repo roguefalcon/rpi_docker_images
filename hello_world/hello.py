@@ -60,7 +60,7 @@ def login():
 
    # The login didn't work
    else:
-      
+
       # Let's tell them they need to try again
       flash("Login failed")
 
