@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li class='active'><a href='/rest_api'>REST API Tutorial</a></li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-1'>
+       <span class='giant'>10</span>
+    </div>
+    <div class='col-md-11'>
+    <p>The Car API is going to be almost identical to the Passenger API with different SQL statements.
+       We are going to go through this pretty fast so buckle up.</p>
+
+    <p>Let's create the car.py file in the myapp directory</p>
+
+    <p><pre class='prettyprint lang-bash'>
+vim myapp/car.py</pre></p>
+
+    <p>Go into insert mode by pressing 'i' and then paste the following</p>
+
+    <p><pre class='prettyprint lang-python'>
+#!/usr/bin/python3
+# Car API - v1.0
+
+from myapp import app
+from flask import jsonify
+from flask import request
+from flask import g
+
+"""
+   I prefer the BREAD acryonm: Browse, Read, Edit, Add and Delete
+   So to protect the scope of the entire application functions will
+   be named car_[bread_keyword].  This will avoid naming collisions.
+"""
+
+
+# Get a list of cars (Browse) ==========================================
+@app.route('/api/1.0/car', methods=['GET'])
+def car_browse():
+
+    # The active flag shows only the 'non-deleted' items
+    # If you want to see everything pass active=0
+    active = request.args.get('active', default='1', type=int)
+
+    # It is a best practice to limit the amount of data an
+    # API will allow a user to retrieve on a single call
+    # This creates a throttle to protect the server.
+    # In this case we are just defaulting to 10 but will let
+    # them ask for more
+    limit = request.args.get('limit', default='10', type=int)
+
+    # Get the employee records
+    g.c.execute('''SELECT rowid, make, model, year, mileage, active
+                     FROM car
+                    WHERE active=?
+                    LIMIT ?''', (active, limit))
+    data = g.c.fetchall()
+
+    # Send the data back as JSON
+    return jsonify(data)</pre></p>
+
+    <p>This code is exactly the same as the passenger browse except the SELECT calls
+       the car table and asks for it's columns.</p>
+
+    <p>We need to add this new file to our __init__.py so it can be part of our module.  Remember in vim you
+       can press :$ to go to the bottom of a file and then press capital O to get into Insert mode
+       on a new line.  Please add the following to the bottom of your __init__.py file:</p>
+
+    <p><pre class='prettyprint lang-python'>
+from myapp import car</pre></p>
+
+    <p>When you save the __init__.py file the Flask app should reload.  If it exits due to an error
+       you can restart it by pressing the up arrow (to load your last command) and then press enter.</p>
+
+    <p>Now we can test it with the following:</p>
+
+<p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
+
+    <p>We should see a list of cars from the database.</p>
+
+    <p><pre class='prettyprint lang-javascript'>
+[
+  {
+    "active": 1,
+    "make": "Tesla",
+    "mileage": 13784,
+    "model": "Model 27",
+    "rowid": 1,
+    "year": 2021
+  },
+  {
+    "active": 1,
+    "make": "Google",
+    "mileage": 35741,
+    "model": "PixelCar Beta",
+    "rowid": 2,
+    "year": 2018
+  },
+  {
+    "active": 1,
+    "make": "Apple",
+    "mileage": 1337,
+    "model": "Model XX",
+    "rowid": 3,
+    "year": 2019
+  }
+]</pre></p>
+
+    <p>Let's add the read() function.  Paste the following at the bottom of car.py.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Get Data for a single car (Read) ======================================
+@app.route('/api/1.0/car/&lt;car_id&gt;', methods=['GET'])
+def car_read(car_id):
+
+    # Return the all columns for this one employee
+    g.c.execute('''
+                  SELECT rowid, make, model, year, mileage, active
+                    FROM car
+                   WHERE active = 1
+                     AND rowid = ?
+                ''', (car_id))
+    data = g.c.fetchall()
+
+    # Return in JSON format
+    return jsonify(data)
+</pre></p>
+
+    <p>Again, this is almost exactly the same as Passenger's read().</p>
+
+    <p>Save the file and test with the following command.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car/2</pre></p>
+
+    <p>You should see the following</p>
+
+    <p><pre class='prettyprint lang-javascript'>
+[
+  {
+    "active": 1,
+    "make": "Google",
+    "mileage": 35741,
+    "model": "PixelCar Beta",
+    "rowid": 2,
+    "year": 2018
+  }
+]</pre></p>
+
+    <p>Same drill for the edit.  Bottom of the file please.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Update Single Car (Edit) ==============================================
+@app.route('/api/1.0/car/&lt;car_id&gt;', methods=['PUT'])
+def car_edit(car_id):
+
+    # User input
+    make = request.form.get('make')
+    model = request.form.get('model')
+    year = request.form.get('year')
+    mileage = request.form.get('mileage')
+
+    # Let's tell the user they forget to send values we need
+    if not make or not model or not year or not mileage:
+       return jsonify({'success': False, 'error': 'Missing values'})
+
+    # Update the car in the database
+    g.c.execute('''
+                  UPDATE car
+                     SET make=?,
+                         model=?,
+                         year=?,
+                         mileage=?
+                   WHERE rowid=?
+                ''', (make, model, year, mileage, car_id))
+    g.conn.commit()
+
+    # Let's tell them it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>We can run it with the following</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X PUT -d make=Uber -d model=Racer -d year=2018 -d mileage=1234  http://{{request.cookies.vm_name}}:5001/api/1.0/car/2</pre></p>
+
+    <p>Now we can verify it worked with this command.  We could also just run the read_sql.py.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car/2</pre></p>
+
+    <p><pre class='prettyprint lang-javascript'>
+[
+  {
+    "active": 1,
+    "make": "Uber",
+    "mileage": 1234,
+    "model": "Racer",
+    "rowid": 2,
+    "year": 2018
+  }
+]</pre></p>
+
+    <p>We should see that the Google Car has been replaced by an Uber Racer.</p>
+
+    <p>Now we can add the add() function at the bottom of car.py.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Insert Single Car (Add) ===============================================
+@app.route('/api/1.0/car', methods=['POST'])
+def car_add():
+
+    # User input
+    make = request.form.get('make')
+    model = request.form.get('model')
+    year = request.form.get('year')
+    mileage = request.form.get('mileage')
+
+    # Let's tell the user they forget to send values we need
+    if not make or not model or not year or not mileage:
+       return jsonify({'success': False, 'error': 'Missing values'})
+
+    # Insert the new car into the database
+    g.c.execute('''
+                  INSERT INTO car
+                       VALUES (?, ?, ?, ?, ?)
+                ''', (make, model, year, mileage, 1))
+    g.conn.commit()
+
+    # Let's tell them it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>Let's run it with the following curl command</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X POST -d make=Uber -d model=Volvo -d year=2018 -d mileage=1234 http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
+
+    <p>And verify it with the curl browse command:</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
+
+    <p>You should see the Uber Volvo at the bottom of the list.  Mine had a rowid of 4.</p>
+
+    <p>Last section for the car.py.  Let's add the delete function to the bottom of car.py</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Delete Single Car (Delete) ============================================
+@app.route('/api/1.0/car/&lt;car_id&gt;', methods=['DELETE'])
+def car_delete(car_id):
+
+    # Set the active flag to 0 which will make them appear deleted
+    g.c.execute('''UPDATE car
+                      SET active=0
+                    WHERE rowid=?''', car_id)
+    g.conn.commit()
+
+    # Tell the user it worked
+    return jsonify({'success': True})
+</pre></p>
+
+    <p>Same pattern, let's run it via curl:</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/car/4</pre></p>
+
+    <p>And verify it.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
+
+    <p>If you haven't noticed, in the read_sql.py results the record is still there with active set to 0.
+       It is just missing from the curl response.  You (as the owner of the database) can see things
+       that your API users (sometimes called consumers) can't see by design.</p>
+
+    <p>You are ready for the next step.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>11</span>
+    </div>
+    <div class='col-11'>
+    Step 11 is continued on the <a href='/rest_api/11'>next page</a>.
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
+  </body>
+</html>

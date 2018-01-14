@@ -50,7 +50,7 @@ def passenger_read(passenger_id):
                    WHERE active = 1
                      AND rowid = ?
                 ''', (passenger_id))
-    data = g.c.fetchall()
+    data = g.c.fetchone()
 
     # Return in JSON format
     return jsonify(data)

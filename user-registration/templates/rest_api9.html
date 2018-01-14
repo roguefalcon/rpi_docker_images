@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li class='active'><a href='/rest_api'>REST API Tutorial</a></li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-1'>
+       <span class='giant'>9</span>
+    </div>
+    <div class='col-md-11'>
+      <p>Now it's time to create the API endpoints for the Passenger table.  An endpoint is a fancy name
+         for each url in an API.  We are going to use the RESTful paradigm and the BREAD Acronym to design our
+         endpoint.  Rest stands for `Representational state transfer`.  But you can forget that.  REST takes
+         advantage of HTTP `verbs` to tell the server what the users intentions are.  HTTP `verbs` are
+         the single words in all caps (i.e. GET, POST, DELETE, PUT, etc.).</p>
+
+      <p>If you went through the Hello World tutorial, I mentioned that the industry adopted an acronym called
+         CRUD to define the methods of an application as it relates to a the things you'd do to a table.  A small
+         but dedicated group of us are trying to switch to the BREAD acronym because we feel CRUD sounds bad
+         and doesn't really cover everything we need. CRUD stands for Create, Read, Update and Delete.  BREAD stands
+         for Browse, Read, Edit, Add and Delete.</p>
+
+     <p>We will design the Passenger API using the BREAD acronym and REST HTTP verbs. You don't need to memorize
+        the following table but it shows what URLS, functions and HTTP Verbs align.</p>
+
+     <p>
+     <table class='table table-bordered'>
+       <thead>
+         <tr>
+           <th>BREAD Keyword</th>
+           <th>Endpoint URL</th>
+           <th>HTTP Verb</th>
+           <th>Purpose</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+            <td>Browse</td>
+            <td>/passenger</td>
+            <td>GET</td>
+            <td>List all passengers</td>
+         </tr>
+         <tr>
+            <td>Read</td>
+            <td>/passenger/id</td>
+            <td>GET</td>
+            <td>Details about a single passenger</td>
+         </tr>
+         <tr>
+            <td>Edit</td>
+            <td>/passenger/id</td>
+            <td>PUT</td>
+            <td>Edit single passenger</td>
+         </tr>
+         <tr>
+            <td>Add</td>
+            <td>/passenger</td>
+            <td>POST</td>
+            <td>Add a single passenger</td>
+         </tr>
+         <tr>
+            <td>Delete</td>
+            <td>/passenger/id</td>
+            <td>DELETE</td>
+            <td>Delete a single passenger</td>
+         </tr>
+       </tbody>
+     </table>
+     </p>
+
+     <p>
+
+     <p>REST doesn't suggest there can't be other endpoints, but these are the minimum you should support.
+        with these you can do pretty much anything you'd need to do.  It's also worth mentionging
+        that there is also a PATCH keyword.  The original idea was that PUT replaced an entire record and
+        PATCH only replaced part of the record.  For this tutorial, we are only going to update the
+        entire record and therefore we are only using the PUT verb.  From a database performance perspective
+        it is normally better to replace part of the record than the whole record.</p>
+
+     <p>That is enough lecture time, Let's start coding! Let's make a file named passenger.py in the folder myapp.</p>
+
+
+     <p><pre class='prettyprint lang-bash'>
+vim myapp/passenger.py
+</pre></p>
+
+     <p>Remember to press `i` for insert mode and then paste the following code.</p>
+
+     <p><pre class='prettyprint lang-python'>
+#!/usr/bin/python3
+# Passenger API - v1.0
+
+from myapp import app
+from flask import jsonify
+from flask import request
+from flask import g
+
+"""
+   I prefer the BREAD acryonm: Browse, Read, Edit, Add and Delete
+   So to protect the scope of the entire application functions will
+   be named passenger_[bread_keyword].  This will avoid naming collisions
+   across our entire python module.
+"""
+
+
+# Get a list of passengers (Browse) ==========================================
+@app.route('/api/1.0/passenger', methods=['GET'])
+def passenger_browse():
+
+    # The active flag shows only the 'non-deleted' items
+    # If you want to see everything pass active=0
+    active = request.args.get('active', default='1', type=int)
+
+    # It is a best practice to limit the amount of data an
+    # API will allow a user to retrieve on a single call
+    # This creates a throttle to protect the server.
+    # In this case we are just defaulting to 10 but will let
+    # them ask for more
+    limit = request.args.get('limit', default='10', type=int)
+
+    # Get the employee records
+    g.c.execute('''SELECT rowid, name, active
+                     FROM passenger
+                    WHERE active=?
+                    LIMIT ?''', (active, limit))
+    data = g.c.fetchall()
+
+    # Send the data back as JSON
+    return jsonify(data)</pre></p>
+
+    <p>Normally, I'd talk through every line of this code.  But it's been a while since
+       we've run our code (since we are just now at a point that we can).  Let's run
+       everything and make sure it compiles.</p>
+
+     <p>Open a new terminal and login to the server.  We want two windows so we have
+        one in which we can edit our code and one where we can keep the application running.
+        We will use our run.py script to run the application. Since we didn't chmod it in step
+        8 let's chmod it now and then run it.  You can use the following commands.</p>
+
+     <p><pre class='prettyprint lang-bash'>
+cd
+cd rest_api
+chmod u+x run.py
+./run.py
+</pre></p>
+
+    <p>You should see the following if it worked:</p>
+
+    <p><img src='/static/img/rest_api/step.9.1.png'></p>
+
+    <p>If it didn't work, you may need to talk to an industry professional to get it working.
+       This is a Hack-a-thon after all so time is very limited.</p>
+
+    <p>Pro Tip: You can press tab in a terminal and it will type for you.  So to run this you
+       could type `./ru&lt;tab&gt;` and it will type the n.py for you.  You have to type
+       the `ru` since there is also the `read_sql.py` and you have to type enough that
+       there is only one choice left.  If there is more than one choice it will type
+       everything up until it can't decided which one you want.  This is called tab completion.</p>
+
+   <p>Assuming it ran and you saw what you expected to see let's talk through what is happening in our newest
+      code.</p>
+
+     <p><pre class='prettyprint lang-python'>
+#!/usr/bin/python3
+# Passenger API - v1.0</pre></p>
+
+     <p>You've seen that first line a bunch of times.  What you haven't seen is a comment at the top
+        of the file telling the next developer what they are seeing. Guido Von Rossum, the creator
+        of Python, stressed that code is read much more often than it is written.  Commenting
+        drastically improves your ability to maintain code.  In the industry we talk about
+        writing readable code (`Code Readability`).  This is a subtle but important comment line.</p>
+
+     <p><pre class='prettyprint lang-python'>
+from myapp import app
+from flask import jsonify
+from flask import request
+from flask import g</pre></p>
+
+     <p>The app module is the module we are building.  By importing it we get Flask and our code in
+        the __init__.py file.  The jsonify module will help us build a JSON response.  More on this
+        in a minute.  You've seen the request and g modules before.  By importing the g module
+        we gain access to the things we loaded into g in the __init__.py.</p>
+
+     <p><pre class='prettyprint lang-python'>
+"""
+   I prefer the BREAD acryonm: Browse, Read, Edit, Add and Delete
+   So to protect the scope of the entire application functions will
+   be named passenger_[bread_keyword].  This will avoid naming collisions
+   across our entire python module.
+"""</pre></p>
+
+     <p>You can do `block comments` in Python using either the ''' or the """.
+        This comment is telling the developer how to name their functions to
+        avoid issues.  This is important because you will be working on the
+        same code as others in the group.  If you both name a function the
+        same thing (even in different files) it will cause issues.</p>
+
+
+     <p><pre class='prettyprint lang-python'>
+# Get a list of passengers (Browse) ==========================================
+@app.route('/api/1.0/passenger', methods=['GET'])
+def passenger_browse():</pre></p>
+
+     <p>In Flask you define a route using a Python decorator (the `@` shows a decorator).
+        In this decorator we put our URL as `/api/1.0/passenger`.  I prefer to add
+        /api and the /1.0 to indicate to anyone `calling` our API what it is and what
+        version they are using.  There is an idea that when you release an API to the world
+        you are making a contract that this API will always work the way it works at the
+        moment you release it.  The reality is that you will need to change it because
+        something new will be added or you'll think of a better way to do something.
+        By changing the version number when you `break contract` you will help people
+        using your API.  You can also run multiple versions at the same time to
+        give users a chance to update their code before you turn the old version off.</p>
+
+     <p>This may actually matter during HackMT.</p>
+
+     <p><pre class='prettyprint lang-python'>
+    # The active flag shows only the 'non-deleted' items
+    # If you want to see everything pass active=0
+    active = request.args.get('active', default='1', type=int)
+
+    # It is a best practice to limit the amount of data an
+    # API will allow a user to retrieve on a single call
+    # This creates a throttle to protect the server.
+    # In this case we are just defaulting to 10 but will let
+    # them ask for more
+    limit = request.args.get('limit', default='10', type=int)</pre></p>
+
+     <p>These two lines of code (and 7 lines of comments) are setting default values
+        and then letting the API user override them.  We set an active flag to indicate
+        whether or not something has been deleted.  We set a limit to protect the server.</p>
+
+     <p><pre class='prettyprint lang-python'>
+    # Get the employee records
+    g.c.execute('''SELECT rowid, name, active
+                     FROM passenger
+                    WHERE active=?
+                    LIMIT ?''', (active, limit))
+    data = g.c.fetchall()</pre></p>
+
+    <p>You've seen selects and c.fetchall() before.  In this case the g.c.fetchall() uses the cursor
+       we created in the __init__.py.  The other new idea here is the LIMIT in the SQL query.  LIMIT
+       in SQLite (and MySQL) tells the database to only give us back that number of rows.  We've defaulted
+       that to 10 rows.  You need to pick a default that makes sense for your application.  For example,
+       if you are displaying 50 rows on a page, it would be better to raise the limit to 50 instead of
+       calling the API 5 times with a LIMIT of 10.  As with all programming, you may need to try a few
+       values to see what is faster.</p>
+
+     <p><pre class='prettyprint lang-python'>
+    # Send the data back as JSON
+    return jsonify(data)</pre></p>
+
+    <p>This line uses Flask's built in jsonify() method to return the data from the query in a
+       JSON format.  JSON is the native format that JavaScript
+       can directly import.  It is very lightweight (especially compared to XML) and developer readable (most humans
+       can't read JSON but most developers can).  In this case the JSON should look like this:</p>
+
+     <p><pre class='prettyprint lang-json'>
+[
+  {
+    "active": 1,
+    "name": "Keanu Reeves",
+    "rowid": 1
+  },
+  {
+    "active": 1,
+    "name": "Laurence Fishburne",
+    "rowid": 2
+  },
+  {
+    "active": 1,
+    "name": "Carrie-Anne Moss",
+    "rowid": 3
+  }
+]</pre></p>
+
+   <p>We would say it's a list of objects in JSON.  If this same data structure was in Python we'd call it a
+      list of dictionaries.  You can see each row in our database got it's own {} and they are name value pairs.
+      This makes it especially easy to parse or display on a website.</p>
+
+    <p>Let's open another terminal (or use a free one if you already have 3) and test our endpoint to see
+       if that's what we get back.  Having multiple terminals open will make you a faster developer.
+       This is why most development shops give developers multiple monitors.  The more we have open
+       that more we can see and the faster we work.  A $150 monitor will pay for itself in a week of increased
+       productivity.</p>
+
+    <p>We will use the bash command `curl` to check our URL.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
+
+    <p>You should have seen the same thing as the JSON above.  The -X argument sends
+       the specific HTTP verb (in this case GET).  This will be very helpful in our next steps.</p>
+
+    <p>It's time to add our next funciton.  Please past the following read() function into your passenger.py.
+       Python prefers that you have two blank lines between functions.</p>
+
+     <p><pre class='prettyprint lang-python'>
+# Get Data for a single passenger (Read) ======================================
+@app.route('/api/1.0/passenger/&lt;passenger_id&gt;', methods=['GET'])
+def passenger_read(passenger_id):
+
+    # Return the all columns for this one employee
+    g.c.execute('''
+                  SELECT rowid, name, active
+                    FROM passenger
+                   WHERE active = 1
+                     AND rowid = ?
+                ''', (passenger_id))
+    data = g.c.fetchone()
+
+    # Return in JSON format
+    return jsonify(data)</pre></p>
+
+    <p>This is very similar to the Browse function, but in this case we are passing a specific
+       id and then adding that to our WHERE clause.  This will only pull back one row so we use
+       the fetchone() instead of fetchall().</p>
+
+    <p>Save the file by pressing `:w` and watch it reload in the terminal where flask is running.
+       Let's test our new endpoint.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/1</pre></p>
+
+    <p>Notice the 1 at the end of the line.  We are asking for the record with id 1.  In this case that
+       will be Keanu.  When Flask sees the id on the end of the line it knows to route to the read() instead
+       of the browse().</p>
+
+    <p>When you run that command You should see a line in the flask window like this (without color):</p>
+
+    <p><pre class='prettyprint lang-bash'>
+10.8.0.1 - - [14/Jan/2018 16:18:34] "GET /api/1.0/passenger/1 HTTP/1.1" 200 -</pre></p>
+
+    <p>At the end of that line there is a 200.  That 200 means everything is OK.  If you see
+       a 500, 404 or 400 then you've got problems and you need to talk to a mentor.</p>
+
+    <p>The output from the curl command should look like this:</p>
+
+    <p><pre class='prettyprint lang-bash'>
+{
+  "active": 1,
+  "name": "Keanu Reeves",
+  "rowid": 1
+}</pre></p>
+
+    <p>Now we can add the Edit().  Please paste the following code at the bottom of passenger.py:</p>
+
+    <p>In vim you can press capital 'O' (letter not number) and it will put in you Insert Mode
+       on the line below the line you are on.  You have to press escape to be in 'normal' mode
+       first.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Update Single Passenger (Edit) ==============================================
+@app.route('/api/1.0/passenger/&lt;passenger_id&gt;', methods=['PUT'])
+def passenger_edit(passenger_id):
+
+    # User input
+    name = request.form.get('name')
+
+    # Let's tell the user they forget to send values we need
+    if not name:
+       return jsonify({'success': False, 'error': 'Missing values'})
+
+    g.c.execute('''
+                  UPDATE passenger
+                     SET name=?,
+                         active=1
+                   WHERE rowid=?
+                ''', (name, passenger_id))
+    g.conn.commit()
+
+    # Let's tell them it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>There are a couple of new concepts here.  Let's discuss.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Update Single Passenger (Edit) ==============================================
+@app.route('/api/1.0/passenger/&lt;passenger_id&gt;', methods=['PUT'])
+def passenger_edit(passenger_id):</pre></p>
+
+    <p>This is the same as the Read function with the exception of the PUT keyword and the
+       name of the function.</p>
+
+    <p><pre class='prettyprint lang-python'>
+    # User input
+    name = request.form.get('name')</pre></p>
+
+    <p>When the user sends us values they won't be on the URL.  They will be in the `body`
+       of the request.  Using request.form.get() is a safe way to retrieve these
+       because the program won't crash if they forgot to send them.  In this case
+       we are looking for the `name` value to be sent from the user.</p>
+
+    <p><pre class='prettyprint lang-python'>
+    # Let's tell the user they forget to send values we need
+    if not name:
+       return jsonify({'success': False, 'error': 'Missing values'})</pre></p>
+
+    <p>If they forgot to send us the name, we need to tell them they messed up.</p>
+
+    <p><pre class='prettyprint lang-python'>
+    g.c.execute('''
+                  UPDATE passenger
+                     SET name=?,
+                         active=1
+                   WHERE rowid=?
+                ''', (name, passenger_id))
+    g.conn.commit()</pre></p>
+
+    <p>This is a SQL UPDATE statement.  It is similar to the INSERT but you have to line up
+       the values in the SET section.  You might notice we put active=1 in this query.
+       I decided that you shouldn't edit a deleted record, so editing a deleted one
+       will activate it.  This also aligns with the idea of PUT replacing the entire
+       record.  There is also a g.conn.commit().  Just like in the load_sql.py script,
+       this saves the changes to the database file.</p>
+
+    <p><pre class='prettyprint lang-python'>
+    # Let's tell them it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>If we got this far then everything worked so we can send back a success True message.</p>
+
+    <p>Let's test our edit with curl:</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X PUT -d 'name=Bilbo Baggins' http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
+
+    <p>If this works we will change Laurence Fishburne's name to Bilbo Baggins.  He will love that.  You can see
+       the updated record by either running ./read_sql.py or by using the following curl command.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
+
+    <p>Only two more functions to go.</p>
+
+    <p>Another vim tip, you can jump to the bottom of a file by pressing `:$` and then hitting enter.
+       The $ represents the last line of a file.  You can also jump to specific line numbers by
+       pressing :111 to jump to line 111.  This is useful if you get an error on a line.</p>
+
+    <p>Please paste the following at the bottom of the passenger.py. Remember to by in insert mode.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Insert Single Passenger (Add) ===============================================
+@app.route('/api/1.0/passenger', methods=['POST'])
+def passenger_add():
+
+    # User input
+    name = request.form.get('name')
+
+    # Let's tell the user they forget to send values we need
+    if not name:
+       return jsonify({'success': False, 'error': 'Missing values'})
+
+    g.c.execute('''
+                  INSERT INTO passenger
+                       VALUES (?, ?)
+                ''', (name, 1))
+    g.conn.commit()
+
+    # Let's tell them it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>Almost identical to the edit() function with the following differences.  We don't pass an id on the
+       url because SQLite will assign one for us.  We also use an INSERT statement (you've seen these in the
+       load_sql.py script.  Last callout is the POST HTTP verb.  Everything else is the same.</p>
+
+    <p>Let's test it.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X POST -d 'name=Hugo Weaving' http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
+
+    <p>This movie needed a bad guy so adding Hugo Smith (Agent Smith) felt right.</p>
+
+    <p>You can verify it worked by running ./read_sql.py or the following CURL command (calls Browse)</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
+
+    <p>Let's add our final endpoint for the Passenger API.  Please paste the following into the bottom of
+       your passenger.py:</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Delete Single Passenger (Delete) ============================================
+@app.route('/api/1.0/passenger/&lt;passenger_id&gt;', methods=['DELETE'])
+def passenger_delete(passenger_id):
+
+    # Set the active flag to 0 which will make them appear deleted
+    g.c.execute('''UPDATE passenger
+                      SET active=0
+                    WHERE rowid=?''', passenger_id)
+    g.conn.commit()
+
+    # Tell the user it worked
+    return jsonify({'success': True})
+</pre></p>
+
+    <p>This function uses the DELETE HTTP verb and an UPDATE SQL statement.  The reason
+       we are marking this deleted instead of using the DELETE SQL statement to remove
+       them has to do with a concept called referential integrity.  The idea will make
+       more sense when we build the Trip endpoint but if you consider the tables
+       at the top of the tutorial.  If someone built a report from the Trip
+       table that referenced the Passenger Table to see who rode in one of our cars in the
+       last month, and we had deleted a couple passengers out of the table, we've
+       broken the reference table that Trip was counting on.  So we say that you
+       need to maintain referential integrity to protect the data in the database.</p>
+
+    <p>Typically you wouldn't delete data from a database.  If you do then you need to
+       consider all of the references and delete them all.</p>
+
+    <p>Let's test our delete() by deleting Bilbo.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
+
+    <p>Like before you can verify it worked by running ./read_sql.py or the following CURL command (calls Browse)</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
+
+    <p>Now if you try to get record 2 you'll get a `null` response.  Cause it's not technically
+       there any more.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
+
+    <p>Good Job!  This was a big step and you hopefully are much smarter than you were at the top
+       of this file.  I suspect the next two steps will go much faster for you.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>10</span>
+    </div>
+    <div class='col-11'>
+    Step 10 is continued on the <a href='/rest_api/10'>next page</a>.
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
+  </body>
+</html>

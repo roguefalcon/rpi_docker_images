@@ -44,28 +44,52 @@
   <!--/HR -->
   <div class='row'>
     <div class='col-md-1'>
-       <span class='giant'>3</span>
+       <span class='giant'>8</span>
     </div>
     <div class='col-md-11'>
-      <p>Now let's setup a couple of directories for our new hello world python flask app.</p>
+    <p>In the Hello, World tutorial we would run the file where all the code was.  In the situtation
+       where we have a bunch of files we need to create a program that imports our code and runs it.</p>
 
-      <p>
-         <pre class='prettyprint lang-bash'>
-cd
-mkdir rest_api
-cd rest_api
-mkdir myapp
-ls
-         </pre>
-      </p>
+    <p>This is incredibly simple.  We will create a file called run.py.</p>
 
-      <p><b>mkdir</b> is a command to create (make) a new directory.<br />
-         <b>cd</b> is the command to change directories.<br />
-         <b>ls</b> is the command to list everything in a directory<br />
+    <p><pre class='prettyprint lang-bash'>
+vim run.py</pre></p>
 
-      <p>The series of commands create two directories.  That first `cd` puts you back
-         in your home directory.  I did that for the people that are coming from the Hello World
-         tutorial.  You will need two seperate directories for these two projects.</p>
+    <p>Put the following in the file.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+#!/usr/bin/python3
+
+from myapp import app
+
+# Define the port we want to run on
+PORT = 5001
+
+# Run this app
+app.run(debug=True, host='0.0.0.0', port=PORT, threaded=True)</pre></p>
+
+    <p>We've already discussed the `shebang` line.  Let's look at the rest of them.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+from myapp import app</pre></p>
+
+    <p>We are importing the module that we are building so we can call app.run() on it.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+# Define the port we want to run on
+PORT = 5001</pre></p>
+
+    <p>Since we ran the Hello World tutorial on port 5000 we will run this one on port 5001 so
+       they can both run at the same time.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+# Run this app
+app.run(debug=True, host='0.0.0.0', port=PORT, threaded=True)</pre></p>
+
+    <p>This line is where all the work is done.  It runs on your VM's ip address and it enables Threading.</p>
+
+    <p>We are now ready to write our first API function in Step 9.</p>
+
     </div>
   </div>
   <!-- HR -->
@@ -73,10 +97,10 @@ ls
   <!--/HR -->
   <div class='row'>
     <div class='col-1'>
-       <span class='giant'>4</span>
+       <span class='giant'>9</span>
     </div>
     <div class='col-11'>
-    Step 4 is continued on the <a href='/rest_api/4'>next page</a>.
+    Step 9 is continued on the <a href='/rest_api/9'>next page</a>.
     </div>
   </div>
 

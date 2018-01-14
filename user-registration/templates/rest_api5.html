@@ -286,9 +286,9 @@ c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
        honestly not sure why we call it that (neither is Wikipedia) but if you Google
        `shebang python` you'll see that I'm not crazy.  I think it's because we are in the `Shell`
        and in the old days of typing the ! was called a `bang` and over time it was shortened
-       to `shebang` but I'm just guessing.  When I started coding the # was called a `pound` and
-       not a `hashtag`. The astrisk (*) at one point was called a `splat` and the slash (/) was
-       called a `whack`.  Old people really had fun with typing.</p>
+       to `shebang` instead of saying `shell bang` but I'm just guessing.  When I started coding
+       the # was called a `pound` and not a `hashtag`. The astrisk (*) at one point was called
+       a `splat` and the slash (/) was called a `whack`.  Old people really had fun with typing.</p>
 
     <p><pre class='prettyprint lang-python'>
 # Imported libraries
@@ -318,6 +318,15 @@ c = conn.cursor()
 
 print("Processing tables")</pre></p>
 
+    <p>This is our connection to the databsae.  Since we are using SQLite we will keep the database
+       in a file.  For small applications SQLite is fine.  If you were building a major
+       enterprise application you probably want to look at something that can scale, but SQLite is
+       surprisingly powerful.</p>
+
+    <p>There are two things here that matter:<br/>
+       <span style='padding-left: 3em;'><b>conn</b> - This deals with the database file and the connection to it</span><br/>
+       <span style='padding-left: 3em;'><b>c</b> - This deals with the data in the file.  It's a cursor which means you point it at things</span></p>
+
     <p><pre class='prettyprint lang-python'>
 # Make the cars =============================================================
 print("==&gt; Cars")
@@ -328,6 +337,16 @@ c.execute('''CREATE TABLE IF NOT EXISTS car
               mileage INTEGER,
                active INTEGER)''')</pre></p>
 
+    <p>If you've never seen SQL this could be a little intimidating, Don't worry.  Most people learn SQL very quickly
+       because of how closely it matches English.  The c.execute() let's you run any SQL command against your database.
+       the `CREATE TABLE` statement tells the database you are making a table in this case called `car`.
+       the `IF NOT EXISTS` is a safety statement that makes sure we don't try to create a table that is already
+       there.  Since we've deleted the file, this table should never be there.  But this is a best practice. To
+       save you headaches in the future, I recommend adding it.  After that first line we are just adding columns
+       to our database table.  Each column has a 'type' that tells the database what type of data we are going to
+       store.  In this case we are storing two TEXT fields and 3 INTEGER fields.  We will use several other
+       types over this tutorial.</p>
+
     <p><pre class='prettyprint lang-python'>
 # Let's load some data
 c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
@@ -337,6 +356,124 @@ c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
 c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
           ('Apple', 'Model XX', 2019, 1337, 1))</pre></p>
 
+    <p>This is 3 identical INSERT statements which load data in our table.  By saying INSERT INTO `table` you
+       let the database know where to store the data.  The VALUES line up with your columns.  We are using
+       a Python trick where we put in a ? and then pass the values in the second execute() argument.  We are
+       doing this because it will handle the `escaping` for us.  That way we don't have to worry about someone
+       putting in a bad character (or worse a malicious SQL statement).</p>
+
+    <p>We are almost ready to run the load_sql.py script and see what it does.  You will need to change the permissions on
+       the file before you can run it.  Please run the following:</p>
+
+    <p><pre class='prettyprint lang-python'>
+chmod u+x load_sql.py</pre></p>
+
+    <p>There is an indepth explaination on Linux file permissions in Hello World, <a href='/hello_world/5'>Step 5</a>.  Scroll
+       until you see the picture of the 1970's car.</p>
+
+    <p>Now we can run the file and see what it does:</p>
+
+    <p><pre class='prettyprint lang-python'>
+./load_sql.py</pre></p>
+
+    <p>Putting the `./` in front of the scripts tells the server that you want to run the load_sql.py in the same
+       folder you are currently in.  In Linux everything you type in the terminal is a program.  So when you type
+       ls you are running a program that lists directories.  It's located in /bin/ls.  You can always
+       find a program using another command (or program) called `which`.  If you type `which ls` it will say `/bin/ls`.
+       </p>
+
+    <p>The first time you run it there is an "error" but the program still works.</p>
+
+    <p><img src='/static/img/rest_api/step.5.1.png'></p>
+
+    <p>The `Couldn't remove the file: No such file or directory` is an excption the os.remove() threw
+       when it tried to remove a file and couldn't find it.  We caught the exception in the try/except
+       block and just printed it to the screen.  IF we hadn't done that Python would have stopped the program
+       because unhandled exceptions are assumed as mistakes.  If we run it again (HINT: up arrow in a terminal
+       will pull up your last command) we will not see that error because in the last run it created the sql.db
+       file.  The second run finds that file and deletes it so there is no error/exception to handle.</p>
+
+    <p><img src='/static/img/rest_api/step.5.2.png'></p>
+
+    <p>Let's add the rest of the items to the bottomw of the load_sql.py script so we have all of our tables.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Make the passengers ============================================================
+print("==&gt; Passengers")
+c.execute('''CREATE TABLE IF NOT EXISTS passenger
+             (   name TEXT,
+               active INTEGER)''')
+
+# This uses executemany() which is faster for larger sets of data
+passengers = [('Keanu Reeves', 1),
+              ('Laurence Fishburne', 1),
+              ('Carrie-Anne Moss', 1)]
+c.executemany('INSERT INTO passenger VALUES (?, ?)', passengers)
+
+# Make the Destinations =======================================================
+print("==&gt; Destinations")
+c.execute('''CREATE TABLE IF NOT EXISTS destination
+             (street TEXT,
+                city TEXT,
+               state TEXT,
+            zip_code INTEGER,
+              active INTEGER)''')
+
+# This uses executemany() which is faster for larger sets of data
+destinations= [('6801 Hollywood Blvd', 'Los Angeles', 'CA', 90028, 1),
+               ('3400 Warner Blvd', 'Burbank', 'CA', 91522, 1),
+               ('6801 Hollywood Blvd', 'Hollywood', 'CA', 90028, 1)]
+c.executemany('INSERT INTO destination VALUES (?, ?, ?, ?, ?)', destinations)
+
+
+# Make the Trips =============================================================
+print("==&gt; Trips")
+c.execute('''CREATE TABLE IF NOT EXISTS trip
+              (        car_id INTEGER,
+                 passenger_id INTEGER,
+               destination_id INTEGER,
+              trip_start_time TEXT,
+                trip_end_time TEXT)''')
+
+# This uses executemany() which is faster for larger sets of data
+destinations= [(1, 1, 1, '2018-01-14 07:14:12', '2018-01-14 07:23:01'),
+               (2, 3, 2, '2018-01-14 13:47:39', '2018-01-14 14:01:17'),
+               (3, 2, 3, '2018-01-14 06:01:53', '2018-01-14 07:41:19')]
+c.executemany('INSERT INTO trip VALUES (?, ?, ?, ?, ?)', destinations)
+
+# Now we need to save the changes to the file
+conn.commit()</pre></p>
+
+    <p>If you read the additional lines you probably noticed that the INSERT statements in
+       this section use c.executemany() instead of c.execute().  The c.executemany() is faster
+       at INSERTing a lot of rows.  In this case we are just inserting 3 and the speed
+       improvement really won't be that noticeable but I wanted to show both formats so you'd
+       be aware of the two different methods.  One awesome thing is SQLite and MySQL have very similar syntax.
+       MySQL runs a lot of very popular online websites including: Facebook, Youtube, Netflix, Uber, Tesla, etc.
+       Learning the SQLite syntax will set you up to make much larger projects on other databases.</p>
+
+    <p>Now that we've updated the script let's run it again and confirm it works.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+./load_sql.py</pre></p>
+
+    <p>This time you should see the following:</p>
+
+    <p><img src='/static/img/rest_api/step.5.3.png'></p>
+
+    <p>The database is loaded!  Now let's go to Step 6 and learn how to read it.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>6</span>
+    </div>
+    <div class='col-11'>
+    Step 6 is continued on the <a href='/rest_api/6'>next page</a>.
     </div>
   </div>
 

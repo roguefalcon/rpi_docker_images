@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li class='active'><a href='/rest_api'>REST API Tutorial</a></li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-1'>
+       <span class='giant'>7</span>
+    </div>
+    <div class='col-md-11'>
+    <p>Now we are ready to start building our API app.  If you did the Hello World tutorial, all the
+       Python was in a single file.  Since this is dealing with 4 different types of data, we want to
+       break the code up into multiple files.  To do that we will need to steup our very own Python
+       module.</p>
+
+    <p>Python uses a somewhat strange standard for building a module.  The module must be in it's own
+       folder and it must have a file called __init__.py.  The __init__.py is the focus of this step.</p>
+
+    <p><pre class='prettyprint lang-python'>
+vim myapp/__init__.py</pre></p>
+
+    <p>Now we need to add the following to that file.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Python Imports
+from flask import Flask
+from flask import g
+from flask import session
+from flask import request
+from flask import redirect
+import sqlite3
+
+# Setup my flask object
+app = Flask(__name__)
+
+# Database Connection =========================================================
+@app.before_request
+def db_connect():
+
+    try:
+        # The SQL connection ==================================================
+        g.conn = sqlite3.connect('sql.db', check_same_thread=False)
+        # This tells SQLite that I want dictionaries
+        # instead of tuples for fetch statements
+        g.conn.row_factory = lambda c, r: dict([(col[0], r[idx]) for idx, col in enumerate(g.c.description)])
+        # SQL cursor
+        g.c = g.conn.cursor()
+    except RuntimeError:
+        print("FATAL: No database connection established")
+
+
+@app.route('/')
+def index():
+
+    return "Autonomous Car API"
+
+
+# App Modules =================================================================
+from myapp import passenger</pre></p>
+
+    <p>Let's walk through the sections of the file.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Python Imports
+from flask import Flask
+from flask import g
+from flask import session
+from flask import request
+from flask import redirect
+import sqlite3</pre></p>
+
+    <p>You always want to import your code at the top of a Python file.  It is a best
+       practice.  Importing code throughout can cause issues in larger applications
+       becuase you aren't always sure what has already been imported.  The lines above
+       literraly pull in someone else's code into your program so you can use it.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Setup my flask object
+app = Flask(__name__)</pre></p>
+
+    <p>This defines the Flask app that everything will inherit and use.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Database Connection =========================================================
+@app.before_request
+def db_connect():
+
+    try:
+        # The SQL connection ==================================================
+        g.conn = sqlite3.connect('sql.db', check_same_thread=False)
+        # This tells SQLite that I want dictionaries
+        # instead of tuples for fetch statements
+        g.conn.row_factory = lambda c, r: dict([(col[0], r[idx]) for idx, col in enumerate(g.c.description)])
+        # SQL cursor
+        g.c = g.conn.cursor()
+    except RuntimeError:
+        print("FATAL: No database connection established")</pre></p>
+
+    <p>This creates a database connection for your app and stores it in a "global" object.  Flask gives us the
+       `g` object that you can store anything in.  It's great because we only have to define this connection
+       once and it's available on every request.  We should add some logic to verify if we already have a
+       connection but it's not mandatory and we aren't expecting a ton of traffic at this point.</p>
+
+    <p>The `check_same_thread=False` allows SQLite to work safely in a threaded environment (like Flask).</p>
+
+    <p>The g.conn.row_factory is one of those lines that isn't super readable but really helps us
+       later in our programming.  It tell's SQLite that we want Lists of named Dictionaries instead of
+       the default list of tuples behavior.  Basically it lets reference columns by name instead of by number.
+       This will make sense over the next few steps.</p>
+
+    <p>The try/except block is looking for an issue using the sql.db file.  This is very similar to the setup
+       in the load_sql.py.</p>
+
+
+    <p><pre class='prettyprint lang-python'>
+@app.route('/')
+def index():
+
+    return "Autonomous Car API"</pre></p>
+
+    <p>APIs aren't intended to be visited from a browser.  If someone stumbles into
+       this URL we want to tell them what it is.  It would be nice to give documentation here
+       but this is a tutorial and we don't want them to look at it too hard.</p>
+
+
+    <p><pre class='prettyprint lang-python'>
+# App Modules =================================================================
+from myapp import passenger</pre></p>
+
+    <p>This line is telling our module that there is going to be a passenger.py file that we want
+       to import.  You may have already guessed that the folder name is the name of the app.
+       For the tutorial I chose to name our app, myapp.  Original, right?  Normally we'd do
+       better than this.</p>
+
+    <p>At the top of this Step I said import all of your modules at the top of the file.  This is
+       normally what you'd do.  In this case, we can't import something that modifies the app object
+       until after the app object is created.  Flask recommends this setup so this is what I do.</p>
+
+    <p>__init__.py is finished.  Let's keep building this module in the next step.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>8</span>
+    </div>
+    <div class='col-11'>
+    Step 8 is continued on the <a href='/rest_api/8'>next page</a>.
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
+  </body>
+</html>
