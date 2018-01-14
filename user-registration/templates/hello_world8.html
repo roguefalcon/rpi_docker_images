@@ -39,7 +39,7 @@
 
     <p>We are going to start by creating two scripts that will help setup (and reset) the database
        as well as give us some visibility into the current state of the database.  First we are going to create
-       load_sql.py.</p>
+       load_sql.py in our hello_world folder.</p>
 
     <p><pre class='prettyprint'>
 vim load_sql.py</pre></p>
@@ -52,6 +52,7 @@ vim load_sql.py</pre></p>
 # Imported libraries
 import sqlite3
 import bcrypt
+import os
 
 # We want to remove the existing file
 try:

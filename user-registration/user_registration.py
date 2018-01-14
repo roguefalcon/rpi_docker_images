@@ -42,10 +42,38 @@ def main():
       if request.cookies.get('username'):
          data['username'] = request.cookies.get('username')
 
-      return render_template('user_registration.html', data=data) 
+      return render_template('user_registration.html', data=data)
    else:
-      return render_template('registration_full.html') 
+      return render_template('registration_full.html')
 
+
+@app.route("/login", methods=['POST'])
+def login():
+
+   # Let's find them in the database
+   c.execute('''SELECT u.username, v.name
+                  FROM vpn_users u, vms v
+                 WHERE v.username = u.username
+                   AND u.email = ?
+                   AND u.password = ?
+             ''', (request.form.get('email'), request.form.get('password')))
+   data = c.fetchone()
+
+   # IF we didn't find them send them back to the login with an angry message
+   if not data:
+      flash("Invalid Email address or password")
+      return redirect(url_for('main'))
+
+   # Found them so let's reset their cookies
+   username = data['username']
+   vm_name = data['name']
+
+   # We want to set a cookie for this user so we can track who it is
+   resp = make_response(redirect(url_for('vpn_setup')))
+   resp.set_cookie('username', username, max_age=2592000)
+   resp.set_cookie('vm_name', vm_name, max_age=2592000)
+
+   return resp
 
 # Register a new user =========================================================
 @app.route("/register", methods=['POST'])
@@ -71,7 +99,7 @@ def register():
       return redirect(url_for('main'))
 
    # Add the user
-   c.execute('''INSERT INTO vpn_users VALUES (?, ?, ?, ?, ?)''', 
+   c.execute('''INSERT INTO vpn_users VALUES (?, ?, ?, ?, ?)''',
             (name, email, username, password, filename))
    rowid = c.lastrowid
 
@@ -173,6 +201,12 @@ def new_vm():
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+# Favicon.ico ==================================================================
+@app.route('/robots.txt')
+def robotstxt():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'robots.txt', mimetype='text/plain')
 
 # OpenVPN file download ========================================================
 @app.route('/ovpn_file', methods=['GET', 'POST'])

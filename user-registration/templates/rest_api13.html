@@ -47,14 +47,78 @@
        <span class='giant'>13</span>
     </div>
     <div class='col-md-11'>
+    <p>It is good practice to write tests for your Programs/APIs/etc.  Since we are on a time crunch
+       I'm not going to go through all the automated test suites that are available.  I've taken
+       all the curl commands that we've been using and I've dropped them into a bash shell script.
+       Please make a new file in your rest_api folder called test.sh and add the following code.</p>
+
+    <p><pre class='prettyprint lang-python'>
+#!/bin/bash
+
+# Run the load_sql.py to put us in a stable state
+./load_sql.py
+
+echo "==&gt; Testing Passengers"
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/passenger
+curl -X POST -d 'name=Hugo Weaving' http://{{request.cookies.vm_name}}:5001/api/1.0/passenger
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/4
+curl -X PUT -d 'name=Agent Smith' http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/4
+curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/passenger
+
+echo "==&gt; Testing Cars"
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/car
+curl -X POST -d make=Uber -d model=Volvo -d year=2018 -d mileage=1234 http://{{request.cookies.vm_name}}:5001/api/1.0/car
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/car/4
+curl -X PUT -d make=Uber -d model=Racer -d year=2018 -d mileage=1234 http://{{request.cookies.vm_name}}:5001/api/1.0/car/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/car/4
+curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/car/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/car
+
+echo "==&gt; Testing Destinations"
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/destination
+curl -X POST -d 'street=1234 Main Street' -d city=Hollywood -d state=CA -d zip_code=90028 http://{{request.cookies.vm_name}}:5001/api/1.0/destination
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/destination/4
+curl -X PUT -d 'street=1234 Main Street' -d city=Hollywood -d state=CA -d zip_code=90028 http://{{request.cookies.vm_name}}:5001/api/1.0/destination/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/destination/4
+curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/destination/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/destination
+
+echo "==&gt; Testing Trips"
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip
+curl -X POST -d car_id=3 -d passenger_id=1 -d destination_id=2 -d 'trip_start_time=2018-01-18 11:14:07' -d 'trip_end_time=2018-01-18 11:28:19' http://{{request.cookies.vm_name}}:5001/api/1.0/trip
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip/4
+curl -X PUT -d car_id=2 -d passenger_id=1 -d destination_id=2 -d 'trip_start_time=2018-01-18 11:14:07' -d 'trip_end_time=2018-01-18 11:28:19' http://{{request.cookies.vm_name}}:5001/api/1.0/trip/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip/4
+curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/trip/4
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip</pre></p>
+
+   <p>You need to change permissions and then run it.</p>
+
+   <p><pre class='prettyprint lang-bash'>
+# Change Permissions
+chmod u+x test.sh
+
+# Run the tests
+./test.sh</pre></p>
+
+   <p>Another trick is to pipe `|` the output from test.sh into the bash 'more' command.  You will see it fill
+      your screen and then stop.  Then you can hit space bar to watch the output one screen at a time.<p>
+
+   <p>You are ready for the last step.</p>
+
     </div>
   </div>
   <!-- HR -->
   <div class='row'><div class='col-12'><hr/></div></div>
   <!--/HR -->
   <div class='row'>
-    <div class='col-12'>
-     <h3>You are almost ready to start working.  <a href=''>Dive in</a> to the final step of the onboarding.</h3>
+    <div class='col-md-1'>
+       <span class='giant'>14</span>
+    </div>
+    <div class='col-md-11'>
+       Step 14 is continued on the <a href='/rest_api/14'>next page</a>.
     </div>
   </div>
 

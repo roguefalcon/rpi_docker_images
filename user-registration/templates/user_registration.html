@@ -127,6 +127,28 @@
     </div>
     </div>
     </form>
+
+    <hr style='margin-top: 125px;'>
+
+    <p>Already registered but switched computers?  You can login with your email address
+       and password.</p>
+    <form method='post' action='/login' id='login_form'>
+    <div class='form-row'>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="" name='email' required>
+    </div>
+    <div class="form-group">
+      <label for="firstname">Password</label>
+      <input type="password" class="form-control" id="password" placeholder="" name='password' required>
+    </div>
+    <div class="form-group">
+       <button type='submit' class='btn btn-default pull-right' name='submit' value='Step 2'>Login &gt;</button>
+       <div class='pull-right'></div>
+    </div>
+    </div>
+    </form>
+
     {% endif %}
    </div>
   </div>

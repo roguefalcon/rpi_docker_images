@@ -73,7 +73,7 @@ def trip_read(trip_id):
                       AND t.destination_id = d.rowid
                       AND t.rowid = ?
                 ''', (trip_id,))
-    data = g.c.fetchall()
+    data = g.c.fetchone()
 
     # Return in JSON format
     return jsonify(data)

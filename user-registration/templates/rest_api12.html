@@ -47,6 +47,322 @@
        <span class='giant'>12</span>
     </div>
     <div class='col-md-11'>
+    <p>The last 3 APIs that we built were very similar.  This one will have a few items
+       that are the same but there are some more advanced SQL concepts.</p>
+
+    <p>We are going to go a little slower through this one.</p>
+
+    <p>Let's create a new file called trip.py in the myapp folder.</p>
+
+    <p>Paste the following code:</p>
+
+    <p><pre class='prettyprint lang-python'>
+#!/usr/bin/python3
+# Trip API - v1.0
+
+from myapp import app
+from flask import jsonify
+from flask import request
+from flask import g
+
+"""
+   I prefer the BREAD acryonm: Browse, Read, Edit, Add and Delete
+   So to protect the scope of the entire application functions will
+   be named trip_[bread_keyword].  This will avoid naming collisions.
+"""
+
+
+# Get a list of trips (Browse) ==========================================
+@app.route('/api/1.0/trip', methods=['GET'])
+def trip_browse():
+
+    # The active flag shows only the 'non-deleted' items
+    # If you want to see everything pass active=0
+    active = request.args.get('active', default='1', type=int)
+
+    # It is a best practice to limit the amount of data an
+    # API will allow a user to retrieve on a single call
+    # This creates a throttle to protect the server.
+    # In this case we are just defaulting to 10 but will let
+    # them ask for more
+    limit = request.args.get('limit', default='10', type=int)
+
+    # Get the employee records
+    g.c.execute('''
+                   SELECT t.rowid,
+                          c.make,
+                          c.model,
+                          p.name,
+                          d.street,
+                          d.city,
+                          d.state,
+                          d.zip_code,
+                          trip_start_time,
+                          trip_end_time
+                     FROM trip t, car c, passenger p, destination d
+                    WHERE t.car_id = c.rowid
+                      AND t.passenger_id = p.rowid
+                      AND t.destination_id = d.rowid
+                    LIMIT ?''', (limit,))
+    data = g.c.fetchall()
+
+    # Send the data back as JSON
+    return jsonify(data)
+</pre></p>
+
+    <p>Let's talk about the SQL statement:</p>
+
+    <p><pre class='prettyprint lang-sql'>
+                   SELECT t.rowid,
+                          c.make,
+                          c.model,
+                          p.name,
+                          d.street,
+                          d.city,
+                          d.state,
+                          d.zip_code,
+                          trip_start_time,
+                          trip_end_time
+                     FROM trip t, car c, passenger p, destination d
+                    WHERE t.car_id = c.rowid
+                      AND t.passenger_id = p.rowid
+                      AND t.destination_id = d.rowid
+                    LIMIT 10
+</pre></p>
+
+    <p>Since the Trip table is a table full of ids, we are going to join all the reference
+       tables back to it so we can send the API user values instead of just sending ids.
+       If you look at the FROM you can see us listing out all 4 tables.  We assign them
+       single letter nicknames because it makes for less typing.  So car is refered to as `c`
+       in the rest of the query.  If you look at the columns at the top you can see this with
+       c.make and c.model.</p>
+
+    <p>Joining tables is a pretty big concept.  Here is a fancy picture showing what we are doing.</p>
+
+    <p><img src='/static/img/rest_api/step.12.1.png'></p>
+
+    <p>That artwork is the reason I'm a programmer and not a UX person.  But it does show the concept.
+       If we pull row one from the Trip table, we will link the id on each reference table back to the coresponding
+       row of that table.  Then we will pull that value back instead of the id.  If we wanted the id, we could reference
+       that by saying table.rowid.  For example, c.rowid in that picture would return 2.</p>
+
+    <p>There are dozens of ways to join tables.  There is also another syntax using the JOIN SQL keyword.
+       in my experience people that are new to SQL can learn this syntax faster and then `step up` to the
+       JOIN keyword when they need to do more complex things.</p>
+
+    <p>Before we can test this we need to add it to the __init__.py file.  You've done this before.
+       Please place the following at the bottom of the file.</p>
+
+    <p><pre class='prettyprint lang-sql'>
+from myapp import trip</pre></p>
+
+    <p>When you save the __init__.py file the Flask terminal should reload.</p>
+
+    <p>Now we can test this new endpoint and see the SQL statement in action.  Let's use our trusty friend `curl`.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip</pre></p>
+
+    <p>You can see in the results that it's joined all the values so we are looking at the data
+       the user will want to see.</p>
+
+    <p><pre class='prettyprint lang-javascript'>
+[
+  {
+    "city": "Los Angeles",
+    "make": "Tesla",
+    "model": "Model 27",
+    "name": "Keanu Reeves",
+    "rowid": 1,
+    "state": "CA",
+    "street": "6801 Hollywood Blvd",
+    "trip_end_time": "2018-01-14 07:23:01",
+    "trip_start_time": "2018-01-14 07:14:12",
+    "zip_code": 90028
+  },
+  {
+    "city": "Burbank",
+    "make": "Uber",
+    "model": "Racer",
+    "name": "Carrie-Anne Moss",
+    "rowid": 2,
+    "state": "CA",
+    "street": "3400 Warner Blvd",
+    "trip_end_time": "2018-01-14 14:01:17",
+    "trip_start_time": "2018-01-14 13:47:39",
+    "zip_code": 91522
+  },
+  {
+    "city": "Hollywood",
+    "make": "Apple",
+    "model": "Model XX",
+    "name": "Bilbo Baggins",
+    "rowid": 3,
+    "state": "CA",
+    "street": "6801 Hollywood Blvd",
+    "trip_end_time": "2018-01-14 07:41:19",
+    "trip_start_time": "2018-01-14 06:01:53",
+    "zip_code": 90028
+  }
+]</pre></p>
+
+    <p>In theory, that is all the data we would need to build a history report about the trips
+       that have happened in our database.</p>
+
+    <p>Let's create the read endpoint.  It is going to be the same but pull a single record
+       instead of the full list. Please add the following to the bottom of trip.py.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Get Data for a single trip (Read) ======================================
+@app.route('/api/1.0/trip/&lt;trip_id&gt;', methods=['GET'])
+def trip_read(trip_id):
+
+    # Return the all columns for this one employee
+    g.c.execute('''
+                   SELECT t.rowid,
+                          c.make,
+                          c.model,
+                          p.name,
+                          d.street,
+                          d.city,
+                          d.state,
+                          d.zip_code,
+                          trip_start_time,
+                          trip_end_time
+                     FROM trip t, car c, passenger p, destination d
+                    WHERE t.car_id = c.rowid
+                      AND t.passenger_id = p.rowid
+                      AND t.destination_id = d.rowid
+                      AND t.rowid = ?
+                ''', (trip_id,))
+    data = g.c.fetchone()
+
+    # Return in JSON format
+    return jsonify(data)</pre></p>
+
+    <p>We can test it with /trip/1 via curl.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip/1</pre></p>
+
+    <p>You should see the data for a single trip.</p>
+
+    <p>Now we can add the edit.  You know the drill.  Paste at the bottom of trip.py.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Update Single Trip (Edit) ==============================================
+@app.route('/api/1.0/trip/&lt;trip_id&gt;', methods=['PUT'])
+def trip_edit(trip_id):
+
+    # User input
+    car_id = request.form.get('car_id')
+    passenger_id = request.form.get('passenger_id')
+    destination_id = request.form.get('destination_id')
+    trip_start_time = request.form.get('trip_start_time')
+    trip_end_time = request.form.get('trip_end_time')
+
+    # Let's tell the user they forget to send values we need
+    if (not car_id or not passenger_id or not destination_id or
+        not trip_start_time or not trip_end_time):
+       return jsonify({'success': False, 'error': 'Missing values'})
+
+    # Update the trip in the database
+    g.c.execute('''
+                  UPDATE trip
+                     SET car_id=?,
+                         passenger_id=?,
+                         destination_id=?,
+                         trip_start_time=?,
+                         trip_end_time=?
+                   WHERE rowid=?
+                ''', (car_id, passenger_id, destination_id, trip_start_time, trip_end_time, trip_id))
+    g.conn.commit()
+
+    # Let's tell them it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>Now this is interesting.  On the edit we went back to sending id's and not values.
+       This behavior really needs to depend on your use case for your application.  In this case
+       for the tutorial, it makes sense to me to let them insert the values via the other
+       endpoints (passenger, car, destination) and then insert the ids in the trip table.</p>
+
+    <p>This will be true for both the `add` and the `edit`. So let's add the add function and then
+       test them both.</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Insert Single Trip (Add) ===============================================
+@app.route('/api/1.0/trip', methods=['POST'])
+def trip_add():
+
+    # User input
+    car_id = request.form.get('car_id')
+    passenger_id = request.form.get('passenger_id')
+    destination_id = request.form.get('destination_id')
+    trip_start_time = request.form.get('trip_start_time')
+    trip_end_time = request.form.get('trip_end_time')
+
+    # Let's tell the user they forget to send values we need
+    if (not car_id or not passenger_id or not destination_id or
+        not trip_start_time or not trip_end_time):
+       return jsonify({'success': False, 'error': 'Missing values'})
+
+    # Insert the new trip into the database
+    g.c.execute('''
+                  INSERT INTO trip
+                       VALUES (?, ?, ?, ?, ?)
+                ''', (car_id, passenger_id, destination_id, trip_start_time, trip_end_time))
+    g.conn.commit()
+
+    # Let's tell them it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>Now we can test the edit and add functions via curl.</p>
+
+    <p><pre class='prettyprint lang-bash'>
+# Let's run the load_sql.py again to put things back to our orignal values
+./load_sql.py
+
+# You will need to restart flask with the ctrl-c, up arrow, enter method.
+
+# The Edit
+curl -X PUT -d car_id=2 -d passenger_id=1 -d destination_id=2 -d 'trip_start_time=2018-01-18 11:14:07' -d 'trip_end_time=2018-01-18 11:28:19' http://{{request.cookies.vm_name}}:5001/api/1.0/trip/1
+
+# The Add
+curl -X POST -d car_id=3 -d passenger_id=1 -d destination_id=2 -d 'trip_start_time=2018-01-18 11:14:07' -d 'trip_end_time=2018-01-18 11:28:19' http://{{request.cookies.vm_name}}:5001/api/1.0/trip
+
+# The Browse
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip
+</pre></p>
+
+    <p>So we've added a new trip (with existing cars, people and destinations) and editted the destination on the first trip
+       to be 3400 Warner Blvd (Warner Bros. Studios).</p>
+
+    <p>Let's add the delete:</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Delete Single Trip (Delete) ============================================
+@app.route('/api/1.0/trip/&lt;trip_id&gt;', methods=['DELETE'])
+def trip_delete(trip_id):
+
+    # Set the active flag to 0 which will make them appear deleted
+    g.c.execute('''DELETE FROM trip
+                    WHERE rowid=?''', trip_id)
+    g.conn.commit()
+
+    # Tell the user it worked
+    return jsonify({'success': True})</pre></p>
+
+    <p>Save and test</p>
+
+    <p><pre class='prettyprint lang-bash'>
+# Delete
+curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/trip/4
+
+# And Browse
+curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip</pre></p>
+
+    <p>If there are three results then you've done it!  Only two steps left!</p>
+
     </div>
   </div>
   <!-- HR -->

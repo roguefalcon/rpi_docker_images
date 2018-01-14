@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li class='active'><a href='/rest_api'>REST API Tutorial</a></li>
+        <li>Start Working</li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-1'>
+       <span class='giant'>14</span>
+    </div>
+    <div class='col-md-11'>
+      <h1>Security</h1>
+      <p>I'd be remissed if I didn't tell you how to secure your API.  We can't just let
+         anyone send requests.  That's be chaos.  If you've been making a list of things to
+         Google/Read after the Hack-a-thon then add `OWASP Top 10` to the list.  IT's the
+         Top security issues that impact web applications and APIs.</p>
+
+      <p>For this application 
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-12'>
+     <h3>You are almost ready to start working.  <a href=''>Dive in</a> to the final step of the onboarding.</h3>
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
+  </body>
+</html>
