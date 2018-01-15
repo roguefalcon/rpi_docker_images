@@ -28,7 +28,7 @@
       <ul id="progressbar">
         <li class='active'><a href='/'>Register</a></li>
         <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
-        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        {% if not 'backend' in request.cookies %}<li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>{% endif %}
         <li class='active'><a href='/rest_api'>REST API Tutorial</a></li>
         <li>Start Working</li>
       </ul>
@@ -61,7 +61,7 @@
   <!--/HR -->
   <div class='row'>
     <div class='col-12'>
-     <h3>You are almost ready to start working.  <a href=''>Dive in</a> to the final step of the onboarding.</h3>
+     <h3>You are almost ready to <a href='/start_working'>start working</a>.</h3>
     </div>
   </div>
 

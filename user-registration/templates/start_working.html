@@ -29,32 +29,14 @@
         <li class='active'><a href='/'>Register</a></li>
         <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
         {% if not 'backend' in request.cookies %}<li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>{% endif %}
-        <li class='active'><a href='/rest_api'>REST API Tutorial</a></li>
-        <li>Start Working</li>
+        {% if not 'front-end' in request.cookies %}<li class='active'><a href='/rest_api'>REST API Tutorial</a></li>{% endif %}
+        <li class='active'><a href='/start_working'>>Start Working</a></li>
       </ul>
     </div>
   </div>
   <div class='row'>
     <div class='col-md-12'>
       &nbsp;
-    </div>
-  </div>
-  <div class='row'>
-    <div class='col-md-12'>
-    <p>In this tutorial you will get a deep intro into building a REST API.  We call APIs the "backend" because we think
-       of the browser as being the front-end (on the client computer) and the API/database/etc being on the server at
-       the "backend" of the process. </p>
-
-    <p>We will use the following technology:</p>
-
-    <center>
-    <h2>Backend</h2>
-    <img height='100px' src='/static/img/Python-logo.png' style='background: #fff'>
-    <img height='100px' src='/static/img/flask.png' style='background: #fff'>
-    <img height='100px' src='/static/img/SQLite.png' style='background: #fff'>
-    <img height='100px' src='/static/img/zeromq.png' style='background: #fff'>
-    </center>
-
     </div>
   </div>
   <!-- HR -->
@@ -65,23 +47,19 @@
        <span class='giant'>1</span>
     </div>
     <div class='col-md-11'>
+      <p>You've completed 1 or 2 tutorials. You feel pretty good about life (or you are reconsidering your
+         decision to be a developer).  You are almost ready to start working on a team to help win this HackMT
+         event!.  The next couple of steps will help you get up to speed with working on a team and get you
+         the skills you need to weild code like a Knight Templar Coding Wizard (if that is a thing).</p>
 
-      <h1>Steps 1 - 13 in this tutorial are complete.</h1> <h1> Step 14 is still a work in progress.</h1>
+      <p>We need to start by getting you assigned to a team and a project so you'll know which code
+         repository to clone.  Walk up to Kenny and say "Hey, my name is ______ and I'm a ______
+         (year in school).  I've just completed the ________ tutorial(s).  I need assigned to a group."</p>
 
-      <p>If you already did the Hello, World tutorial you can skip to <a href='/rest_api/4'>step 4</a>.</p>
+      <p>Your name will be written on the wall with a group and the name of a task, which will translate
+         into a code repository.</p>
 
-      <p>It is important that you don't rush this tutorial.  If you've never done this before it will take some
-         time.  That's ok.  You are here to learn.  The industry professionals are here to help you.  If you've
-         already built a couple Flask apps then you'll breeze through this tutorial.  I still recommend you
-         follow it because you'll write code that will be valuable on the project we are building.</p>
-
-      <p>You are going to need a terminal to run the Flask app. In Linux and Mac
-      they are built in.  In Windows we will need to download/save putty.exe.
-      I typically create a folder on the c:\ drive called `bin` and put it in there.</p>
-
-      <p>Windows - <a href='/static/files/putty64/putty.exe'>Putty 64bit</a> or <a href='/static/files/putty32/putty.exe'>Putty 32bit</a> (right click - save file as).  The odds are that you want 64bit.</p>
-      <p>Linux &amp; Mac - Open a Terminal.</p>
-      <p>Chromebook - Google `Chromebook Developer Mode` and follow those steps for a Chronos shell OR you can just install the SSH extension.</p>
+     <p>This needs more thought :-(</p>
     </div>
   </div>
   <!-- HR -->
@@ -92,7 +70,7 @@
        <span class='giant'>2</span>
     </div>
     <div class='col-11'>
-    Step 2 is continued on the <a href='/rest_api/2'>next page</a>.
+    Step 2 is continued on the <a href='/start_working/2'>next page</a>.
     </div>
   </div>
 

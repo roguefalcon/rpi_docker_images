@@ -75,6 +75,7 @@ def login():
 
    return resp
 
+
 # Register a new user =========================================================
 @app.route("/register", methods=['POST'])
 def register():
@@ -123,6 +124,26 @@ def register():
    return resp
 
 
+@app.route("/front_end_path", methods=['GET'])
+def front_end_path():
+
+   # We want to set a cookie for this user so we can track who it is
+   resp = make_response(redirect(url_for('hello_world')))
+   resp.set_cookie('front-end', '1', max_age=2592000)
+
+   return resp
+
+
+@app.route("/backend_path", methods=['GET'])
+def backend_path():
+
+   # We want to set a cookie for this user so we can track who it is
+   resp = make_response(redirect(url_for('rest_api')))
+   resp.set_cookie('backend', '1', max_age=2592000)
+
+   return resp
+
+
 @app.route("/vpn_setup")
 def vpn_setup():
 
@@ -154,6 +175,16 @@ def rest_api(page_id=None):
        return render_template('rest_api' + str(page_id) + '.html')
    else:
        return render_template('rest_api.html')
+
+# Start Working tutorials
+@app.route("/start_working")
+@app.route("/start_working/<page_id>")
+def start_working(page_id=None):
+
+   if page_id:
+       return render_template('start_working' + str(page_id) + '.html')
+   else:
+       return render_template('start_working.html')
 
 
 @app.route("/dashboard")

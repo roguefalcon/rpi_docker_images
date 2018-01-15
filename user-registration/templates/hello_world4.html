@@ -15,7 +15,7 @@
         <li class='active'><a href='/'>Register</a></li>
         <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
         <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
-        <li>REST API Tutorial</li>
+        {% if not 'front-end' in request.cookies %}<li>REST API Tutorial</li>{% endif %}
         <li>Start Working</li>
       </ul>
     </div>
