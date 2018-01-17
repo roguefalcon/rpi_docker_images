@@ -272,7 +272,10 @@ c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
 c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
           ('Google', 'PixelCar Beta', 2018, 35741, 1))
 c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
-          ('Apple', 'Model XX', 2019, 1337, 1))</pre></p>
+          ('Apple', 'Model XX', 2019, 1337, 1))
+
+# Now we need to save the changes to the file
+conn.commit()</pre></p>
 
     <p>To exit insert mode and save the file press Escape and then press `:wq`.</p>
 
@@ -356,11 +359,18 @@ c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
 c.execute('''INSERT INTO car VALUES (?, ?, ?, ?, ?)''',
           ('Apple', 'Model XX', 2019, 1337, 1))</pre></p>
 
-    <p>This is 3 identical INSERT statements which load data in our table.  By saying INSERT INTO `table` you
+    <p>This are 3 identical INSERT statements which load data in our table.  By saying INSERT INTO `table` you
        let the database know where to store the data.  The VALUES line up with your columns.  We are using
        a Python trick where we put in a ? and then pass the values in the second execute() argument.  We are
        doing this because it will handle the `escaping` for us.  That way we don't have to worry about someone
        putting in a bad character (or worse a malicious SQL statement).</p>
+
+    <p><pre class='prettyprint lang-python'>
+# Now we need to save the changes to the file
+conn.commit()</pre></p>
+
+    <p>This block of code saves the changes to the database file.  If you don't include it then nothing
+       will actually change.</p>
 
     <p>We are almost ready to run the load_sql.py script and see what it does.  You will need to change the permissions on
        the file before you can run it.  Please run the following:</p>

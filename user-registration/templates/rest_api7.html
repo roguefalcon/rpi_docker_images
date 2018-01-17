@@ -88,6 +88,9 @@ def db_connect():
         print("FATAL: No database connection established")
 
 
+# If someone comes here via a browser, let's tell them what this is
+# This would also be a great place to host some documentation on
+# What your API does and how to use it.
 @app.route('/')
 def index():
 
@@ -152,14 +155,17 @@ def db_connect():
 
 
     <p><pre class='prettyprint lang-python'>
+# If someone comes here via a browser, let's tell them what this is
+# This would also be a great place to host some documentation on
+# What your API does and how to use it.
 @app.route('/')
 def index():
 
     return "Autonomous Car API"</pre></p>
 
     <p>APIs aren't intended to be visited from a browser.  If someone stumbles into
-       this URL we want to tell them what it is.  It would be nice to give documentation here
-       but this is a tutorial and we don't want them to look at it too hard.</p>
+       this URL we want to tell them what it is.  As the comment says, it would be nice to give documentation here
+       but this is a tutorial and in a Hack-a-thon we don't have time for everything we'd like to do.</p>
 
 
     <p><pre class='prettyprint lang-python'>

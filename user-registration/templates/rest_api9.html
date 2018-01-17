@@ -406,10 +406,12 @@ def passenger_edit(passenger_id):
                          active=1
                    WHERE rowid=?
                 ''', (name, passenger_id))
+
+    # Save the changes to the database
     g.conn.commit()
 
     # Let's tell them it worked
-    return jsonify({'success': True})</pre></p>
+    return jsonify({'success': True, 'rowid': passenger_id})</pre></p>
 
     <p>There are a couple of new concepts here.  Let's discuss.</p>
 
@@ -444,6 +446,8 @@ def passenger_edit(passenger_id):</pre></p>
                          active=1
                    WHERE rowid=?
                 ''', (name, passenger_id))
+
+    # Save the changes to the database
     g.conn.commit()</pre></p>
 
     <p>This is a SQL UPDATE statement.  It is similar to the INSERT but you have to line up
@@ -455,9 +459,10 @@ def passenger_edit(passenger_id):</pre></p>
 
     <p><pre class='prettyprint lang-python'>
     # Let's tell them it worked
-    return jsonify({'success': True})</pre></p>
+    return jsonify({'success': True, 'rowid': passenger_id})</pre></p>
 
-    <p>If we got this far then everything worked so we can send back a success True message.</p>
+    <p>If we got this far then everything worked so we can send back a success True message.  We also pass
+       the id back as a convience method.</p>
 
     <p>Let's test our edit with curl:</p>
 
@@ -494,14 +499,22 @@ def passenger_add():
                   INSERT INTO passenger
                        VALUES (?, ?)
                 ''', (name, 1))
+
+    # Let's get the id of the item we just inserted so
+    # We can tell the user which record they created
+    rowid = g.c.lastrowid
+
+    # Save the changes to the database
     g.conn.commit()
 
     # Let's tell them it worked
-    return jsonify({'success': True})</pre></p>
+    return jsonify({'success': True, 'rowid': rowid})</pre></p>
 
     <p>Almost identical to the edit() function with the following differences.  We don't pass an id on the
        url because SQLite will assign one for us.  We also use an INSERT statement (you've seen these in the
-       load_sql.py script.  Last callout is the POST HTTP verb.  Everything else is the same.</p>
+       load_sql.py script.  Another callout is the POST HTTP verb.  There is also a new concept `g.c.lastrowid`.
+       This built in SQLite method will give you the id of the item you just inserted.  We will return
+       this to help the program calling our API know which record they created.</p>
 
     <p>Let's test it.</p>
 
