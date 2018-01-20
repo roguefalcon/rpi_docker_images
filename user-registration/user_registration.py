@@ -359,4 +359,4 @@ if __name__ == "__main__":
     app.secret_key = '8sad87das87sdf87sdf87sd87fd87dsf'
     app.config['SESSION_TYPE'] = 'filesystem'
 
-    app.run(host='0.0.0.0', port=3500, debug=True)
+    app.run(host='0.0.0.0', port=3500, debug=True, threaded=True)
