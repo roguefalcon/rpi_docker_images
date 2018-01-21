@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-12 text-center'>
+      <h1>VPN Setup</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        <li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>
+        <li class='active'><a href='/rest_api'>REST API Tutorial</a></li>
+        <li class='active'><a href='/start_working'>Start Working</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-12'>
+       <h2>Table of Contents</h2>
+    </div>
+  </div>
+  <hr>
+  <div class='row'>
+    <div class='col-5'>
+      <h3>Hello World</h3>
+      <ul>
+        <li><a href='/hello_world'>Step 1 - Welcome and Terminal</a></li>
+        <li><a href='/hello_world/2'>Step 2 - Putty and SSH</a></li>
+        <li><a href='/hello_world/3'>Step 3 - Setup Flask Directories</a></li>
+        <li><a href='/hello_world/4'>Step 4 - Text Editors (Vim)</a></li>
+        <li><a href='/hello_world/5'>Step 5 - Index Page and Linux Permissions</a></li>
+        <li><a href='/hello_world/6'>Step 6 - HTML Templates</a></li>
+        <li><a href='/hello_world/7'>Step 7 - HTML and Bootstrap Primer</a></li>
+        <li><a href='/hello_world/8'>Step 8 - SQL and load_sql.py/read_sql.py</a></li>
+        <li><a href='/hello_world/9'>Step 9 - Flask Database Setup and Login</a></li>
+        <li><a href='/hello_world/10'>Step 10 - BREAD Overview and Browse Mode</a></li>
+        <li><a href='/hello_world/11'>Step 11 - BREAD Add mode</a></li>
+        <li><a href='/hello_world/12'>Step 12 - BREAD Delete mode and Logout</a></li>
+        <li><a href='/hello_world/13'>Step 13 - BREAD Edit mode</a></li>
+        <li><a href='/hello_world/14'>Step 14 - Security Enhancement</a></li>
+      </ul>
+      <hr>
+      <h3>Start Working</h3>
+      <ul>
+        <li><a href='/start_working'>Step 1 - Team Assignment</a></li>
+        <li><a href='/start_working/2'>Step 2 - Agile Overview</a></li>
+        <li><a href='/start_working/3'>Step 3 - Git Basics</a></li>
+        <li><a href='/start_working/4'>Step 4 - Project Architecture</a></li>
+        <li><a href='/start_working/5'>Step 5 - Jenkins and Production</a></li>
+      </ul>
+    </div>
+    <div class='col-1'>
+    </div>
+    <div class='col-5'>
+      <h3>Rest API</h3>
+      <ul>
+        <li><a href='/rest_api'>Step 1 - Welcome and Terminal</a></li>
+        <li><a href='/rest_api/2'>Step 2 - Putty and SSH</a></li>
+        <li><a href='/rest_api/3'>Step 3 - Setup Flask Directories</a></li>
+        <li><a href='/rest_api/4'>Step 4 - Text Editors (Vim)</a></li>
+        <li><a href='/rest_api/5'>Step 5 - Database Schema and load_sql.py</a></li>
+        <li><a href='/rest_api/6'>Step 6 - read_sql.py</a></li>
+        <li><a href='/rest_api/7'>Step 7 - __init__.py</a></li>
+        <li><a href='/rest_api/8'>Step 8 - run.py</a></li>
+        <li><a href='/rest_api/9'>Step 9 - BREAD Overview and Passenger API</a></li>
+        <li><a href='/rest_api/10'>Step 10 - Car API</a></li>
+        <li><a href='/rest_api/11'>Step 11 - Destination API</a></li>
+        <li><a href='/rest_api/12'>Step 12 - Trip API with SQL Joins</a></li>
+        <li><a href='/rest_api/13'>Step 13 - Testing an API with Bash and `curl`</a></li>
+        <li><a href='/rest_api/14'>Step 14 - Securing the API</a></li>
+      </ul>
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+<!--<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  </body>
+</html>-->
+
+{% include 'footer.html' %}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        {% if not 'backend' in request.cookies %}<li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>{% endif %}
+        {% if not 'front-end' in request.cookies %}<li class='active'><a href='/rest_api'>REST API Tutorial</a></li>{% endif %}
+        <li class='active'><a href='/start_working'>Start Working</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-1'>
+       <span class='giant'>3</span>
+    </div>
+    <div class='col-md-11'>
+      <h2>Git Basics</h2>
+
+      <p>You've now been assigned to a team, you can see on the wall there are a ton of post-it
+         notes representing work that you are supposed to do.  There are a bunch of poeple
+         that are going to work on the same code.  How do we avoid messing each other up?
+         This magic is simple.  We will use a tool called a code repository.
+         We've decided to go with the most popular one on the planet called 'Git'.
+         Let's walk through the basics.
+
+      <p>We need to setup your access to the code repository server.<p>
+
+      <p><pre class='prettyprint lang-bash'>
+ssh-keygen -t rsa
+# press enter 3 times at each prompt</pre></p>
+
+      <p>The command above will ask you which file to save your key in then it will
+         ask you twice for your password.  Just press enter to select the default
+         file and press enter two more times to leave your password blank.
+         Here is a picture of the entire process:<p>
+
+      <p><img src='/static/img/start_working/step.3.png'></p>
+
+      <p>Now we need to copy this key to the git server with the following command:</p>
+
+      <p><pre class='prettyprint lang-bash'>
+ssh-copy-id {{request.cookies.username}}@git.pyatt.lan </pre></p>
+
+      <p>A few things are going to happen.  It will copy the key and then prompt you
+         for your ssh password.  Then it will tell you to login to the server to
+         see if it worked.  Finally you will logout of the machine to get back to your server.</p>
+
+      <p><img src='/static/img/start_working/step.3.2.png'></p>
+
+      <p>If you haven't already, login to the git.pyatt.lan server and verify that it
+         <u>did not</u> ask you for a password.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+ssh {{request.cookies.username}}@git.pyatt.lan</pre></p>
+
+      <p>To logout you can type `logout` or you can press `ctrl-d`.</p>
+
+      <p>Now let's get the code repository and learn some basic git commands.<p>
+
+      <p>You've been assigned to a team (if not ask for Kenny or Stephen), the name of that
+         team closely aligns with the project you are working on.  There is a pre-created
+         code repository named the same as your group name.</p>
+
+      <p>Here is a key:</p>
+
+      <p>
+         Team Name - repo name<br/>
+         Web UI Team - web<br/>
+         <!--Web API Team - webapi<br/>-->
+         CRM UI Team - crm<br/>
+         CRM API Team - crmapi<br/>
+         Ops UI Team - ops<br/>
+         Ops API Team - opsapi<br/>
+         Mobile App Team - mobile<br/>
+         Mobile API Team - mobileapi<br/>
+      <p>
+
+      <p>From your home folder you will want to <b>`clone`</b> the git repository for your
+         project.  Here is an example if you were on the crmapi team.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+cd
+#Typing `cd` by itself on a line takes you bak to your home folder.
+
+git clone {{request.cookies.username}}@git.pyatt.lan:/srv/git/crmapi.git
+</pre></p>
+
+      <p>Notice at the end of the line there is a crmapi.git file.  Switch that out for your team's repo.</p>
+
+      <p>You should see the following:</p>
+
+      <p><img src='/static/img/start_working/step.3.3.png'></p>
+
+      <p>Now you can type `ls` and see the new repo.  Let's `cd` into the repo.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+cd crmapi
+ls</pre></p>
+
+      <p>You will see some basic files.  Nothing to crazy, the work isn't done yet. I put just
+         enough in each repo to get it started (except mobile, you guys are starting from scratch).
+         Let's start looking at some basic git commands.</p>
+
+      <p><pre class='prettyprint lang-bash'>
+# Look at the current status of your git repo
+git status
+
+# Add a file to your git repo (if git status says it's `untracked`)
+git add [filename]
+
+# Commit (save) your changes to your local repository
+git commit -am "[tweet style message about your update]"
+
+# Get all the changes your teammates have been doing
+git pull
+
+# Send your changes to the group repository server
+git push</pre></p>
+
+      <p>These git commands are in the order that you will run them as you work.  If you
+         do this in this order, and your team doesn't assign two people to work on
+         the same file at the same time you should never hit a merge conflict.
+         If you hit a merge conflict ask for a Mentor to help you.  Otherwise, you
+         will risk losing some code.</p>
+
+      <p>There was some debate around using a `branching` strategy during HackMT.  We've
+         decided not to but you should really Google `git flow branching strategy` and
+         read up on it after HackMT.</p>
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>4</span>
+    </div>
+    <div class='col-11'>
+    Step 4 is continued on the <a href='/start_working/4'>next page</a>.
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

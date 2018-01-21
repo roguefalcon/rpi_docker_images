@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>TeamKP VM Registration</title>
+
+    <!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link href="static/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+  <div class='container'>
+  <div class='row'>
+    <div class='col-md-12 text-center'>
+      <h1>Hello World Tutorial</h1>
+      {% if 'username' in request.cookies %}
+      {{request.cookies.username}}@{{request.cookies.vm_name}}
+      {% endif %}
+    </div>
+  </div>
+ <div class='row'>
+    <div class='col-md-12'>
+      <ul id="progressbar">
+        <li class='active'><a href='/'>Register</a></li>
+        <li class='active'><a href='/vpn_setup'>VPN Setup</a></li>
+        {% if not 'backend' in request.cookies %}<li class='active'><a href='/hello_world'>Hello World Tutorial</a></li>{% endif %}
+        {% if not 'front-end' in request.cookies %}<li class='active'><a href='/rest_api'>REST API Tutorial</a></li>{% endif %}
+        <li class='active'><a href='/start_working'>Start Working</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-md-1'>
+       <span class='giant'>4</span>
+    </div>
+    <div class='col-md-11'>
+       <h2>Project Architecture</h2>
+
+       <p>So what exactly are we building?</p>
+
+       <p>We are building 7 applications in the pattern of Micro-services.
+          We are building 4 different sets of applications as outlined below.
+          Each application (except Web) comes with a database, UI and API.</p>
+
+       <p><center><img src='/static/img/project_architecture.png'></center></p>
+
+       <p>We've built basic "Functional Requirements Documents" or "FRDs" on what we are
+          expecting in an MVP for each application.  This is the type of
+          documentation that you may see when working in Corporate America.</p>
+
+       <p>We also have a setup of UI Mockups for each area.</p>
+
+       <p>Download the items that impact your team:</p>
+
+       <table class="table table-bordered">
+       <thead>
+         <tr>
+           <th>Project</th>
+           <th>FRD</th>
+           <th>Mockup</th>
+           <th>Team Leader</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+            <td>
+               Web
+            </td>
+            <td>
+               <a href='https://docs.google.com/document/d/1QidyifRFoKdjUz8RcMWk5GylHD4c3UO0VPqqYXFBNWQ/edit?usp=sharing'>Google Doc</a>
+            </td>
+            <td>
+              <a href='/static/img/wires/web_index.png'><img src='/static/img/wires/thumbs/web_index.jpg'></a>
+              <a href='/static/img/wires/web_about.png'><img src='/static/img/wires/thumbs/web_about.jpg'></a>
+            </td>
+            <td>
+              Chris Ondrovic
+            </td>
+         </tr>
+         <tr>
+            <td>
+               CRM
+            </td>
+            <td>
+               <a href='https://docs.google.com/document/d/1iBPSkGoGn-o3rIzD7ntq6Eja4nZB6Dg3s9wjTCwIezQ/edit?usp=sharing'>Google Doc</a>
+            </td>
+            <td>
+              <a href='/static/img/wires/crm_login.png'><img src='/static/img/wires/thumbs/crm_login.jpg'></a>
+              <a href='/static/img/wires/crm_browse.png'><img src='/static/img/wires/thumbs/crm_browse.jpg'></a>
+              <a href='/static/img/wires/crm_details.png'><img src='/static/img/wires/thumbs/crm_details.jpg'></a>
+              <a href='/static/img/wires/crm_complaint.png'><img src='/static/img/wires/thumbs/crm_complaint.jpg'></a>
+            </td>
+            <td>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               CRM API
+            </td>
+            <td>
+               <a href='https://docs.google.com/document/d/15ntlZwzA-TD5U6N1j4hNm2iJtnK9mj9qC70W-BxLWxk/edit?usp=sharing'>Google Doc</a>
+            </td>
+            <td>N/A
+            </td>
+            <td>
+            </td>
+         </tr>
+         <tr>
+            <td>
+              Ops
+            </td>
+            <td>
+            </td>
+            <td>
+              <a href='/static/img/wires/crm_login.png'><img src='/static/img/wires/thumbs/crm_login.jpg'></a>
+              <a href='/static/img/wires/ops_browse.png'><img src='/static/img/wires/thumbs/ops_browse.jpg'></a>
+              <a href='/static/img/wires/ops_browse_2.png'><img src='/static/img/wires/thumbs/ops_browse_2.jpg'></a>
+              <a href='/static/img/wires/ops_details.png'><img src='/static/img/wires/thumbs/ops_details.jpg'></a>
+              <a href='/static/img/wires/ops_add.png'><img src='/static/img/wires/thumbs/ops_add.jpg'></a>
+            </td>
+            <td>
+            </td>
+         </tr>
+         <tr>
+            <td>
+              Ops API
+            </td>
+            <td>
+            </td>
+            <td>N/A
+            </td>
+            <td>
+            </td>
+         </tr>
+         <tr>
+            <td>
+              Mobile
+            </td>
+            <td>
+            </td>
+            <td>
+              <a href='/static/img/wires/mobile_login.png'><img src='/static/img/wires/thumbs/mobile_login.jpg'></a>
+              <a href='/static/img/wires/mobile_details.png'><img src='/static/img/wires/thumbs/mobile_details.jpg'></a>
+            </td>
+            <td>
+              Prakash Patel &amp; Neel Patel
+            </td>
+         </tr>
+         <tr>
+            <td>
+              Mobile API
+            </td>
+            <td>
+            </td>
+            <td>N/A
+            </td>
+            <td>
+              Prakash Patel &amp; Neel Patel
+            </td>
+         </tr>
+       </tbody>
+       </table>
+
+
+    </div>
+  </div>
+  <!-- HR -->
+  <div class='row'><div class='col-12'><hr/></div></div>
+  <!--/HR -->
+  <div class='row'>
+    <div class='col-1'>
+       <span class='giant'>5</span>
+    </div>
+    <div class='col-11'>
+    Step 5 is continued on the <a href='/start_working/5'>next page</a>.
+    </div>
+  </div>
+
+  <!-- End of tutorial -->
+  <div class='row'>
+    <div class='col-md-12'>
+      &nbsp;
+    </div>
+  </div>
+  </div> <!-- End container -->
+
+{% include 'footer.html' %}

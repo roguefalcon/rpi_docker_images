@@ -144,6 +144,12 @@ def backend_path():
    return resp
 
 
+@app.route("/toc")
+def toc():
+
+   return render_template('toc.html')
+
+
 @app.route("/vpn_setup")
 def vpn_setup():
 
@@ -194,12 +200,12 @@ def dashboard():
    c.execute('''SELECT name, email, username, filename FROM vpn_users''')
    users = c.fetchall()
 
-   # Get a list of the vms 
+   # Get a list of the vms
    c.execute('''SELECT name, ip, username from vms''')
    vms = c.fetchall()
 
    # Show the results
-   return render_template('dashboard.html', vms=vms, users=users) 
+   return render_template('dashboard.html', vms=vms, users=users)
 
 
 # Success Screen
@@ -224,7 +230,7 @@ def new_vm():
    # Update the local tinydb database
    db.update({'username': request.form['username'], 'password': request.form['password'], 'firstname': request.form['firstname'], 'lastname': request.form['lastname'], 'language': request.form['language']}, vms.name == vm_name)
 
-   return render_template('vm_assignment.html', vm_name=vm_name) 
+   return render_template('vm_assignment.html', vm_name=vm_name)
 
 
 # Favicon.ico ==================================================================
@@ -243,7 +249,7 @@ def robotstxt():
 @app.route('/ovpn_file', methods=['GET', 'POST'])
 def ovpn_file():
 
-   # Set the username from the cookie of the user that is logged in 
+   # Set the username from the cookie of the user that is logged in
    # I don't want to be obvious and expose other ovpn files
    filename = request.cookies.get('username') + '.ovpn'
 
