@@ -1,0 +1,47 @@
+{% include 'header.html' %}
+
+<div class="col marginTop">
+  <div class="row">
+    <div class="col">
+      <a href=''>&lt; Back to Queue</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+    <h3>{{data.name}}</h3>
+    <h5>{{data.street}} {{data.city}}, {{data.state}}, {{data.zip}}</h5>
+    <h5>{{data.phone}}</h5>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+    <form>
+    <button>Called</button>
+    <button>Scheduled Consultation</button>
+    <button>Left Message</button>
+    <button>Changed Mind</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+     <h5>Select Day</h5>
+    </div>
+    <div class="col">
+     <h5>Select Time</h5>
+     <button>12:00 PM</button>
+     <button>12:30 PM</button><br/>
+     <button>1:00 PM</button>
+     <button>2:30 PM</button>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+    <h4>Notes</h4>
+     <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}

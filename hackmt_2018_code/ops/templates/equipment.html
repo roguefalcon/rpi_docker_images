@@ -1,0 +1,35 @@
+{% include 'header.html' %}
+
+<div>
+<!--{{data[0].name}}-->
+<div class='row'>
+      <div class='col-md-12'>
+      {% if data %}
+      <table class='table'>
+      <thead>
+        <tr>
+          <th scope='col'>Name</th>
+          <th scope='col'>#</th>
+          <th scope='col'>User ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data %}
+        <tr>
+          <th scope='row'>{{item.name}}</th>
+          <td>{{item.quantity}}</td>
+          <td>{{item.crew_id}}</td>
+          <td>
+            <a class='btn btn-secondary' href='/edit/{{item.rowid}}' role='button'>Edit</a>
+            <a class='btn btn-secondary' href='/delete/{{item.rowid}}' role='button'>Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+      {% endif %}
+</div>
+
+
+
+{% include 'footer.html' %}

@@ -1,0 +1,49 @@
+{% include 'header.html' %}
+
+  <!-- Content -->
+  <div class='container'>
+    <div class='row'>
+      <div class='col-10'>
+	<img src='https://ubilabs.net/snap-2.png'>
+
+        <h1>Admin</h1>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-12'>
+      {% if data %}
+      <table class='table'>
+      <thead>
+        <tr>
+          <th scope='col'>#</th>
+          <th scope='col'>Date</th>
+          <th scope='col'>Customer</th>
+          <th scope='col'> </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data %}
+        <tr>
+          <th scope='row'>{{item.rowid}}</th>
+          <td>{{item.date_created}}</td>
+          <td>{{item.name}}</td>
+	  <td>{{item.street}}</td>
+	  <td>{{item.city}}</td>
+          <td>
+
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+      {% else %}
+	Nothing is scheduled
+      {% endif %}
+      </div>
+    </div>
+  </div>
+  <!--/Content -->
+
+
+{% include 'footer.html' %}
