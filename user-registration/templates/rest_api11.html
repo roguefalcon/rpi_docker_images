@@ -137,7 +137,7 @@ def destination_edit(destination_id):
     g.conn.commit()
 
     # Let's tell them it worked
-    return jsonify({'success': True})
+    return jsonify({'success': True, 'rowid': destination_id})
 
 
 # Insert Single Destination (Add) ===============================================
@@ -159,10 +159,16 @@ def destination_add():
                   INSERT INTO destination
                        VALUES (?, ?, ?, ?, ?)
                 ''', (street, city, state, zip_code, 1))
+
+    # Let's get the id of the item we just inserted so
+    # We can tell the user which record they created
+    rowid = g.c.lastrowid
+
+    # Save the changes to the database
     g.conn.commit()
 
     # Let's tell them it worked
-    return jsonify({'success': True})
+    return jsonify({'success': True, 'rowid': rowid})
 
 
 # Delete Single Destination (Delete) ============================================

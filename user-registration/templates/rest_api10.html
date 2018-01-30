@@ -216,7 +216,7 @@ def car_edit(car_id):
     g.conn.commit()
 
     # Let's tell them it worked
-    return jsonify({'success': True})</pre></p>
+    return jsonify({'success': True, 'rowid': car_id})</pre></p>
 
     <p>We can run it with the following</p>
 
@@ -264,10 +264,16 @@ def car_add():
                   INSERT INTO car
                        VALUES (?, ?, ?, ?, ?)
                 ''', (make, model, year, mileage, 1))
+
+    # Let's get the id of the item we just inserted so
+    # We can tell the user which record they created
+    rowid = g.c.lastrowid
+
+    # Save the changes to the database
     g.conn.commit()
 
     # Let's tell them it worked
-    return jsonify({'success': True})</pre></p>
+    return jsonify({'success': True, 'rowid': rowid})</pre></p>
 
     <p>Let's run it with the following curl command</p>
 

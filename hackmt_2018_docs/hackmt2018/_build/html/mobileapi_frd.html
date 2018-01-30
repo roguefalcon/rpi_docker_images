@@ -1,0 +1,163 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Mobile API FRD &#8212; HackMT_2018  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database Schema" href="schema.html" />
+    <link rel="prev" title="Mobile FRD" href="mobile_frd.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="schema.html" title="Database Schema"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mobile_frd.html" title="Mobile FRD"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HackMT_2018  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mobile-api-frd">
+<h1>Mobile API FRD<a class="headerlink" href="#mobile-api-frd" title="Permalink to this headline">¶</a></h1>
+<p>The Mobile API powers the Mobile app.  The mobile app will also use
+several other APIs.</p>
+<div class="section" id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h2>
+<p>Please refer to the <a class="reference internal" href="schema.html#notification-table"><span class="std std-ref">notification</span></a>, <a class="reference internal" href="schema.html#session-table"><span class="std std-ref">session</span></a>, <a class="reference internal" href="schema.html#user-table"><span class="std std-ref">user</span></a> tables.</p>
+</div>
+<div class="section" id="user-stories">
+<h2>User Stories<a class="headerlink" href="#user-stories" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>load_sql.py</li>
+<li>read_sql.py</li>
+<li>notification_browse</li>
+<li>notification_read</li>
+<li>notification_edit</li>
+<li>notification_add</li>
+<li>notification_delete</li>
+<li>session_login</li>
+<li>session_logout</li>
+<li>session_check_status</li>
+<li>user_browse</li>
+<li>user_read</li>
+<li>user_edit</li>
+<li>user_add</li>
+<li>user_delete</li>
+</ol>
+</div>
+<div class="section" id="special-instructions">
+<h2>Special Instructions<a class="headerlink" href="#special-instructions" title="Permalink to this headline">¶</a></h2>
+<p>It is probable that you will want to build an API endpoint in the mobile API
+that calls another API.  This is very easy using the Python Requests module:</p>
+<div class="highlight-rst"><div class="highlight"><pre><span></span># ----------------------------------------
+# Put this at the top of your python file
+# ----------------------------------------
+import requests
+
+# ----------------------------------------------------------------
+# Then put this in your function definition or a helper function
+# ----------------------------------------------------------------
+r = requests.get(&#39;https://[URL:PORT]/api/1.0/[ENDPOINT]&#39;)
+</pre></div>
+</div>
+<p>The documentation for this is <a class="reference external" href="http://docs.python-requests.org/en/master/user/quickstart/">available here</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="web_frd.html">Web FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webapi_frd.html">Web API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crm_frd.html">CRM FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crmapi_frd.html">CRM API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops_frd.html">Ops FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opsapi_frd.html">Ops API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mobile_frd.html">Mobile FRD</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mobile API FRD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#schema">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-stories">User Stories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#special-instructions">Special Instructions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Database Schema</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mobile_frd.html"
+                        title="previous chapter">Mobile FRD</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="schema.html"
+                        title="next chapter">Database Schema</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="schema.html" title="Database Schema"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mobile_frd.html" title="Mobile FRD"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HackMT_2018  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Kenny Pyatt.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

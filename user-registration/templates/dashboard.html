@@ -8,14 +8,15 @@
 <table border=0 cellpadding=10 cellspacing=1>
 <tr>
   <td valign='top'>
-   <h2>Users</h2>
+   <!--<h2>Users</h2>-->
 
-   <table border=1 cellpadding=5 cellspacing=1>
+   <!--<table border=1 cellpadding=5 cellspacing=1>
    <tr>
       <td>Name</td>
       <td>Email</td>
       <td>Username</td>
       <td>Filename</td>
+      <td> - </td>
    </tr>
    {% for user in users %}
    <tr>
@@ -23,27 +24,36 @@
       <td>{{user.email}}</td>
       <td>{{user.username}}</td>
       <td>{{user.filename}}</td>
+      <td>[<a href=''>Delete</a>]</td>
    </tr>
    {% endfor %}
-   </table>
-   
+   </table>-->
+
   </td>
   <td valign='top'>&nbsp;</td>
   <td valign='top'>
-   
+
    <h2>List of VMs</h2>
-   
+
    <table border=1 cellpadding=5 cellspacing=1>
    <tr>
+      <td>Name</td>
+      <td>Username</td>
+      <td>Email</td>
+      <td>Filename</td>
       <td>Server</td>
       <td>IP</td>
-      <td>User</td>
+      <td> - </td>
    </tr>
    {% for vm in vms %}
       <tr>
+        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.personname}}</td>
+        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.username}}</td>
+        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.email}}</td>
+        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.filename}}</td>
         <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.name}}</td>
         <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.ip}}</td>
-        <td {% if vm.username %} bgcolor='#4CAF50'{% endif %}>{{vm.username}}</td>
+        <td>{% if vm.username %}[<a href='/deletevm?vrowid={{vm.vmsrowid}}&vpnrowid={{vm.vpnrowid}}'>Delete</a>]{% endif %}</td>
       </tr>
    {% endfor %}
    </table>

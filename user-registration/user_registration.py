@@ -193,19 +193,86 @@ def start_working(page_id=None):
        return render_template('start_working.html')
 
 
+# Admin Dashboard of doom
 @app.route("/dashboard")
 def dashboard():
 
    # Get a list of the users registered
-   c.execute('''SELECT name, email, username, filename FROM vpn_users''')
-   users = c.fetchall()
+   #c.execute('''SELECT name, email, username, filename FROM vpn_users''')
+   #users = c.fetchall()
 
    # Get a list of the vms
-   c.execute('''SELECT name, ip, username from vms''')
+   #c.execute('''SELECT name, ip, username from vms''')
+   #vms = c.fetchall()
+
+   # Get a list of the vms
+   c.execute('''SELECT v.rowid AS vmsrowid,
+                       vpn.rowid AS vpnrowid,
+                       v.name,
+                       v.ip,
+                       v.username,
+                       vpn.name AS personname,
+                       vpn.email,
+                       vpn.filename
+                  FROM vms v, vpn_users vpn
+                 WHERE vpn.username = v.username
+              ORDER BY v.ip''')
    vms = c.fetchall()
 
    # Show the results
-   return render_template('dashboard.html', vms=vms, users=users)
+   return render_template('dashboard.html', vms=vms)
+
+
+# Delete a VM and user from the system
+@app.route("/deletevm")
+def deletevm():
+
+   # Which ones are we deleteing
+   vms_rowid = request.args.get('vrowid')
+   vpn_rowid = request.args.get('vpnrowid')
+
+   # Determine which VM we are deleting
+   c.execute('''SELECT name, ip, username FROM vms WHERE rowid = ?''', (vms_rowid, ))
+   vm = c.fetchone()
+
+   print " ==> Deleting: " + vm['name']
+
+   # Determine which ovpn user were revoking access for
+   c.execute('''SELECT username FROM vpn_users WHERE rowid = ?''', (vpn_rowid, ))
+   user = c.fetchone()
+
+   print " ==> Removing VPN Access for: " + user['username']
+
+   # Delete Entry from vms table
+   c.execute('''DELETE FROM vms WHERE rowid = ?''', (vms_rowid, ))
+
+   # Delete Entry from vpn_users table
+   c.execute('''DELETE FROM vpn_users WHERE rowid = ?''', (vpn_rowid, ))
+
+   # Shutdown and remove the VM
+   # Let's determine the IP address of this vm by DNS lookup
+   res = resolver.Resolver()
+   res.nameservers = ['192.168.1.112']
+   answers = res.query(vm['name'])
+   ip = answers[0].address
+
+   # Determine the ODROID ip address so we know which host to start the VM on.
+   odroid = ip[:-1] + "0"
+   os.system("ansible " + odroid + " -m command -a \"docker stop " + vm['name'] + "\"")
+   os.system("ansible " + odroid + " -m command -a \"docker rm " + vm['name'] + "\"")
+
+   # Revoke VPN access
+   command = "/usr/local/bin/pivpn revoke {}".format(quote(user['username']))
+   subprocess.call(shlex.split(command), shell=False)
+
+   # We need to put the VM back in the system
+   c.execute('''INSERT INTO vms VALUES (?, ?, ?)''', (vm['name'], ip, ''))
+
+   # Commit database changes
+   conn.commit()
+
+   # Back to the dashboard
+   return redirect(url_for('dashboard'))
 
 
 # Success Screen
@@ -365,4 +432,4 @@ if __name__ == "__main__":
     app.secret_key = '8sad87das87sdf87sdf87sd87fd87dsf'
     app.config['SESSION_TYPE'] = 'filesystem'
 
-    app.run(host='0.0.0.0', port=3500, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=3500, debug=False, threaded=True)

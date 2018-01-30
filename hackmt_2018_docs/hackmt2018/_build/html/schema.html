@@ -1,0 +1,614 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Database Schema &#8212; HackMT_2018  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Mobile API FRD" href="mobileapi_frd.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mobileapi_frd.html" title="Mobile API FRD"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HackMT_2018  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="database-schema">
+<h1>Database Schema<a class="headerlink" href="#database-schema" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="activity">
+<span id="activity-table"></span><h2><strong>activity</strong><a class="headerlink" href="#activity" title="Permalink to this headline">¶</a></h2>
+<p>This table tracks the activity of todo items and relates back to it (FK).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>todo_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>note</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>status_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>employee_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="crew">
+<span id="crew-table"></span><h2><strong>crew</strong><a class="headerlink" href="#crew" title="Permalink to this headline">¶</a></h2>
+<p>The crew table tracks the various ‘crews’ of people and equipment.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="crew-member">
+<span id="id1"></span><h2><strong>crew_member</strong><a class="headerlink" href="#crew-member" title="Permalink to this headline">¶</a></h2>
+<p>This is a join table between the employee table and the crew table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>crew_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>employee_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="customer">
+<span id="customer-table"></span><h2><strong>customer</strong><a class="headerlink" href="#customer" title="Permalink to this headline">¶</a></h2>
+<p>This holds both prospects and customers</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>email</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>street</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>city</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>state</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>zip</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>phone</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>status_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="employee">
+<span id="employee-table"></span><h2><strong>employee</strong><a class="headerlink" href="#employee" title="Permalink to this headline">¶</a></h2>
+<p>This table holds information about the hero employees of Lawnbots</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>email</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>phone</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>password</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>message</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>status_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="equipment">
+<span id="equipment-table"></span><h2><strong>equipment</strong><a class="headerlink" href="#equipment" title="Permalink to this headline">¶</a></h2>
+<p>This is a list of equipment and which crew it’s assigned to</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>quantity</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>crew_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>active</td>
+<td>integer</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="notification">
+<span id="notification-table"></span><h2><strong>notification</strong><a class="headerlink" href="#notification" title="Permalink to this headline">¶</a></h2>
+<p>This table holds notifications for display on the mobile app.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>type</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>note</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>customer_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>employee_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>status_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="schedule">
+<span id="schedule-table"></span><h2><strong>schedule</strong><a class="headerlink" href="#schedule" title="Permalink to this headline">¶</a></h2>
+<p>This table holds the operations employee schedule.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>type</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>customer_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>employee_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>schedule_date</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="session">
+<span id="session-table"></span><h2><strong>session</strong><a class="headerlink" href="#session" title="Permalink to this headline">¶</a></h2>
+<p>This table holds the sessions.  If they have an entry in here and it’s less than
+1 hour old, then they are logged in.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>user_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="status">
+<span id="status-table"></span><h2><strong>status</strong><a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
+<p>This table holds the statuses for several different applications.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>name</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>description</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>status_group</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+<p>There are going to be a bunch of status values here:</p>
+<ul class="simple">
+<li><em>Activity Statuses</em><ul>
+<li>Filled out RFQ - Customer filled out the RFQ</li>
+<li>Meeting Scheduled - We’ve scheduled the appointment with the customer</li>
+<li>Called - Customer has been contacted</li>
+<li>Left Message - Got the voicemail and left a message</li>
+<li>Changed Mind - Customer has decided not to use the service</li>
+<li>Complaint Processed - Customer complaint has been processed</li>
+</ul>
+</li>
+<li><em>Customer Statuses</em><ul>
+<li>Prospect - Customer has requested a quote</li>
+<li>Estimate - Operations Team has delivered an estimate</li>
+<li>Contract - Customer has accepted the estimate and signed the contract</li>
+</ul>
+</li>
+<li><em>Employee Statuses</em><ul>
+<li>Employeed - Employee is still working here</li>
+<li>Fired - We mutually decided that it was time for you to leave</li>
+<li>Leave - Employee has taken a leave of abscense</li>
+</ul>
+</li>
+<li><em>Notification Statuses</em><ul>
+<li>Queued - Message read to be sent</li>
+<li>Sent - Message has been sent</li>
+<li>Read - Message has been read by customer</li>
+</ul>
+</li>
+<li><em>Todo Statuses</em><ul>
+<li>New - This Todo hasn’t been looked at yet (read page not visited)</li>
+<li>Assigned - This Todo is assigned to a CSR</li>
+<li>Locked - This Todo is locked by a CSR</li>
+<li>Completed - This Todo is completed</li>
+<li>Closed - This Todo was closed without work being done</li>
+</ul>
+</li>
+<li><em>User Statuses</em><ul>
+<li>Disabled - User account is disabled.  User can’t login</li>
+<li>Enabled - User account is enabled and can login</li>
+<li>New - New account</li>
+<li>Admin - This account has special privileges</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="todo">
+<span id="todo-table"></span><h2><strong>todo</strong><a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+<p>This is the todo list for the CRMs.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>type</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>customer_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>status_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>type</strong> field should have one of the following values:</p>
+<ul class="simple">
+<li>RFQ</li>
+<li>Complaint</li>
+</ul>
+</div>
+<div class="section" id="user">
+<span id="user-table"></span><h2><strong>user</strong><a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rowid</td>
+<td>(provided by SQLite)</td>
+</tr>
+<tr class="row-odd"><td>email</td>
+<td>text</td>
+</tr>
+<tr class="row-even"><td>password</td>
+<td>text</td>
+</tr>
+<tr class="row-odd"><td>employee_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>customer_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>status_id</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td>active</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td>date_created</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Each row in the <strong>user</strong> table should only have one of the following: <strong>employee_id</strong> or <strong>customer_id</strong>.  It should never have both.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="web_frd.html">Web FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webapi_frd.html">Web API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crm_frd.html">CRM FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crmapi_frd.html">CRM API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops_frd.html">Ops FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opsapi_frd.html">Ops API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mobile_frd.html">Mobile FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mobileapi_frd.html">Mobile API FRD</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database Schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#activity"><strong>activity</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#crew"><strong>crew</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#crew-member"><strong>crew_member</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customer"><strong>customer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#employee"><strong>employee</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#equipment"><strong>equipment</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notification"><strong>notification</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#schedule"><strong>schedule</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#session"><strong>session</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#status"><strong>status</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#todo"><strong>todo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user"><strong>user</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mobileapi_frd.html"
+                        title="previous chapter">Mobile API FRD</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mobileapi_frd.html" title="Mobile API FRD"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HackMT_2018  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Kenny Pyatt.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,209 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Web FRD &#8212; HackMT_2018  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Web API FRD" href="webapi_frd.html" />
+    <link rel="prev" title="Welcome to Lawnbots HackMT 2018 Schema Documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="webapi_frd.html" title="Web API FRD"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Lawnbots HackMT 2018 Schema Documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HackMT_2018  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="web-frd">
+<h1>Web FRD<a class="headerlink" href="#web-frd" title="Permalink to this headline">¶</a></h1>
+<p>The website is designed to be the customer facing portal to the Lawnbots brand.  The wireframes speak for themselves regarding the design elements.  The FRD will describe the function.</p>
+<div class="section" id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h2>
+<p>We will use the <strong>user</strong> table and <strong>sessions</strong> table.</p>
+<p>See <a class="reference internal" href="schema.html#user-table"><span class="std std-ref">user</span></a> and <a class="reference internal" href="schema.html#session-table"><span class="std std-ref">session</span></a>.</p>
+</div>
+<div class="section" id="user-stories">
+<h2>User Stories<a class="headerlink" href="#user-stories" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Create load_sql.py (refer to tutorial: <a class="reference external" href="http://dev.kennypyatt.com:3500/hello_world/8">Hello World - Step 8</a>)</p>
+</li>
+<li><p class="first">Create read_sql.py</p>
+</li>
+<li><p class="first">Create web.py (refer to tutorial: <a class="reference external" href="http://dev.kennypyatt.com:3500/hello_world/5">Hello World - Step 5</a>)</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Index function</p>
+</li>
+<li><p class="first">About function</p>
+</li>
+<li><p class="first">Pricing function</p>
+</li>
+<li><p class="first">FAQ function</p>
+</li>
+<li><p class="first">Schedule function</p>
+</li>
+<li><p class="first">Save RFQ form function</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Save to Database</li>
+<li>Make API Call to CRM API (see special instructions below).</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Create index.html</p>
+</li>
+<li><p class="first">Create about.html</p>
+</li>
+<li><p class="first">Create pricing.html</p>
+</li>
+<li><p class="first">Create faq.html</p>
+</li>
+<li><p class="first">Create schedule.html</p>
+</li>
+</ol>
+</div>
+<div class="section" id="special-instructions">
+<h2>Special Instructions<a class="headerlink" href="#special-instructions" title="Permalink to this headline">¶</a></h2>
+<p>For the <strong>Save RFQ form function</strong> you are going to need to add an API call to the CRM API:</p>
+<div class="highlight-rst"><div class="highlight"><pre><span></span># -------------------------------------------------------------------------
+#  Add these lines to the top of your web.py file
+# -------------------------------------------------------------------------
+
+import requests
+import os
+
+# -------------------------------------------------------------------------
+#   Add code similar to this in your save function
+# -------------------------------------------------------------------------
+
+# Set development values
+APP_URL = &#39;localhost&#39;
+APP_PORT = &#39;5001&#39;
+
+# Now let&#39;s see if production wants override them
+if &#39;APP_PORT&#39; in os.environ:
+    APP_PORT = int(os.environ[&#39;APP_PORT&#39;])
+
+if &#39;APP_URL&#39; in os.environ and os.environ[&#39;APP_DEBUG&#39;] == &#39;0&#39;:
+    APP_APP = str(os.environ[&#39;APP_URL&#39;])
+
+# A best practice to make sure they aren&#39;t already added
+# But we&#39;d need to get the CRM API team to let us search their api
+# r = requests.get(&#39;http://&#39; + APP_URL + &#39;:&#39; + APP_PORT + &#39;/api/1.0/customer?name=&#39; + customer_name, data=data)
+
+# Let&#39;s add data to the CRM customer table via the CRM API
+data = {&#39;key&#39;: &#39;value&#39;}
+r = requests.post(&#39;http://&#39; + APP_URL + &#39;:&#39; + APP_PORT + &#39;/api/1.0/customer&#39;, data=data)
+
+# Let&#39;s make the call to the CRM API and add data to the todo so the CSRs know to do this
+data = {&#39;key&#39;: &#39;value&#39;}
+r = requests.post(&#39;http://&#39; + APP_URL + &#39;:&#39; + APP_PORT + &#39;/api/1.0/todo&#39;, data=data)
+</pre></div>
+</div>
+<p>This example code would send the data to the CRM API for a customer and a todo item in two separate API calls.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Web FRD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#schema">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-stories">User Stories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#special-instructions">Special Instructions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="webapi_frd.html">Web API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crm_frd.html">CRM FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crmapi_frd.html">CRM API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ops_frd.html">Ops FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opsapi_frd.html">Ops API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mobile_frd.html">Mobile FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mobileapi_frd.html">Mobile API FRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Database Schema</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Lawnbots HackMT 2018 Schema Documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="webapi_frd.html"
+                        title="next chapter">Web API FRD</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="webapi_frd.html" title="Web API FRD"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Lawnbots HackMT 2018 Schema Documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">HackMT_2018  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Kenny Pyatt.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>
