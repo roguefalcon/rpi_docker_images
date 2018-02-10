@@ -52,7 +52,7 @@
 
     <p>Let's create the car.py file in the myapp directory</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 vim myapp/car.py</pre></p>
 
     <p>Go into insert mode by pressing 'i' and then paste the following</p>
@@ -113,12 +113,12 @@ from myapp import car</pre></p>
 
     <p>Now we can test it with the following:</p>
 
-<p><pre class='prettyprint lang-bash'>
+<p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
 
     <p>We should see a list of cars from the database.</p>
 
-    <p><pre class='prettyprint lang-javascript'>
+    <p><pre class='prettyprint lang-javascript' style='background-color: #012'>
 [
   {
     "active": 1,
@@ -170,12 +170,12 @@ def car_read(car_id):
 
     <p>Save the file and test with the following command.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car/2</pre></p>
 
     <p>You should see the following</p>
 
-    <p><pre class='prettyprint lang-javascript'>
+    <p><pre class='prettyprint lang-javascript' style='background-color: #012'>
 [
   {
     "active": 1,
@@ -220,15 +220,15 @@ def car_edit(car_id):
 
     <p>We can run it with the following</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X PUT -d make=Uber -d model=Racer -d year=2018 -d mileage=1234  http://{{request.cookies.vm_name}}:5001/api/1.0/car/2</pre></p>
 
     <p>Now we can verify it worked with this command.  We could also just run the read_sql.py.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car/2</pre></p>
 
-    <p><pre class='prettyprint lang-javascript'>
+    <p><pre class='prettyprint lang-javascript' style='background-color: #012'>
 [
   {
     "active": 1,
@@ -277,12 +277,12 @@ def car_add():
 
     <p>Let's run it with the following curl command</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X POST -d make=Uber -d model=Volvo -d year=2018 -d mileage=1234 http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
 
     <p>And verify it with the curl browse command:</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
 
     <p>You should see the Uber Volvo at the bottom of the list.  Mine had a rowid of 4.</p>
@@ -306,12 +306,12 @@ def car_delete(car_id):
 
     <p>Same pattern, let's run it via curl:</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/car/4</pre></p>
 
     <p>And verify it.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/car</pre></p>
 
     <p>If you haven't noticed, in the read_sql.py results the record is still there with active set to 0.

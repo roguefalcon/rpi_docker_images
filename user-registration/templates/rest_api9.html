@@ -119,7 +119,7 @@
      <p>That is enough lecture time, Let's start coding! Let's make a file named passenger.py in the folder myapp.</p>
 
 
-     <p><pre class='prettyprint lang-bash'>
+     <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 vim myapp/passenger.py
 </pre></p>
 
@@ -176,7 +176,7 @@ def passenger_browse():
         We will use our run.py script to run the application. Since we didn't chmod it in step
         8 let's chmod it now and then run it.  You can use the following commands.</p>
 
-     <p><pre class='prettyprint lang-bash'>
+     <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 cd
 cd rest_api
 chmod u+x run.py
@@ -294,7 +294,7 @@ def passenger_browse():</pre></p>
        can directly import.  It is very lightweight (especially compared to XML) and developer readable (most humans
        can't read JSON but most developers can).  In this case the JSON should look like this:</p>
 
-     <p><pre class='prettyprint lang-json'>
+     <p><pre class='prettyprint lang-json' style='background-color: #012'>
 [
   {
     "active": 1,
@@ -325,7 +325,7 @@ def passenger_browse():</pre></p>
 
     <p>We will use the bash command `curl` to check our URL.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
 
     <p>You should have seen the same thing as the JSON above.  The -X argument sends
@@ -358,7 +358,7 @@ def passenger_read(passenger_id):
     <p>Save the file by pressing `:w` and watch it reload in the terminal where flask is running.
        Let's test our new endpoint.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/1</pre></p>
 
     <p>Notice the 1 at the end of the line.  We are asking for the record with id 1.  In this case that
@@ -367,7 +367,7 @@ curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/1</pre></p
 
     <p>When you run that command You should see a line in the flask window like this (without color):</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 10.8.0.1 - - [14/Jan/2018 16:18:34] "GET /api/1.0/passenger/1 HTTP/1.1" 200 -</pre></p>
 
     <p>At the end of that line there is a 200.  That 200 means everything is OK.  If you see
@@ -375,7 +375,7 @@ curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/1</pre></p
 
     <p>The output from the curl command should look like this:</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 {
   "active": 1,
   "name": "Keanu Reeves",
@@ -466,13 +466,13 @@ def passenger_edit(passenger_id):</pre></p>
 
     <p>Let's test our edit with curl:</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X PUT -d 'name=Bilbo Baggins' http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
 
     <p>If this works we will change Laurence Fishburne's name to Bilbo Baggins.  He will love that.  You can see
        the updated record by either running ./read_sql.py or by using the following curl command.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
 
     <p>Only two more functions to go.</p>
@@ -518,14 +518,14 @@ def passenger_add():
 
     <p>Let's test it.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X POST -d 'name=Hugo Weaving' http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
 
     <p>This movie needed a bad guy so adding Hugo Smith (Agent Smith) felt right.</p>
 
     <p>You can verify it worked by running ./read_sql.py or the following CURL command (calls Browse)</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
 
     <p>Let's add our final endpoint for the Passenger API.  Please paste the following into the bottom of
@@ -561,18 +561,18 @@ def passenger_delete(passenger_id):
 
     <p>Let's test our delete() by deleting Bilbo.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
 
     <p>Like before you can verify it worked by running ./read_sql.py or the following CURL command (calls Browse)</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger</pre></p>
 
     <p>Now if you try to get record 2 you'll get a `null` response.  Cause it's not technically
        there any more.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl -X GET http://{{request.cookies.vm_name}}:5001/api/1.0/passenger/2</pre></p>
 
     <p>Good Job!  This was a big step and you hopefully are much smarter than you were at the top

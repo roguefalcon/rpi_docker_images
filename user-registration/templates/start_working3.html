@@ -58,7 +58,7 @@
 
       <p>We need to setup your access to the code repository server.<p>
 
-      <p><pre class='prettyprint lang-bash'>
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 ssh-keygen -t rsa
 # press enter 3 times at each prompt</pre></p>
 
@@ -71,7 +71,7 @@ ssh-keygen -t rsa
 
       <p>Now we need to copy this key to the git server with the following command:</p>
 
-      <p><pre class='prettyprint lang-bash'>
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 ssh-copy-id {{request.cookies.username}}@git.pyatt.lan </pre></p>
 
       <p>A few things are going to happen.  It will copy the key and then prompt you
@@ -83,10 +83,14 @@ ssh-copy-id {{request.cookies.username}}@git.pyatt.lan </pre></p>
       <p>If you haven't already, login to the git.pyatt.lan server and verify that it
          <u>did not</u> ask you for a password.</p>
 
-      <p><pre class='prettyprint lang-bash'>
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 ssh {{request.cookies.username}}@git.pyatt.lan</pre></p>
 
-      <p>To logout you can type `logout` or you can press `ctrl-d`.</p>
+      <p>You should have seen it successfully login to the git server.  If you didn't then you have an issue and need
+         to talk to a mentor.  To logout you can type `logout` or you can press `ctrl-d`.</p>
+
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
+ctrl-d</pre></p>
 
       <p>Now let's get the code repository and learn some basic git commands.<p>
 
@@ -111,7 +115,7 @@ ssh {{request.cookies.username}}@git.pyatt.lan</pre></p>
       <p>From your home folder you will want to <b>`clone`</b> the git repository for your
          project.  Here is an example if you were on the crmapi team.</p>
 
-      <p><pre class='prettyprint lang-bash'>
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 cd
 #Typing `cd` by itself on a line takes you bak to your home folder.
 
@@ -126,7 +130,7 @@ git clone {{request.cookies.username}}@git.pyatt.lan:/srv/git/crmapi.git
 
       <p>Now you can type `ls` and see the new repo.  Let's `cd` into the repo.</p>
 
-      <p><pre class='prettyprint lang-bash'>
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 cd crmapi
 ls</pre></p>
 
@@ -134,7 +138,7 @@ ls</pre></p>
          enough in each repo to get it started (except mobile, you guys are starting from scratch).
          Let's start looking at some basic git commands.</p>
 
-      <p><pre class='prettyprint lang-bash'>
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 # Look at the current status of your git repo
 git status
 

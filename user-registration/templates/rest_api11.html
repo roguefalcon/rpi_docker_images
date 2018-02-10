@@ -203,7 +203,7 @@ from myapp import destination</pre></p>
 
     <p>Run the following commands one at a time and verify it did what you expected.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl http://{{request.cookies.vm_name}}:5001/api/1.0/destination
 curl -X POST -d 'street=1234 Main Street' -d city=Hollywood -d state=CA -d zip_code=90028 http://{{request.cookies.vm_name}}:5001/api/1.0/destination
 curl http://{{request.cookies.vm_name}}:5001/api/1.0/destination/4

@@ -160,13 +160,13 @@ from myapp import trip</pre></p>
 
     <p>Now we can test this new endpoint and see the SQL statement in action.  Let's use our trusty friend `curl`.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip</pre></p>
 
     <p>You can see in the results that it's joined all the values so we are looking at the data
        the user will want to see.</p>
 
-    <p><pre class='prettyprint lang-javascript'>
+    <p><pre class='prettyprint lang-javascript' style='background-color: #012'>
 [
   {
     "city": "Los Angeles",
@@ -242,7 +242,7 @@ def trip_read(trip_id):
 
     <p>We can test it with /trip/1 via curl.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 curl http://{{request.cookies.vm_name}}:5001/api/1.0/trip/1</pre></p>
 
     <p>You should see the data for a single trip.</p>
@@ -318,7 +318,7 @@ def trip_add():
 
     <p>Now we can test the edit and add functions via curl.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 # Let's run the load_sql.py again to put things back to our orignal values
 ./load_sql.py
 
@@ -354,7 +354,7 @@ def trip_delete(trip_id):
 
     <p>Save and test</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 # Delete
 curl -X DELETE http://{{request.cookies.vm_name}}:5001/api/1.0/trip/4
 

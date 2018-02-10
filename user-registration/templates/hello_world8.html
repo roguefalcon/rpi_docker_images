@@ -41,7 +41,7 @@
        as well as give us some visibility into the current state of the database.  First we are going to create
        load_sql.py in our hello_world folder.</p>
 
-    <p><pre class='prettyprint'>
+    <p><pre class='prettyprint' style='background-color: #012'>
 vim load_sql.py</pre></p>
 
     <p>Now put the following in the file and we will talk through what it does later in this step.</p>
@@ -79,12 +79,12 @@ conn.commit()
 
     <p>Save and exit the file (':wq').  We can't forget to change the permissions.</p>
 
-    <p><pre class='prettyprint'>
+    <p><pre class='prettyprint' style='background-color: #012'>
 chmod u+x load_sql.py</pre></p>
 
     <p>Now we can run it with the ./ trick</p>
 
-    <p><pre class='prettyprint'>
+    <p><pre class='prettyprint' style='background-color: #012'>
 ./load_sql.py</pre></p>
 
     <p>This script runs 3 SQL statements using the python version of SQLite v3.  The actual
@@ -167,7 +167,7 @@ conn.commit()</pre></p>
 
     <p>Now let's make a script that will read the database and print it out.  We will create read_sql.py in the same folder.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 vim read_sql.py</pre></p>
 
     <p>Paste the following code into the file:</p>
@@ -209,13 +209,13 @@ for user in users:
        or more) this might not be a good idea. For the Hack-a-thon it will be fine.  Let's run it and see
        what happens.</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 chmod u+x read_sql.py
 ./read_sql.py</pre></p>
 
     <p>This was the output I saw</p>
 
-    <p><pre class='prettyprint lang-bash'>
+    <p><pre class='prettyprint lang-bash' style='background-color: #012'>
 ==&gt; Favorite Colors
 ==&gt; Users
 ('asdf', b'$2b$12$6qZXk96tEbJQv6DVa7G4jeYdhNFwAUnPaNwUUDOnLRMLzvSZuC.jS')</pre></p>
