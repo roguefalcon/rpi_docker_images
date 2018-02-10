@@ -1,0 +1,13 @@
+
+" Debian tells me I need to keep this line
+runtime! debian.vim
+
+" This makes the syntax highlighting the same as the tutorial
+syntax on
+colo kenny
+
+" Don't think I need this but it's in the file I copied from
+if filereadable("/etc/vim/vimrc.local")
+  source /etc/vim/vimrc.local
+endif
+
