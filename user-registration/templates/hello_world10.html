@@ -30,8 +30,8 @@
     <div class='col-11'>
       <p>You are in the final stretch of the Hello World tutorial.  You've already learned a ton.
          Good news is that we are going to continue to learn!  The new concept that I want to introduce
-         is the B.R.E.A.D. Application.  In some circles they call this the C.R.U.D. application.  I don't like
-         to call things that I build CRUD.</p>
+         is the B.R.E.A.D. Application.  In some circles they call this the C.R.U.D. application.  Personally,
+         I don't like to call things that I build CRUD.</p>
 
       <p>B.R.E.A.D. stands for:</p>
 
@@ -187,7 +187,12 @@ vim templates/browse.html</pre></p>
          on how to use our software.  By adding a sentence and a link in the `else` section we make the
          users life a little easier by showing them how to add the very first record.</p>
 
-      <p>Now we need to make the header.html and footer.html.  Here is the code for the header.html:</p>
+      <p>Now we need to make the header.html and footer.html.</p>
+
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
+vim templates/header.html</pre></p>
+
+      <p>Here is the code for the header.html:</p>
 
       <p><pre class='prettyprint lang-html'>
 &lt;!DOCTYPE html&gt;
@@ -206,8 +211,11 @@ vim templates/browse.html</pre></p>
   &lt;/head&gt;
   &lt;body&gt;</pre></p>
 
-      <p>That code should look familiar because it is at the top of your index.html page.  Put the following in the 
+      <p>That code should look familiar because it is at the top of your index.html page.  Put the following in the
          footer.html:</p>
+
+      <p><pre class='prettyprint lang-bash' style='background-color: #012'>
+vim templates/footer.html</pre></p>
 
       <p><pre class='prettyprint lang-html'>
   &lt;!-- Javascript --&gt;

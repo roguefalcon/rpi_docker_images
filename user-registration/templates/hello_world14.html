@@ -33,7 +33,7 @@
        we didn't put in any logic to force the user to go to the login screen if they aren't logged
        in.  We need to add that layer of security!</p>
 
-    <p>To see what I mean click the `logout` button then visit <a href=='http://{{request.cookies.vm_name}}/browse'>http://{{request.cookies.vm_name}}/browse</a></p>
+    <p>To see what I mean click the `logout` button then visit <a href='http://{{request.cookies.vm_name}}:5000/browse' target="_blank">http://{{request.cookies.vm_name}}:5000/browse</a></p>
     <p>Oops!  Luckily Python Flask offers a simple solution to this problem.  There is an @app.before_request
        function that will allow you to run code before any other function on every single browser request.</p>
 

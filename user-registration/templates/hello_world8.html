@@ -87,6 +87,9 @@ chmod u+x load_sql.py</pre></p>
     <p><pre class='prettyprint' style='background-color: #012'>
 ./load_sql.py</pre></p>
 
+    <p><i>Hint: The first time you run load_sql.py it will complain because it's trying to reset
+          the database but it's not there to reset.  It still runs and works correctly.</i></p>
+
     <p>This script runs 3 SQL statements using the python version of SQLite v3.  The actual
        database is stored in the file sql.db.  Let's look at the file and discuss the parts.
     </p>

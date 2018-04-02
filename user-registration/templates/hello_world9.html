@@ -60,7 +60,7 @@ conn.row_factory = lambda c, r: dict([(col[0], r[idx]) for idx, col in enumerate
 c = conn.cursor()</pre></p>
 
     <p>We are doing things similar to the read_sql.py and load_sql.py with a few differences.  In the first line
-       we've hadded the `check_same_thread=False` which will allow SQLite to run in flask in a manner that
+       we've added the `check_same_thread=False` which will allow SQLite to run in flask in a manner that
        is Thread safe.  The Thread Safe topic is to big for this tutorial.  Feel free to ask Kenny.</p>
 
     <p>The conn.row_factory line is advanced Python which slightly violates the `readable` rule.  The comment
@@ -74,6 +74,10 @@ c = conn.cursor()</pre></p>
 
     <p>We need to rename the hello() function to be index() so our program will make more sense.</p>
     <p><pre class='prettyprint lang-python'>
+# Change this line
+def hello():
+
+# To this
 def index():</pre></p>
 
     <p>Paste this after the return line in the index() function.  I leave two empty lines between functions.</p>
@@ -175,7 +179,7 @@ if __name__ == "__main__":
     app.secret_key = 'Ssa0dfloi30s9adflkj3/{}asdf9#@'
     app.config['SESSION_TYPE'] = 'filesystem'
 
-    app.run(host='0.0.0.0', port=5000, debug=True)</pre></p>
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)</pre></p>
 
     <p>We are telling Flask Sessions to use the file system to store it's state and we are setting up a secret_key
        that will allow for encryption.  In order to make your app secure, you need to type random characters into
@@ -190,7 +194,7 @@ if __name__ == "__main__":
           <li>Click the Login Button without entering anything</li>
           <li>Enter a user without a password and click the Login Button</li>
           <li>Enter an incorrect username and password</li>
-          <li>Enter the correct username and password (asdf/asdf) [Hint: this will error]</li>
+          <li>Enter the correct username and password (asdf/asdf) [<i>Hint: this will error. See below. </i>]</li>
        </ol>
     </p>
 
