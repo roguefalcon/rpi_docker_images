@@ -1,10 +1,14 @@
 FROM kprpi
 
-#RUN apt-get update && apt-get upgrade -y
-RUN apt-get update
-
 # Run the debian packages we need
-RUN apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd python3 python3-pip python3-dev libffi-dev sqlite3 python3-setuptools nano wget
+RUN apt-get update && apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd python3 python3-pip python3-dev libffi-dev sqlite3 python3-setuptools nano wget apt-transport-https ca-certificates curl gnupg2 software-properties-common
+
+# We are setting up Docker inside of a Docker contianer to teach docker
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+    apt-key fingerprint 0EBFCD88 && \
+    echo "deb [arch=armhf] https://download.docker.com/linux/debian \
+         $(lsb_release -cs) stable" |     tee /etc/apt/sources.list.d/docker.list
+    apt-get update && apt-get install docker-ce
 
 # Add the python3 packages we need
 RUN pip3 install wheel flask bcrypt flake8
@@ -13,7 +17,7 @@ RUN pip3 install wheel flask bcrypt flake8
 RUN mkdir /var/run/sshd
 
 # Create a backdoor user
-RUN useradd -m -p paUD.XF6AT3SA -s /bin/bash kp
+#RUN useradd -m -p paUD.XF6AT3SA -s /bin/bash kp
 
 # Custom Configs for HackMT VMs
 # We will setup SSH, PAM, LDAP, etc.
@@ -36,7 +40,7 @@ COPY vimrc /etc/vim/vimrc
 RUN pam-auth-update --force
 
 # We will expose other ports with the run command
-# We always want this port
+# but we always want this port
 EXPOSE 22
 
 CMD /tmp/start.sh
