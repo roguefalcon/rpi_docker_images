@@ -290,7 +290,7 @@ $servers->setValue('server','name','KP OpenLDAP');
    'ldaps://ldap.example.com/',
    'ldapi://%2fusr%local%2fvar%2frun%2fldapi'
            (Unix socket at /usr/local/var/run/ldap) */
-$servers->setValue('server','host','192.168.1.112');
+$servers->setValue('server','host','10.8.0.3');
 
 /* The port your LDAP server listens on (no quotes). 389 is standard. */
 // $servers->setValue('server','port',389);

@@ -5,7 +5,7 @@ FROM alpine
 ENV OPENLDAP_VERSION 2.4.44-r0
 
 RUN  apk update \
-  && apk add openldap openldap-back-mdb \
+  && apk add openldap openldap-back-mdb openvpn \
   && rm -rf /var/cache/apk/*
 
 VOLUME ["/etc/openldap-dist", "/var/lib/openldap"]
@@ -21,6 +21,8 @@ RUN touch /run/openldap/slapd.args
 RUN chmod a+rw /run/openldap/slapd.args
 COPY slapd.conf /etc/openldap/slapd.conf
 COPY slapd.ldif /etc/openldap/slapd.ldif
+COPY ldap.ovpn /ldap.ovpn
+COPY base.ldif /base.ldif
 
 EXPOSE 389
 
