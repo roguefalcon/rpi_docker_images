@@ -1,21 +1,21 @@
 [2J[;H
-  _____       _   _                  __      ____  __
- |  __ \     | | | |                 \ \    / /  \/  |
- | |__) |   _| |_| |__   ___  _ __    \ \  / /| \  / |
- |  ___/ | | | __| '_ \ / _ \| '_ \    \ \/ / | |\/| |
- | |   | |_| | |_| | | | (_) | | | |    \  /  | |  | |
- |_|    \__, |\__|_| |_|\___/|_| |_|     \/   |_|  |_|
-         __/ |
-        |___/
+
+    ____              __  __  ____           ______           _       _
+   / __ \__  ______ _/ /_/ /_/ __ \___ _   _/_  __/________ _(_)___  (_)___  ____ _
+  / /_/ / / / / __ `/ __/ __/ / / / _ \ | / // / / ___/ __ `/ / __ \/ / __ \/ __ `/
+ / ____/ /_/ / /_/ / /_/ /_/ /_/ /  __/ |/ // / / /  / /_/ / / / / / / / / / /_/ /
+/_/    \__, /\__,_/\__/\__/_____/\___/|___//_/ /_/   \__,_/_/_/ /_/_/_/ /_/\__, /
+      /____/                                                              /____/
 -------------------------------------------------------------------------------
+
 Welcome to your Personal Develepment Virtual Machine!
 
 This is a Python VM.  There are many like it, but this one is yours.
 Be kind to your VM and it will treat you well.  If you are not kind to
-your VM please email vm_support@kennypyatt.com.
+your VM please email vm_support@pyattdevtraining.com.
 
-If you have questions feel free to ask in the forums
-or on the slack channel.
+If you have questions feel free to ask in the forums.
+
 --------------------------------------------------------------------------------
 
 Note: Don't do anything illegal from this VM or we will turn you

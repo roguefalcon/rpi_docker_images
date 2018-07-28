@@ -18,6 +18,7 @@ hi Constant     term=underline  ctermfg=Magenta         guifg=Magenta
 hi Special      term=bold       ctermfg=DarkMagenta     guifg=Red
 hi Identifier   term=underline  cterm=bold              ctermfg=Cyan guifg=#40ffff
 hi Statement                    ctermfg=LightRed
+hi Decorator                    ctermfg=LightBlue
 hi Keyword      term=bold       ctermfg=LightRed        gui=bold        guifg=#aa4444
 hi PreProc      term=underline  ctermfg=LightRed        guifg=#ff80ff
 hi Type         term=underline  ctermfg=LightGreen      guifg=#60ff60   gui=bold

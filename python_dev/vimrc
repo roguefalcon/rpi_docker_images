@@ -1,9 +1,21 @@
-
 " Debian tells me I need to keep this line
 runtime! debian.vim
 
-" This makes the syntax highlighting the same as the tutorial
+set mouse=v
 syntax on
+
+" Show trailing whitespace:
+:highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+:match ExtraWhitespace /\s\+$/
+
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+filetype indent off
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" This makes the syntax highlighting the same as the tutorial
 colo kenny
 
 " Don't think I need this but it's in the file I copied from

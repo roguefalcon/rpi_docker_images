@@ -1,6 +1,8 @@
 FROM kprpi
 
-RUN apt-get -y update && apt-get -y upgrade
+RUN echo "deb http://mirrordirector.raspbian.org/raspbian/ jessie main contrib non-free rpi" >> /etc/apt/sources.list
+
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get -y install lighttpd php5-cgi php5 dokuwiki php-net-ldap
 
