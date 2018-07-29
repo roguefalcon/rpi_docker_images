@@ -6,7 +6,7 @@ FROM debian:latest
 
 # Run the debian packages we need
 # RUN apt-get update && apt-get -y install python python-pip python-dev build-essential openssh-server git libpam-ldapd libnss-ldapd nscd python3 python3-pip python3-dev libffi-dev sqlite3 python3-setuptools nano wget apt-transport-https ca-certificates curl gnupg2 software-properties-common
-RUN apt-get update && apt-get -y install build-essential openssh-server git nscd python3 python3-dev libffi-dev sqlite3 python3-setuptools nano wget apt-transport-https ca-certificates curl gnupg2 software-properties-common python3-pip sudo vim
+RUN apt-get update && apt-get -y install build-essential openssh-server git nscd python3 python3-dev libffi-dev sqlite3 python3-setuptools nano wget apt-transport-https ca-certificates curl gnupg2 software-properties-common python3-pip sudo vim openvpn
 
 # Add the python3 packages we need
 RUN pip3 install wheel flask bcrypt flake8
