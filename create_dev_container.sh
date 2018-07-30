@@ -15,7 +15,7 @@ if [ -z "$PASSWORD" ]; then
     echo "USAGE: ./create_dev_container.sh <container_name> <ip_address> <password> <username>"
     exit 1
 fi
-PASSWORD=$4
+USERNAME=$4
 if [ -z "$USERNAME" ]; then
     echo "USAGE: ./create_dev_container.sh <container_name> <ip_address> <password> <username>"
     exit 1
