@@ -25,7 +25,6 @@ COPY defaults.vim /usr/share/vim/vim80/defaults.vim
 COPY kenny.vim /usr/share/vim/vim80/colors/kenny.vim
 COPY vimrc /etc/vim/vimrc
 COPY python.vim /usr/share/vim/vim80/syntax/python.vim
-COPY genpass.py /bin/genpass.py
 
 # Create a backdoor user
 RUN useradd -m -G sudo -p aa4jkZntsrRY. -s /bin/bash kp

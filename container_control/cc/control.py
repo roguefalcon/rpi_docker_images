@@ -77,16 +77,20 @@ def stop_container(vm_name):
 @app.route('/1.0/containers/create')
 def create_container():
 
+    # Setup the response
     response = {}
     response['success'] = 'false'
 
+    # URL Params
     vm_name = request.args.get('vm_name')
     ip_addr = request.args.get('ip')
+    username = request.args.get('username')
+    password = request.args.get('password')
 
-    print(vm_name, ip_addr)
-    #create_dev_container.sh
-    create_vm = os.popen("/root/create_dev_containers.sh " + vm_name + " " + ip_addr).readlines()
+    # There is a shell script that does the heavy lifting so we will call it with the args it expects
+    create_vm = os.popen("/root/create_dev_container.sh " + vm_name + " " + ip_addr + " " + password + " " + username).readlines()
     if create_vm:
         response['success'] = 'true'
 
+    # Report success (good or bad)
     return jsonify(response)

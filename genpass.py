@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 import crypt
+import sys
 
-plaintext = 'studentslearncod3#'
-
+plaintext = sys.argv[1]
 hashed = crypt.crypt(plaintext, 'aa')
 
 print(hashed)
