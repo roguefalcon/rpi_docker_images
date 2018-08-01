@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, send_from_directory
 from cc import app
 import docker
 import os
@@ -94,3 +94,29 @@ def create_container():
 
     # Report success (good or bad)
     return jsonify(response)
+
+
+# Create OpenVPN File =========================================================
+@app.route('/1.0/create_ovpn')
+def create_ovpn():
+
+    # Setup the response
+    response = {}
+    response['success'] = 'false'
+
+    username = request.args.get('username')
+    create_vm = os.popen("/root/generate_ovpn.sh " + username).readlines()
+    if create_vm:
+        response['success'] = 'true'
+
+    # Report success (good or bad)
+    return jsonify(response)
+
+
+# Download OpenVPN File =======================================================
+@app.route('/1.0/download_ovpn')
+def download_ovpn():
+
+    username = request.args.get('username')
+    if username:
+        return send_from_directory('/root', username + ".ovpn", as_attachment=True)
