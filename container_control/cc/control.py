@@ -117,6 +117,16 @@ def create_ovpn():
 @app.route('/1.0/download_ovpn')
 def download_ovpn():
 
+    # Who is looking for their file?
     username = request.args.get('username')
+
+    # Confirm they sent a student username
     if username:
-        return send_from_directory('/root', username + ".ovpn", as_attachment=True)
+
+        # If we don't have this file let's create it
+        if not os.path.isfile("/root/" + username + ".ovpn"):
+            # Create the file
+            create_ovpn = os.popen("/root/generate_ovpn.sh " + username).readlines()
+
+        # Send the file
+        return send_from_directory("/root", username + ".ovpn", as_attachment=True)
