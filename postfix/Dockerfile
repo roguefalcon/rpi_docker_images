@@ -35,4 +35,3 @@ WORKDIR    /tmp
 
 EXPOSE     587
 ENTRYPOINT ["/run.sh"]
-

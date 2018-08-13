@@ -80,17 +80,25 @@ if [ ! -z "$ALLOWED_SENDER_DOMAINS" ]; then
 
 	postconf -e "smtpd_restriction_classes=allowed_domains_only"
 	postconf -e "allowed_domains_only=permit_mynetworks, reject_non_fqdn_sender reject"
-#   Update: loosen up on RCPT checks. This will mean we might get some emails which are not valid, but the service connecting
-#           will be able to send out emails much faster, as there will be no lookup and lockup if the target server is not responing or availalb.e
+#   Update: loosen up on RCPT checks. This will mean we might get some emails
+#           which are not valid, but the service connecting will be able to
+#           send out emails much faster, as there will be no lookup and lockup
+#           if the target server is not responding or available
 #	postconf -e "smtpd_recipient_restrictions=reject_non_fqdn_recipient, reject_unknown_recipient_domain, reject_unverified_recipient, check_sender_access hash:$allowed_senders, reject"
 	postconf -e "smtpd_recipient_restrictions=reject_non_fqdn_recipient, reject_unknown_recipient_domain, check_sender_access hash:$allowed_senders, reject"
 else
 	postconf -# "smtpd_restriction_classes"
-#   Update: loosen up on RCPT checks. This will mean we might get some emails which are not valid, but the service connecting
-#           will be able to send out emails much faster, as there will be no lookup and lockup if the target server is not responing or availalb.e
+#   Update: loosen up on RCPT checks. This will mean we might get some emails
+#           which are not valid, but the service connecting will be able to send
+#           out emails much faster, as there will be no lookup and lockup if the
+#           target server is not responding or available
 #	postconf -e "smtpd_recipient_restrictions=reject_non_fqdn_recipient,reject_unknown_recipient_domain,reject_unverified_recipient"
 	postconf -e "smtpd_recipient_restrictions=reject_non_fqdn_recipient, reject_unknown_recipient_domain, defer_unauth_destination, permit"
 fi
+
+# Kenny added these lines trying to get mail to relay
+postconf -# "smtpd_restriction_classes"
+postconf -e "smtpd_recipient_restrictions=reject_non_fqdn_recipient, reject_unknown_recipient_domain, defer_unauth_destination, permit"
 
 # Since we are behind closed doors, let's just permit all relays.
 postconf -e "smtpd_relay_restrictions=permit"

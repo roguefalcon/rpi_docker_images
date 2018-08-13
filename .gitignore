@@ -3,3 +3,4 @@ user-registration/static/ovpns
 .gitignore
 *.swp
 *.pyc
+nohup.out
